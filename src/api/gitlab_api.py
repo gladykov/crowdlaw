@@ -27,7 +27,8 @@ class GitlabAPI:
     def get_project_by_user_path(self, username, project_path):
         return self.gl.projects.get(username + "/" + project_path)
 
-    def get_project_info(self, project):
+    @staticmethod
+    def get_project_info(project):
         return {
             'username': project.owner['username'],
             'user_name': project.owner['name'],
@@ -63,23 +64,11 @@ class GitlabAPI:
         print(_(f"Downloaded project archive to {output_path}"))
         return output_path
 
-    def upload_project_archive(self, project_name, archive_path):
-        output = self.gl.projects.import_project(open(archive_path, 'rb'), project_name, overwrite=True)
-        # Get a ProjectImport object to track the import status
-        project_import = self.gl.projects.get(output['id'], lazy=True).imports.get()
-        while project_import.import_status != 'finished':
-            print(_("Waiting... importing... grab a cookie..."))
-            time.sleep(5)
-            project_import.refresh()
-            if project_import.import_status == 'failed':
-                print("import failed!")
-                break
-
     def create_empty_project(self, project_name):
         return self.gl.projects.create({'name': project_name, 'visibility': 'public'})
 
-    def prepare_archive_to_push(self, archive_path):
-        os.path.join(get_project_root(), 'tmp', 'archive.zip')
+    def get_credentials_git_url(self, token_name, path):
+        return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
 
 
 if __name__ == "__main__":

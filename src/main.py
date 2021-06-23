@@ -43,3 +43,9 @@ if __name__ == "__main__":
         window = on_boarding.event_handler(window, event, values)
         if window is None:
             break
+        if window is True:
+            on_boarding_success = True
+            break
+
+    if on_boarding_success:
+        pass

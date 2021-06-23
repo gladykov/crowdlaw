@@ -41,5 +41,12 @@ def get_config():
     return config
 
 
+def set_config(config_dict):
+    config_file = os.path.join(get_project_root(), 'projects', 'config.yaml')
+
+    with open(config_file, 'w') as stream:
+        yaml.dump(config_dict, stream)
+
+
 def strip_string(string):
     return string.strip().lower().replace(' ',  '-')

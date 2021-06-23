@@ -8,7 +8,7 @@ from src.views.on_boarding import OnBoardingUI
 from src.views.common import warning_popup
 from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
-from src.utils.utils import Properties, get_git_providers, get_config, strip_string, get_project_root
+from src.utils.utils import Properties, get_git_providers, get_config, set_config, strip_string, get_project_root
 
 config_file = '../config.yaml'
 
@@ -104,30 +104,11 @@ class OnBoardingCtrl:
                 project_stripped_name
             ])
 
-        # Config section - do not write before git success
-        project_dict = {
-            'provider': self.props.git_provider,
-            'username': self.props.username,
-            'token': self.props.token,
-            'project_url': self.props.project_url,
-            'is_owner': new_project,
-            'folder': project_stripped_name,
-        }
-
         config = get_config()
-        if not config:
-            config = {
-                'init': True,
-                'projects': {},
-                'lang': 'en',  # TODO: Set and Get current language during on boarding
-            }
 
-        if self.props.project_name in config['projects'].keys():
+        if config and self.props.project_name in config['projects'].keys():
             warning_popup([_(f"Project {self.props.project_name} already exists")])
             return False
-
-        config['projects'][self.props.project_name] = project_dict
-        config['last_project'] = self.props.project_name
 
         project_dir = os.path.join(get_project_root(), 'projects', project_stripped_name)
 
@@ -159,8 +140,7 @@ class OnBoardingCtrl:
         git_adapter = GitAdapter(project_dir, initialized=False)
         git_adapter.set_config('user', 'name', user_name)
         git_adapter.set_config('user', 'email', email)
-        # TODO: This should change depending on Git API Provider
-        repo_git_url = f"https://{self.props.token_name}:{self.props.token}@gitlab.com/{username}/{path}.git"
+        repo_git_url = remote_api.get_credentials_git_url(self.props.token_name, path)
         git_adapter.set_config('remote "origin"', 'url', repo_git_url)
 
         if new_project:
@@ -174,22 +154,28 @@ class OnBoardingCtrl:
         else:
             git_adapter.pull()
 
+        # And now we can write config
+        project_dict = {
+            'nice_name': repo_name,
+            'provider': self.props.git_provider,
+            'username': username,
+            'project_url': repo_web_url,
+            'is_owner': new_project,
+            'folder': project_dir,
+        }
 
-            # Download template of project, unpack and remove
+        if not config:
+            config = {
+                'init': True,
+                'projects': {},
+                'lang': 'en',  # TODO: Set and Get current language during on boarding
+            }
 
+        config['projects'][self.props.project_name] = project_dict
+        config['last_project'] = self.props.project_name
 
-
-            # Add to list of projects
-            # Project name
-            # Project path
-            # Project owner
-            # Are you owner
-            # Git provider
-            # Username
-            # token
-        # Create folder and config per project
-        # if existing - fork and put copy locally
-        # if new - create project, clone source and set origin
+        set_config(config)
+        return True
 
     def event_handler(self, window, event, values):
         if event == 'new':
@@ -240,7 +226,8 @@ class OnBoardingCtrl:
         if event == _("Start!"):
             if self.validate_page_2(values):
                 self.collect_page_2(values)
-                self.initialize_project()
+                if self.initialize_project():
+                    return True
 
         if event in [_("Close"), sg.WIN_CLOSED]:
             window.close()

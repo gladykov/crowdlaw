@@ -49,3 +49,5 @@ if __name__ == "__main__":
 
     if on_boarding_success:
         pass
+
+    a = 1

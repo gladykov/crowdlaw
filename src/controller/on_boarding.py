@@ -1,30 +1,23 @@
+import os.path
+import webbrowser
+
 import PySimpleGUI as sg
 import validators
-import webbrowser
-import os.path
-import yaml
 
-from src.views.on_boarding import OnBoardingUI
-from src.views.common import warning_popup
 from src.api.api import get_api
+from src.controller.common import CommonCtrl
 from src.git_adapter.git_adapter import GitAdapter
-from src.utils.utils import Properties, get_git_providers, get_config, set_config, strip_string, get_project_root
+from src.utils.utils import (PropertiesOnboarding, get_config,
+                             get_git_providers, get_project_root, set_config,
+                             strip_string)
+from src.views.common import warning_popup
+from src.views.on_boarding import OnBoardingUI
 
-config_file = '../config.yaml'
 
-
-class OnBoardingCtrl:
+class OnBoardingCtrl(CommonCtrl):
 
     def __init__(self):
-        self.props = Properties()
-        self.props.new_existing = None
-        self.props.project_url = None
-        self.props.project_name = None
-        self.props.git_provider = None
-        self.props.username = None
-        self.props.token = None
-        self.props.theme = "Dashboard" # Move to some common CTRL
-        self.props.supported_git_providers = list(get_git_providers().keys())
+        self.props = PropertiesOnboarding()
         self.page = 1
 
     def get_elements(self):
@@ -33,10 +26,8 @@ class OnBoardingCtrl:
         else:
             return OnBoardingUI(self.props).git_details()
 
-    # This will go to some common UI
-    def draw_window(self, window_title, location=(None, None)):
-        window = sg.Window(window_title, [[self.get_elements()]], finalize=True, location=location)
-        return window
+    def get_window(self, window_title, location=(None, None)):
+        return self.draw_window(window_title, self.get_elements(), location)
 
     def validate_page_1(self, values):
         issues = []
@@ -180,12 +171,12 @@ class OnBoardingCtrl:
     def event_handler(self, window, event, values):
         if event == 'new':
             self.props.new_existing = event
-            new_window = self.draw_window('updated', window.CurrentLocation())
+            new_window = self.get_window('updated', window.CurrentLocation())
             window.close()
             return new_window
         if event == 'existing':
             self.props.new_existing = event
-            new_window = self.draw_window('existing', window.CurrentLocation())
+            new_window = self.get_window('existing', window.CurrentLocation())
             window.close()
             return new_window
 
@@ -193,21 +184,21 @@ class OnBoardingCtrl:
             if self.validate_page_1(values):
                 self.collect_page_1(values)
                 self.page = 2
-                new_window = self.draw_window('git details title', window.CurrentLocation())
+                new_window = self.get_window('git details title', window.CurrentLocation())
                 window.close()
                 return new_window
 
         if event == _("Back"):
             self.page = 1
             self.collect_page_2(values)
-            new_window = self.draw_window('git details title', window.CurrentLocation())
+            new_window = self.get_window('git details title', window.CurrentLocation())
             window.close()
             return new_window
 
         if event == 'git_provider':
             self.props.git_provider = values[event]
             self.collect_page_2(values)
-            new_window = self.draw_window('git details changed', window.CurrentLocation())
+            new_window = self.get_window('git details changed', window.CurrentLocation())
             window.close()
             return new_window
 

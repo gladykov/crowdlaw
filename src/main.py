@@ -1,12 +1,14 @@
 import gettext
 import os
+
+import PySimpleGUI as sg
 import yaml
 
-from utils.utils import get_project_root
-from UI.elements import Elements
-import PySimpleGUI as sg
-
+from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
+from UI.elements import Elements
+from utils.utils import get_project_root
+
 locale_dir = os.path.join(get_project_root(), "locale")
 
 lang_en = gettext.translation('crowdlaw', localedir=locale_dir, languages=['en'])
@@ -34,20 +36,31 @@ class Main:
 
 if __name__ == "__main__":
     # Main()
-    on_boarding = OnBoardingCtrl()
-    window = on_boarding.draw_window(_("On boarding"))
 
-    while True:
-        event, values = window.read()
-        print(event, "|", values)
-        window = on_boarding.event_handler(window, event, values)
-        if window is None:
-            break
-        if window is True:
-            on_boarding_success = True
-            break
+    on_boarding = False
 
+    if on_boarding:
+        on_boarding = OnBoardingCtrl()
+        window = on_boarding.get_window(_("On boarding"))
+
+        while True:
+            event, values = window.read()
+            print(event, "|", values)
+            window = on_boarding.event_handler(window, event, values)
+            if window is None:
+                break
+            if window is True:
+                on_boarding_success = True
+                break
+
+    on_boarding_success = True
     if on_boarding_success:
-        pass
+        main_window = MainWindowCtrl()
+        window = main_window.get_window('Code Law 1.0')
 
-    a = 1
+        while True:
+            event, values = window.read()
+            print(event, "|", values)
+            if event in [_("Close"), sg.WIN_CLOSED]:
+                window.close()
+                break

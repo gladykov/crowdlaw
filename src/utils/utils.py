@@ -1,7 +1,8 @@
 import os
-import yaml
 from pathlib import Path
 from zipfile import ZipFile
+
+import yaml
 
 
 def get_project_root() -> Path:
@@ -18,9 +19,32 @@ def get_unpacked_repo_root(starting_pattern):
         return path.name, str(path.parent)
 
 
-class Properties(object):
-    # Virtual object to attach arguments
-    pass
+class PropertiesOnboarding:
+
+    def __init__(self):
+        self.new_existing = None
+        self.project_url = None
+        self.project_name = None
+        self.git_provider = None
+        self.username = None
+        self.token = None
+        self.token_name = None
+        self.theme = "Dashboard"  # Move to some common CTRL
+        self.supported_git_providers = list(get_git_providers().keys())
+
+
+class PropertiesMainWindow:
+
+    def __init__(self):
+        self.new_existing = None
+        self.project_url = None
+        self.project_name = None
+        self.git_provider = None
+        self.username = None
+        self.token = None
+        self.token_name = None
+        self.theme = "Dashboard"  # Move to some common CTRL
+        self.supported_git_providers = list(get_git_providers().keys())
 
 
 def get_git_providers():

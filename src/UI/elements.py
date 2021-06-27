@@ -98,9 +98,15 @@ class Elements:
                 window.close()
                 exit("App closed. Bye!")
 
+
+
+
     def am_i_selected_radio_button(self, key, event, default):
         if event is None:
             return default
+
+
+
 
     def on_boarding(self):
 

@@ -2,17 +2,24 @@ import PySimpleGUI as sg
 
 
 def warning_popup(issues):
-    layout = [
-        [sg.Text(_("Found some issues, please correct them:"))],
-    ]
+    # Expand box so title can be visible always
+    issues.insert(0, "___________________________________________________________")
+    sg.popup_ok(*issues, title=_("Found some issues, please correct them."))
 
-    for issue in issues:
-        layout.append([sg.Text(issue)])
 
-    layout.append([sg.CloseButton(_("OK"))])
-    window = sg.Window(_("Warning"), layout, finalize=True)
-    while True:
-        event, value = window.read()
-        if event in [_("Close"), sg.WIN_CLOSED]:
-            window.close()
-            break
+def popup_yes_no_cancel(title, issues):
+    # Expand box so title can be visible always
+    issues.insert(0, "___________________________________________________________")
+    text = "\n".join(issues)
+    return sg.Window(
+        title,
+        [
+            [sg.Text(text)],
+            [
+                sg.Button(_("Yes"), k="yes"),
+                sg.Button(_("No"), k="no"),
+                sg.Button(_("Cancel"), k="cancel"),
+            ],
+        ],
+        modal=True,
+    ).read(close=True)[0]

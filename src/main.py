@@ -61,6 +61,7 @@ if __name__ == "__main__":
         while True:
             event, values = window.read()
             print(event, "|", values)
-            if event in [_("Close"), sg.WIN_CLOSED]:
-                window.close()
+            window = main_window.event_handler(window, event, values)
+
+            if window is None:
                 break

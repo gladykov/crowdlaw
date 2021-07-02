@@ -1,10 +1,15 @@
 from src.api.gitlab_api import GitlabAPI
-from src.utils.utils import get_git_providers
 
 
-def get_api(api):
-    if api not in list(get_git_providers().keys()):
+def get_api(api, git_providers):
+    """
+    For future, when more than one API will be supported.
+    :param api: str
+    :param git_providers: lst
+    :return: object
+    """
+    if api not in list(git_providers.keys()):
         raise ValueError(_(f"Unsupported API provided: {api}"))
 
-    if api == 'gitlab':
+    if api == "gitlab":
         return GitlabAPI

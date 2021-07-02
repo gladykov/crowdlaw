@@ -2,3 +2,5 @@ python-gitlab~=2.7.1
 
 PySimpleGUI~=4.43.0
 PyYAML~=5.4.1
+
+validators~=0.18.2

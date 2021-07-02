@@ -1,12 +1,9 @@
 import gettext
 import os
 
-import PySimpleGUI as sg
-import yaml
 
 from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
-from UI.elements import Elements
 from utils.utils import get_project_root
 
 
@@ -17,25 +14,7 @@ lang_pl = gettext.translation("crowdlaw", localedir=locale_dir, languages=["pl"]
 lang_en.install()
 
 
-class Main:
-    def __init__(self):
-        config_file = "config.yaml"
-        with open(config_file, "r") as stream:
-            config_file = yaml.safe_load(stream)
-
-        # if not config_file["init"]:
-        #     self.initiliase()
-        # else:
-        #     self.start_app()
-        self.start_app()
-
-    def start_app(self):
-        app = Elements()
-        app.layout()
-
-
 if __name__ == "__main__":
-    # Main()
 
     on_boarding = False
 
@@ -59,11 +38,9 @@ if __name__ == "__main__":
 
         window = main_window.get_window("Code Law 1.0")
 
-        if main_window.props.branch_name is None:
-            branch_name = main_window.get_new_branch_name()
-            if branch_name is None:
-                exit
-            window = main_window.set_working_branch(window, branch_name)
+        if main_window.set_new_branch():  # Needed on first run after starting new proj
+            window.close()
+            window = main_window.get_window("Code Law 1.0")
 
         while True:
             event, values = window.read()

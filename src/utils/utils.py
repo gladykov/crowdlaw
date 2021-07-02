@@ -47,6 +47,10 @@ class PropertiesMainWindow:
         self.theme = "Dashboard"  # Move to some common CTRL
         self.supported_git_providers = list(get_git_providers().keys())
         self.editor_disabled = True
+        self.branch_name = None
+        self.branch_names = None
+        self.editor_text = ""
+        self.edited_file = None
 
 
 def get_git_providers():

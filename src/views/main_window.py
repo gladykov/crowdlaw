@@ -29,13 +29,11 @@ class MainWindowUI:
                 [sg.Text("Click document to start editing")],
                 [
                     sg.Tree(
-                        headings=[
-                            "Size",
-                        ],
+                        headings=[],
                         data=self.props.list_of_files,
                         key="doctree",
-                        num_rows=20,
-                        col0_width=40,
+                        num_rows=10,
+                        col0_width=20,
                         enable_events=True,
                         select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                     )
@@ -47,14 +45,11 @@ class MainWindowUI:
             ],
         )
 
-    def ok(ok):
-        pass
-
     def stage(self):
         return sg.Frame("Current stage", [[sg.Text("Current stage")]])
 
     def editor_background_color(self):
-        return 'grey' if self.props.editor_disabled else 'white'
+        return "grey" if self.props.editor_disabled else "white"
 
     def text_editor(self):
         frame = sg.Frame(
@@ -66,7 +61,23 @@ class MainWindowUI:
                         size=(60, 20),
                         k="document_editor",
                         disabled=self.props.editor_disabled,
-                        background_color=self.editor_background_color()
+                        background_color=self.editor_background_color(),
+                    )
+                ]
+            ],
+        )
+        return frame
+
+    def branch_selector(self):
+        frame = sg.Frame(
+            _("Sets of changes"),
+            [
+                [
+                    sg.Combo(
+                        self.props.branch_names,
+                        enable_events=True,
+                        default_value=self.props.branch_name,
+                        k="branch_selector",
                     )
                 ]
             ],
@@ -79,6 +90,7 @@ class MainWindowUI:
                 [self.repo_info()],
                 [sg.HorizontalSeparator()],
                 [self.documents_list()],
+                [self.branch_selector()],
             ]
         )
 

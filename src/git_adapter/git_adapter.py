@@ -1,14 +1,14 @@
 import os
 
-from src.utils.utils import get_project_root
-
 from git import Repo
 
-repo_root = os.path.join(get_project_root(), 'repos', 'base_repo')
+from src.utils.utils import get_project_root
+
+
+repo_root = os.path.join(get_project_root(), "repos", "base_repo")
 
 
 class GitAdapter:
-
     def __init__(self, path, initialized=True):
         self.path = path
         if initialized:
@@ -44,6 +44,20 @@ class GitAdapter:
 
     def clone(self, local_path, remote_path):
         self.repo.git.clone_from(remote_path, local_path)
+
+    def local_branches(self):
+        local_branches = []
+        for head in self.repo.heads:
+            local_branches.append(head.name)
+
+        return local_branches
+
+    def checkout_new_branch(self, branch_name):
+        self.repo.git.checkout(f"-b{branch_name}")  # Sth adds space in front of name
+
+    def checkout_existing_branch(self, branch_name):
+        self.repo.git.checkout(branch_name)
+
 
 if __name__ == "__main__":
     ga = GitAdapter(repo_root)

@@ -180,7 +180,7 @@ class OnBoardingCtrl(CommonCtrl):
             window.close()
             return new_window
 
-        if event == _("Next"):
+        if event == 'next':
             if self.validate_page_1(values):
                 self.collect_page_1(values)
                 self.page = 2
@@ -188,7 +188,7 @@ class OnBoardingCtrl(CommonCtrl):
                 window.close()
                 return new_window
 
-        if event == _("Back"):
+        if event == "back":
             self.page = 1
             self.collect_page_2(values)
             new_window = self.get_window('git details title', window.CurrentLocation())
@@ -214,13 +214,13 @@ class OnBoardingCtrl(CommonCtrl):
                 get_git_providers()[self.props.git_provider]['get_token']
             )
 
-        if event == _("Start!"):
+        if event == "start":
             if self.validate_page_2(values):
                 self.collect_page_2(values)
                 if self.initialize_project():
                     return True
 
-        if event in [_("Close"), sg.WIN_CLOSED]:
+        if event in ["close", sg.WIN_CLOSED]:
             window.close()
             return None
 

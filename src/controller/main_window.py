@@ -1,5 +1,6 @@
 import os.path
 import webbrowser
+from time import time
 
 import PySimpleGUI as sg
 import validators
@@ -20,6 +21,7 @@ class MainWindowCtrl(CommonCtrl):
         self.props = PropertiesMainWindow()
         self.config = get_config()
         self.props.project_name = self.config["last_project"]
+        self.props.branch_name = self.config.get("last_branch")
         self.props.project_url = self.config["projects"][self.props.project_name][
             "repo"
         ]["url"]
@@ -29,9 +31,12 @@ class MainWindowCtrl(CommonCtrl):
         self.props.list_of_files = self.get_treedata(
             os.path.join(get_project_root(), "projects", "monopipeline")
         )
-        self.props.editor_text = ""
-        self.props.edited_file = None
         self.ignore_event = False  # Special flag for special cases
+        self.git_adapter = GitAdapter(
+            os.path.join(get_project_root(), "projects", "monopipeline"),
+            initialized=True,
+        )
+        self.props.branch_names = self.git_adapter.local_branches()
 
     @staticmethod
     def key_to_id(tree, key):
@@ -57,7 +62,7 @@ class MainWindowCtrl(CommonCtrl):
                         parent,
                         fullname,
                         f,
-                        values=[os.stat(fullname).st_size],
+                        values=[],
                         icon=file_icon,
                     )
 
@@ -118,7 +123,7 @@ class MainWindowCtrl(CommonCtrl):
         os.remove(file_path)
 
     @staticmethod
-    def issues_with_name(possible_name):
+    def validate_new_filename(possible_name):
         issues = []
         if len(possible_name) == 0:
             issues.append(_("Filename cannot be empty"))
@@ -159,6 +164,49 @@ class MainWindowCtrl(CommonCtrl):
         window["document_editor"].update(disabled=self.props.editor_disabled)
         window["document_editor"].update(background_color="white")
 
+    def get_new_branch_name(self):
+        branch_name = sg.popup_get_text(
+            _(
+                "All your changes to the articles,\n"
+                "will be treated together as one set\n"
+                "Please, give a short name to a new set of changes"
+            ),
+            _("Provide name for your set of changes"),
+        )
+
+        if branch_name is None:
+            return None
+
+        if not branch_name:
+            branch_name = self.get_new_branch_name()
+
+        self.props.branch_name_readable = branch_name
+        # Make sure branch name is unique
+        # TODO: Make proper branch name validation
+        return strip_string(branch_name) + "_" + str(time())[-3:]
+
+    def set_working_branch(self, window, branch_name):
+        self.props.branch_name = branch_name
+        if self.branch_exists(self.props.branch_name):
+            self.git_adapter.checkout_existing_branch(self.props.branch_name)
+            print("branch exists")
+        else:
+            print("branch not exists")
+            self.git_adapter.checkout_new_branch(self.props.branch_name)
+            self.props.branch_names = self.git_adapter.local_branches()
+
+        self.props.list_of_files = self.get_treedata(
+            os.path.join(get_project_root(), "projects", "monopipeline")
+        )
+        new_window = self.get_window(
+            "title titel be a variable", window.CurrentLocation()
+        )
+        window.close()
+        return new_window
+
+    def branch_exists(self, branch_name):
+        return branch_name in self.git_adapter.local_branches()
+
     def event_handler(self, window, event, values):
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
@@ -191,7 +239,7 @@ class MainWindowCtrl(CommonCtrl):
             )
             if new_filename is None:
                 return window
-            issues = self.issues_with_name(new_filename)
+            issues = self.validate_new_filename(new_filename)
             if issues:
                 warning_popup(issues)
             else:
@@ -236,6 +284,16 @@ class MainWindowCtrl(CommonCtrl):
             if self.props.edited_file is not None:
                 self.put_file_content(self.props.edited_file, values["document_editor"])
                 window["document_editor"].update(disabled=False)
+
+        if event == "branch_selector":
+            if self.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                # TODO: Do not change branch
+                return window
+
+            return self.set_working_branch(window, values["branch_selector"])
 
         if event in [_("Close"), sg.WIN_CLOSED]:
             window.close()

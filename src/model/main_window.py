@@ -25,15 +25,19 @@ class MainWindowModel(Base):
         self.editor_text = ""
         self.edited_file = None
 
+        self.config = self.get_config()
+        self.project_name = self.config["last_project"]
+
         self.git_adapter = GitAdapter(
-            os.path.join(get_project_root(), "projects", "monopipeline"),
+            os.path.join(get_project_root(), "projects", self.project_name),
             initialized=True,
         )
         self.branch_names = self.git_adapter.local_branches()
 
-        self.config = self.get_config()
-        self.project_name = self.config["last_project"]
-        self.branch_name = self.config.get("last_branch")
+        self.projects = self.folder_list(os.path.join(get_project_root(), "projects"))
+        branch_name = self.git_adapter.repo.active_branch.name
+        # Special case in case of crash
+        self.branch_name = branch_name if branch_name != "master" else "None"
         self.branch_name_readable = ""
         self.project_url = self.config["projects"][self.project_name]["repo"]["url"]
         self.username = self.config["projects"][self.project_name]["repo"]["user"]
@@ -43,7 +47,12 @@ class MainWindowModel(Base):
         self.list_of_files = self.tree_data()
 
     @staticmethod
-    def tree_data():
+    def folder_list(path):
+        return [
+            item for item in os.listdir(path) if os.path.isdir(os.path.join(path, item))
+        ]
+
+    def tree_data(self):
         tree_data = sg.TreeData()
 
         def add_files_in_folder(parent, dir_name):
@@ -63,7 +72,7 @@ class MainWindowModel(Base):
                     )
 
         add_files_in_folder(
-            "", os.path.join(get_project_root(), "projects", "monopipeline")
+            "", os.path.join(get_project_root(), "projects", self.project_name)
         )
 
         return tree_data
@@ -115,7 +124,7 @@ class MainWindowModel(Base):
             return issues
         else:
             new_file_path = os.path.join(
-                get_project_root(), "projects", "monopipeline", new_filename
+                get_project_root(), "projects", self.project_name, new_filename
             )
             self.create_file(new_file_path)
             self.update_list_of_files()
@@ -245,5 +254,24 @@ class MainWindowModel(Base):
 
         return True
 
+    def add_new_branch(self):
+        branch_name = self.get_new_branch_name()
+        if branch_name in [None, "Cancel", ""]:
+            return False
+
+        self.set_working_branch(branch_name)
+        return True
+
     def branch_exists(self, branch_name):
         return branch_name in self.git_adapter.local_branches()
+
+    def select_current_branch(self, window):
+        window["branch_selector"].update(self.branch_name)
+
+    def select_current_project(self, window):
+        window["project_selector"].update(self.project_name)
+
+    def switch_project(self, values):
+        self.config["last_project"] = values["project_selector"]
+        self.set_config(self.config)
+        return MainWindowModel()

@@ -21,7 +21,7 @@ class MainWindowCtrl(BaseCtrl):
         if self.model.branch_name is None:
             branch_name = self.model.get_new_branch_name()
             if branch_name in [None, "Cancel", ""]:
-                exit()
+                exit()  # TODO: When user will close it ?
             self.model.set_working_branch(branch_name)
 
             return True
@@ -32,6 +32,21 @@ class MainWindowCtrl(BaseCtrl):
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
             return window
+
+        if event == "project_selector":
+            if self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                self.model.select_current_project(window)
+                return window
+
+            self.model = self.model.switch_project(values)
+            new_window = self.get_window(
+                "title titel be a variable", window.CurrentLocation()
+            )
+            window.close()
+            return new_window
 
         if event == "doctree":
             self.ignore_event = self.model.select_document(window, values)
@@ -76,7 +91,7 @@ class MainWindowCtrl(BaseCtrl):
                 "cancel",
                 None,
             ]:
-                # TODO: Do not change branch in branch selector
+                self.model.select_current_branch(window)
                 return window
 
             if self.model.set_working_branch(values["branch_selector"]):
@@ -85,6 +100,21 @@ class MainWindowCtrl(BaseCtrl):
                 )
                 window.close()
                 return new_window
+
+        if event == "add_new_set":
+            if self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                self.model.select_current_branch(window)
+                return window
+
+            self.model.add_new_branch()
+            new_window = self.get_window(
+                "title titel be a variable", window.CurrentLocation()
+            )
+            window.close()
+            return new_window
 
         if event in [_("Close"), sg.WIN_CLOSED]:
             window.close()

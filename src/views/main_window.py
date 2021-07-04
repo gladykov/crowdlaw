@@ -8,16 +8,30 @@ class MainWindowUI:
 
     def repo_info(self):
         return sg.Frame(
-            _("Server info"),
+            _("Project info"),
             [
                 [sg.Text(_(f"URL: {self.props.project_url}"))],
                 [sg.Text(_(f"User: {self.props.username}"), k="user")],
                 [sg.Text(_(f"Token: **********"), k="token")],
                 [sg.Text(_(f"Token name: token name"), k="token_name")],
                 [sg.Button(_(f"Update token info"), k="update_token_info")],
+                self.project_selector(),
             ],
             font=("Helvetica", 25),
         )
+
+    def project_selector(self):
+        frame = [
+            sg.Combo(
+                self.props.projects,
+                enable_events=True,
+                default_value=self.props.project_name,
+                k="project_selector",
+            ),
+            sg.Button(_("Add new project"), k="add_new_project"),
+        ]
+
+        return frame
 
     def documents_list(self):
         return sg.Frame(
@@ -75,7 +89,8 @@ class MainWindowUI:
                         enable_events=True,
                         default_value=self.props.branch_name,
                         k="branch_selector",
-                    )
+                    ),
+                    sg.Button(_("Add new set"), k="add_new_set"),
                 ]
             ],
         )

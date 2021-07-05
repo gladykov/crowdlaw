@@ -13,14 +13,14 @@ class OnBoardingUI:
             [sg.Text(_("What do you want to do?"))],
             [
                 sg.Radio(
-                    _("Create fresh empty project, which others can join?"),
+                    _("Create fresh empty project, which others can join"),
                     "intention",
                     default=(self.props.new_existing == "new"),
                     k="new",
                     enable_events=True,
                 ),
                 sg.Radio(
-                    _("Join existing project?"),
+                    _("Join existing project"),
                     "intention",
                     default=(self.props.new_existing == "existing"),
                     k="existing",

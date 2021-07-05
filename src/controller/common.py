@@ -18,8 +18,10 @@ class BaseCtrl:
         # Bind redo mechanism to key Ctrl-Shift-Z
         text.bind("<Control-Shift-Key-Z>", lambda event, text=text: redo(text))
 
-    def draw_window(self, window_title, layout, location=(None, None)):
-        window = sg.Window(window_title, [[layout]], finalize=True, location=location)
+    def draw_window(self, window_title, layout, location=(None, None), modal=False):
+        window = sg.Window(
+            window_title, [[layout]], finalize=True, location=location, modal=modal
+        )
         for element in window.AllKeysDict.keys():
             if window.AllKeysDict[element].Type in [
                 "multiline"

@@ -1,7 +1,6 @@
 import gettext
 import os
 
-
 from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
 from utils.utils import get_project_root
@@ -16,7 +15,7 @@ lang_en.install()
 
 if __name__ == "__main__":
 
-    on_boarding = False
+    on_boarding = True
 
     if on_boarding:
         on_boarding = OnBoardingCtrl()

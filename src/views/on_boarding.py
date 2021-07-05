@@ -72,7 +72,7 @@ class OnBoardingUI:
                 sg.Text(_("Select Git site")),
                 sg.Combo(
                     values=self.props.supported_git_providers,
-                    default_value=_(self.props.git_provider or _("gitlab")),
+                    default_value=_(self.props.git_provider or None),
                     size=(20, 1),
                     k="git_provider",
                     readonly=True,
@@ -118,7 +118,7 @@ class OnBoardingUI:
             ],
             [
                 sg.Text(_(f"Provide token name"), k="token_name_label"),
-                sg.InputText(self.props.token, k="token_name_input"),
+                sg.InputText(self.props.token_name, k="token_name_input"),
             ],
         ]
 

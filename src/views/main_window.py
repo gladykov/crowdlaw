@@ -29,6 +29,7 @@ class MainWindowUI:
                 k="project_selector",
             ),
             sg.Button(_("Add new project"), k="add_new_project"),
+            sg.Button(_("Remove project"), k="remove_project"),
         ]
 
         return frame

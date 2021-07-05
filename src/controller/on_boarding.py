@@ -2,8 +2,8 @@ import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
 from src.model.on_boarding import OnBoardingModel
-from src.views.on_boarding import OnBoardingUI
 from src.views.common import warning_popup
+from src.views.on_boarding import OnBoardingUI
 
 
 class OnBoardingCtrl(BaseCtrl):
@@ -17,8 +17,8 @@ class OnBoardingCtrl(BaseCtrl):
         else:
             return OnBoardingUI(self.model).git_details()
 
-    def get_window(self, window_title, location=(None, None)):
-        return self.draw_window(window_title, self.get_elements(), location)
+    def get_window(self, window_title, location=(None, None), modal=False):
+        return self.draw_window(window_title, self.get_elements(), location, modal)
 
     def event_handler(self, window, event, values):
         if event == "new":
@@ -53,13 +53,7 @@ class OnBoardingCtrl(BaseCtrl):
             return new_window
 
         if event == "git_provider":
-            self.model.git_provider = values[event]
-            self.model.collect_page_2(values)
-            new_window = self.get_window(
-                "git details changed", window.CurrentLocation()
-            )
-            window.close()
-            return new_window
+            self.model.fill_credentials(window, values)
 
         if event == "create_account":
             self.model.open_create_git_account()
@@ -73,6 +67,7 @@ class OnBoardingCtrl(BaseCtrl):
                 self.model.collect_page_2(values)
                 initialization_result = self.model.initialize_project()
                 if initialization_result is True:
+                    window.close()
                     return True
                 else:
                     warning_popup(initialization_result)

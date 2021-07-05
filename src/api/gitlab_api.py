@@ -1,27 +1,30 @@
-import gitlab
+import gettext
 import os
 import time
-import gettext
 
-from src.utils.utils import get_project_root, unzip_file, get_unpacked_repo_root
+import gitlab
+
+from src.utils.utils import get_project_root, get_unpacked_repo_root, unzip_file
+
 
 locale_dir = os.path.join(get_project_root(), "locale")
 
-lang_en = gettext.translation('crowdlaw', localedir=locale_dir, languages=['en'])
-lang_pl = gettext.translation('crowdlaw', localedir=locale_dir, languages=['pl'])
+lang_en = gettext.translation("crowdlaw", localedir=locale_dir, languages=["en"])
+lang_pl = gettext.translation("crowdlaw", localedir=locale_dir, languages=["pl"])
 lang_pl.install()
 
 
 class GitlabAPI:
-
     def __init__(self, user=None, token=None):
         if token is None:
-            token = "BnEQx3xVq6xRzoxS7gKc"
+            self.token = "MwJxgVNCdBcQ8Nk6zy6R"
+        else:
+            self.token = token
         if user is None:
             self.user = "gladykov"
         else:
             self.user = user
-        self.gl = gitlab.Gitlab('https://gitlab.com', private_token=token)
+        self.gl = gitlab.Gitlab("https://gitlab.com", private_token=token)
         self.gl.auth()
 
     def get_project_by_user_path(self, username, project_path):
@@ -30,13 +33,13 @@ class GitlabAPI:
     @staticmethod
     def get_project_info(project):
         return {
-            'username': project.owner['username'],
-            'user_name': project.owner['name'],
-            'email': project.users.gitlab.user.email,
-            'repo_name': project.name,
-            'repo_git_url': project.http_url_to_repo,
-            'repo_web_url': project.web_url,
-            'path': project.path,
+            "username": project.owner["username"],
+            "user_name": project.owner["name"],
+            "email": project.users.gitlab.user.email,
+            "repo_name": project.name,
+            "repo_git_url": project.http_url_to_repo,
+            "repo_web_url": project.web_url,
+            "path": project.path,
         }
 
     def fork_project(self, project, new_name=None, new_path=None):
@@ -45,7 +48,7 @@ class GitlabAPI:
         project.forks.create({"name": name, "path": path})
         forked_project = self.get_project_by_user_path(self.user, path)
         print(_("Waiting for fork to complete. Grab a coffee."))
-        while forked_project.import_status == 'started':
+        while forked_project.import_status == "started":
             print(_("waiting"))
             time.sleep(5)
             forked_project = self.get_project_by_user_path(self.user, path)
@@ -56,16 +59,16 @@ class GitlabAPI:
         self.gl.projects.update(project.id, {"name": new_name, "path": new_path})
 
     def download_project_archive(self, project):
-        output_path = os.path.join(get_project_root(), 'tmp', 'archive.zip')
+        output_path = os.path.join(get_project_root(), "tmp", "archive.zip")
         file = self.gl.http_get(f"/projects/{project.id}/repository/archive.zip")
-        with open(output_path, 'wb') as f:
+        with open(output_path, "wb") as f:
             f.write(file.content)
 
         print(_(f"Downloaded project archive to {output_path}"))
         return output_path
 
     def create_empty_project(self, project_name):
-        return self.gl.projects.create({'name': project_name, 'visibility': 'public'})
+        return self.gl.projects.create({"name": project_name, "visibility": "public"})
 
     def get_credentials_git_url(self, token_name, path):
         return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
@@ -82,5 +85,5 @@ if __name__ == "__main__":
     # dir_name, dir_path = get_unpacked_repo_root(original_project)
     # repo_root = os.path.join(get_project_root(), 'repos', 'base_repo')
     # os.rename(os.path.join(dir_path, dir_name), repo_root)
-    forked_project = gl.get_project_by_user_path('gladykov', 'monopipeline')
+    forked_project = gl.get_project_by_user_path("gladykov", "monopipeline")
     print(forked_project.import_status)

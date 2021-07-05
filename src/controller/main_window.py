@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
+from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.views.common import popup_yes_no_cancel, warning_popup
 from src.views.main_window import MainWindowUI
@@ -47,6 +48,37 @@ class MainWindowCtrl(BaseCtrl):
             )
             window.close()
             return new_window
+
+        if event == "add_new_project":
+            on_boarding = OnBoardingCtrl()
+            on_boarding_window = on_boarding.get_window(_("On boarding"))
+
+            while True:
+                on_boarding_event, on_boarding_values = on_boarding_window.read()
+                print(on_boarding_event, "|", on_boarding_values)
+                on_boarding_window = on_boarding.event_handler(
+                    on_boarding_window, on_boarding_event, on_boarding_values
+                )
+                if on_boarding_window is None:
+                    break
+                if on_boarding_window is True:
+                    self.model = MainWindowModel()
+                    new_window = self.get_window(
+                        "title titel be a variable", window.CurrentLocation()
+                    )
+                    window.close()
+                    self.set_new_branch()
+                    return new_window
+
+        if event == "remove_project":
+            remove_project_result = self.model.remove_project()
+            self.model = MainWindowModel()
+            if remove_project_result is True:
+                new_window = self.get_window(
+                    "title titel be a variable", window.CurrentLocation()
+                )
+                window.close()
+                return new_window
 
         if event == "doctree":
             self.ignore_event = self.model.select_document(window, values)

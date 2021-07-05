@@ -19,6 +19,7 @@ class OnBoardingModel(Base):
         self.token_name = None
         self.theme = "DarkTeal6"  # Move to some common place
         self.supported_git_providers = list(self.git_providers().keys())
+        self.config = self.get_config()
 
     def validate_page_1(self, values):
         issues = []
@@ -71,6 +72,33 @@ class OnBoardingModel(Base):
         self.token_name = values["token_name_input"]
         self.git_provider = values["git_provider"]
 
+    def fill_credentials(self, window, values):
+        window["username_input"].update("")
+        window["token_input"].update("")
+        window["token_name_input"].update("")
+        self.username = None
+        self.token = None
+        self.token_name = None
+        window.refresh()
+        self.git_provider = values["git_provider"]
+
+        if self.config.get("git_providers") is None:
+            return False
+
+        if self.config["git_providers"].get(values["git_provider"]) is None:
+            return False
+
+        self.git_provider = values["git_provider"]
+        self.username = self.config["git_providers"][self.git_provider]["username"]
+        self.token = self.config["git_providers"][self.git_provider]["token"]
+        self.token_name = self.config["git_providers"][self.git_provider]["token_name"]
+        window["username_input"].update(self.username)
+        window["token_input"].update(self.token)
+        window["token_name_input"].update(self.token_name)
+        window.refresh()
+
+        return True
+
     def open_create_git_account(self):
         self.open_url_in_browser(
             self.git_providers()[self.git_provider]["base_url"]
@@ -84,6 +112,9 @@ class OnBoardingModel(Base):
         )
 
     def initialize_project(self):
+        RemoteAPI = get_api(self.git_provider, self.git_providers())
+        remote_api = RemoteAPI(self.username, self.token)
+
         new_project = self.new_existing == "new"
         project_stripped_name = strip_string(self.project_name)
 
@@ -96,9 +127,7 @@ class OnBoardingModel(Base):
                 ]
             )
 
-        config = self.get_config()
-
-        if config and self.project_name in config["projects"].keys():
+        if self.config and self.project_name in self.config["projects"].keys():
             return [_(f"Project {self.project_name} already exists")]
 
         project_dir = os.path.join(
@@ -109,9 +138,6 @@ class OnBoardingModel(Base):
             os.mkdir(project_dir)
         else:
             return [_(f"Project folder {project_dir} already exists")]
-
-        RemoteAPI = get_api(self.git_provider, self.git_providers())
-        remote_api = RemoteAPI(self.username, self.token)
 
         if new_project:
             project = remote_api.get_project_info(
@@ -160,15 +186,22 @@ class OnBoardingModel(Base):
             "folder": project_dir,
         }
 
-        if not config:
-            config = {
+        if not self.config:
+            self.config = {
                 "init": True,
                 "projects": {},
                 "lang": "en",  # TODO: Set and Get current language during on boarding
+                "git_providers": {},
             }
 
-        config["projects"][self.project_name] = project_dict
-        config["last_project"] = self.project_name
+        # Always update to latest for given provider
+        self.config["git_providers"][self.git_provider] = {
+            "username": self.username,
+            "token": self.token,
+            "token_name": self.token_name,
+        }
+        self.config["projects"][self.project_name] = project_dict
+        self.config["last_project"] = self.project_name
 
-        self.set_config(config)
+        self.set_config(self.config)
         return True

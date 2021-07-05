@@ -1,6 +1,6 @@
 import os
 
-from git import Repo
+from git import Repo, rmtree
 
 from src.utils.utils import get_project_root
 
@@ -57,6 +57,9 @@ class GitAdapter:
 
     def checkout_existing_branch(self, branch_name):
         self.repo.git.checkout(branch_name)
+
+    def remove_repo(self):
+        rmtree(self.path)
 
 
 if __name__ == "__main__":

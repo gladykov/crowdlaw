@@ -37,10 +37,11 @@ class MainWindowModel(Base):
         self.projects = self.folder_list(os.path.join(get_project_root(), "projects"))
         branch_name = self.git_adapter.repo.active_branch.name
         # Special case in case of crash
-        self.branch_name = branch_name if branch_name != "master" else "None"
+        self.branch_name = branch_name if branch_name != "master" else None
         self.branch_name_readable = ""
-        self.project_url = self.config["projects"][self.project_name]["repo"]["url"]
-        self.username = self.config["projects"][self.project_name]["repo"]["user"]
+        self.project_url = self.config["projects"][self.project_name]["project_url"]
+        self.username = self.config["projects"][self.project_name]["username"]
+        self.project_folder = self.config["projects"][self.project_name]["folder"]
         self.list_of_files = self.tree_data()
 
     def update_list_of_files(self):
@@ -275,3 +276,29 @@ class MainWindowModel(Base):
         self.config["last_project"] = values["project_selector"]
         self.set_config(self.config)
         return MainWindowModel()
+
+    def remove_project(self):
+        reply = popup_yes_no_cancel(
+            _("Are you sure you want to remove project?"),
+            [
+                _("WARNING: This will remove all your files from your local computer"),
+                _(f"associated with project {self.project_name}."),
+                _("Copy will be left on the server"),
+                _(f"To remove server version go to {self.project_url}"),
+                _("Are you sure you want ro remove files from local computer?"),
+            ],
+        )
+
+        if reply == "yes":
+            self.config["projects"].pop(self.project_name)
+            projects = self.config["projects"].keys()
+            if len(projects) == 0:
+                self.config["last_project"] = None
+            else:
+                self.config["last_project"] = sorted(projects)[0]
+
+            self.set_config(self.config)
+            self.git_adapter.remove_repo()
+            return True
+
+        return False

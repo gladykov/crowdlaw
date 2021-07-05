@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -23,3 +24,17 @@ def get_unpacked_repo_root(starting_pattern):
 
 def strip_string(string):
     return string.strip().lower().replace(" ", "-")
+
+
+def get_tokenname_token(url):
+    # https://tokenname:MwJxgVNCdBcky6R@gitlab.com/gladykov/mynewnice.git
+    parts = url.split(":")
+    token_name = parts[1].split("//")[1]
+    token = parts[2].split("@")[0]
+    return token_name, token
+
+
+def replace_string_between_subs(original, start_str, new_str, end_str):
+    reg = "(?<=%s).*?(?=%s)" % (start_str, end_str)
+    r = re.compile(reg, re.DOTALL)
+    return r.sub(new_str, original)

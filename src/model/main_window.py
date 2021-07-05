@@ -5,7 +5,12 @@ import PySimpleGUI as sg
 
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
-from src.utils.utils import get_project_root, strip_string
+from src.utils.utils import (
+    get_project_root,
+    get_tokenname_token,
+    replace_string_between_subs,
+    strip_string,
+)
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 
 
@@ -32,16 +37,28 @@ class MainWindowModel(Base):
             os.path.join(get_project_root(), "projects", self.project_name),
             initialized=True,
         )
-        self.branch_names = self.git_adapter.local_branches()
 
+        repo_url = self.git_adapter.get_config('remote "origin"', "url")
+        self.token_name, self.token = get_tokenname_token(repo_url)
         self.projects = self.folder_list(os.path.join(get_project_root(), "projects"))
-        branch_name = self.git_adapter.repo.active_branch.name
+        self.branch_names = self.git_adapter.local_branches()
+        self.branch_name = self.git_adapter.repo.active_branch.name
+
         # Special case in case of crash
-        self.branch_name = branch_name if branch_name != "master" else None
+        if self.branch_name == "master":
+            if len(self.branch_names) == 1:
+                self.branch_name = None
+            else:
+                self.branch_name = list(
+                    filter(lambda x: x != "master", self.git_adapter.local_branches())
+                )[0]
+                self.git_adapter.checkout_existing_branch(self.branch_name)
+
         self.branch_name_readable = ""
         self.project_url = self.config["projects"][self.project_name]["project_url"]
         self.username = self.config["projects"][self.project_name]["username"]
         self.project_folder = self.config["projects"][self.project_name]["folder"]
+        self.git_provider = self.config["projects"][self.project_name]["provider"]
         self.list_of_files = self.tree_data()
 
     def update_list_of_files(self):
@@ -61,8 +78,11 @@ class MainWindowModel(Base):
             for f in files:
                 fullname = os.path.join(dir_name, f)
                 if os.path.isdir(fullname):  # If it's a folder, add folder and recurse
-                    tree_data.Insert(parent, fullname, f, values=[], icon=folder_icon)
-                    add_files_in_folder(fullname, fullname)
+                    if not ".git" in fullname.split(os.sep):  # Ignore .git folders
+                        tree_data.Insert(
+                            parent, fullname, f, values=[], icon=folder_icon
+                        )
+                        add_files_in_folder(fullname, fullname)
                 else:
                     tree_data.Insert(
                         parent,
@@ -269,36 +289,57 @@ class MainWindowModel(Base):
     def select_current_branch(self, window):
         window["branch_selector"].update(self.branch_name)
 
+    def remove_current_branch(self):
+        self.git_adapter.checkout_existing_branch("master")
+        self.git_adapter.remove_branch(self.branch_name)
+        self.branch_names = self.git_adapter.local_branches()
+        if self.branch_names:
+            self.set_working_branch(self.branch_names[0])
+        else:
+            self.add_new_branch()
+
     def select_current_project(self, window):
         window["project_selector"].update(self.project_name)
 
-    def switch_project(self, values):
-        self.config["last_project"] = values["project_selector"]
+    def switch_project(self, project_name):
+        self.config["last_project"] = project_name
         self.set_config(self.config)
         return MainWindowModel()
 
     def remove_project(self):
-        reply = popup_yes_no_cancel(
-            _("Are you sure you want to remove project?"),
-            [
-                _("WARNING: This will remove all your files from your local computer"),
-                _(f"associated with project {self.project_name}."),
-                _("Copy will be left on the server"),
-                _(f"To remove server version go to {self.project_url}"),
-                _("Are you sure you want ro remove files from local computer?"),
-            ],
-        )
+        self.config["projects"].pop(self.project_name)
+        projects = self.config["projects"].keys()
+        if len(projects) == 0:
+            self.config["last_project"] = None
+        else:
+            self.config["last_project"] = sorted(projects)[0]
 
-        if reply == "yes":
-            self.config["projects"].pop(self.project_name)
-            projects = self.config["projects"].keys()
-            if len(projects) == 0:
-                self.config["last_project"] = None
-            else:
-                self.config["last_project"] = sorted(projects)[0]
+        self.set_config(self.config)
+        self.git_adapter.remove_repo()
+        return True
 
-            self.set_config(self.config)
-            self.git_adapter.remove_repo()
-            return True
+    def update_token_info(self, values):
+        auth_string = f"{values['token_name_input']}:{values['token_input']}"
 
-        return False
+        provider_projects = []
+
+        for key, value in self.config["projects"].items():
+            if value["provider"] == self.git_provider:
+                provider_projects.append(key)
+
+        if provider_projects:
+            for provider_project in provider_projects:
+                repo = GitAdapter(
+                    os.path.join(get_project_root(), "projects", provider_project),
+                    initialized=True,
+                )
+                url = repo.get_config('remote "origin"', "url")
+                new_url = replace_string_between_subs(url, "://", auth_string, "@")
+                repo.set_config('remote "origin"', "url", new_url)
+
+        self.config["git_providers"][self.git_provider]["token"] = values["token_input"]
+        self.config["git_providers"][self.git_provider]["token_name"] = values[
+            "token_name_input"
+        ]
+        self.set_config(self.config)
+        return True

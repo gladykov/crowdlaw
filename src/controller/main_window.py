@@ -18,6 +18,13 @@ class MainWindowCtrl(BaseCtrl):
     def get_window(self, window_title, location=(None, None)):
         return self.draw_window(window_title, self.get_elements(), location)
 
+    def redraw_window(self, window):
+        new_window = self.get_window(
+            "title titel be a variable", window.CurrentLocation()
+        )
+        window.close()
+        return new_window
+
     def set_new_branch(self):
         if self.model.branch_name is None:
             branch_name = self.model.get_new_branch_name()
@@ -34,6 +41,33 @@ class MainWindowCtrl(BaseCtrl):
             self.ignore_event = not self.ignore_event
             return window
 
+        if event == "update_token_info":
+            reply = popup_yes_no_cancel(
+                _("Are you sure you want to update token info?"),
+                [
+                    _("Updating token info, will update it for all projects"),
+                    _(f"Which use {self.model.git_provider}"),
+                    _(f"Are you sure?"),
+                ],
+            )
+            if reply == "yes":
+                on_boarding = OnBoardingCtrl()
+                on_boarding.page = 2
+                on_boarding.model.username = self.model.username
+                on_boarding.model.token = self.model.token
+                on_boarding.model.token_name = self.model.token_name
+                on_boarding_window = on_boarding.get_window(
+                    _("Update token info"), update=True
+                )
+
+                update_token_event, update_token_values = on_boarding_window.read(
+                    close=True
+                )
+                if update_token_event == "update":
+                    self.model.update_token_info(update_token_values)
+                    self.model = MainWindowModel()
+                    return self.redraw_window(window)
+
         if event == "project_selector":
             if self.model.protect_unsaved_changes(values["document_editor"]) in [
                 "cancel",
@@ -42,12 +76,8 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_project(window)
                 return window
 
-            self.model = self.model.switch_project(values)
-            new_window = self.get_window(
-                "title titel be a variable", window.CurrentLocation()
-            )
-            window.close()
-            return new_window
+            self.model = self.model.switch_project(values["project_selector"])
+            return self.redraw_window(window)
 
         if event == "add_new_project":
             on_boarding = OnBoardingCtrl()
@@ -63,22 +93,26 @@ class MainWindowCtrl(BaseCtrl):
                     break
                 if on_boarding_window is True:
                     self.model = MainWindowModel()
-                    new_window = self.get_window(
-                        "title titel be a variable", window.CurrentLocation()
-                    )
-                    window.close()
                     self.set_new_branch()
-                    return new_window
+                    return self.redraw_window(window)
 
         if event == "remove_project":
-            remove_project_result = self.model.remove_project()
-            self.model = MainWindowModel()
-            if remove_project_result is True:
-                new_window = self.get_window(
-                    "title titel be a variable", window.CurrentLocation()
-                )
-                window.close()
-                return new_window
+            reply = popup_yes_no_cancel(
+                _("Are you sure you want to remove project?"),
+                [
+                    _("WARNING: This will remove all your files from your local computer"),
+                    _(f"associated with project {self.project_name}."),
+                    _("Copy will be left on the server"),
+                    _(f"To remove server version go to {self.project_url}"),
+                    _("Are you sure you want ro remove files from local computer?"),
+                ],
+            )
+
+            if reply == "yes":
+                remove_project_result = self.model.remove_project()
+                self.model = MainWindowModel()
+                if remove_project_result is True:
+                    return self.redraw_window(window)
 
         if event == "doctree":
             self.ignore_event = self.model.select_document(window, values)
@@ -89,10 +123,7 @@ class MainWindowCtrl(BaseCtrl):
             if isinstance(new_file_result, list):
                 warning_popup(new_file_result)
             elif new_file_result is True:
-                new_window = self.get_window(
-                    "title titel be a variable", window.CurrentLocation()
-                )
-                window.close()
+                new_window = self.redraw_window(window)
                 self.model.select_current_file(new_window)
                 return new_window
 
@@ -104,11 +135,7 @@ class MainWindowCtrl(BaseCtrl):
 
             if reply == "yes":
                 self.model.remove_document(values)
-                new_window = self.get_window(
-                    "title titel be a variable", window.CurrentLocation()
-                )
-                window.close()
-                return new_window
+                return self.redraw_window(window)
             else:
                 return window
 
@@ -127,11 +154,7 @@ class MainWindowCtrl(BaseCtrl):
                 return window
 
             if self.model.set_working_branch(values["branch_selector"]):
-                new_window = self.get_window(
-                    "title titel be a variable", window.CurrentLocation()
-                )
-                window.close()
-                return new_window
+                return self.redraw_window(window)
 
         if event == "add_new_set":
             if self.model.protect_unsaved_changes(values["document_editor"]) in [
@@ -142,11 +165,20 @@ class MainWindowCtrl(BaseCtrl):
                 return window
 
             self.model.add_new_branch()
-            new_window = self.get_window(
-                "title titel be a variable", window.CurrentLocation()
+            return self.redraw_window(window)
+
+        if event == "remove_set":
+            reply = popup_yes_no_cancel(
+                _("Are you sure you want to remove current set?"),
+                [
+                    _("All changes made in this set will be lost locally."),
+                    _("They will be still available on the server, if you sent them"),
+                    _("Are you sure you want to remove current set locally?"),
+                ],
             )
-            window.close()
-            return new_window
+            if reply == "yes":
+                self.model.remove_current_branch()
+                return self.redraw_window(window)
 
         if event in [_("Close"), sg.WIN_CLOSED]:
             window.close()

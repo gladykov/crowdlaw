@@ -17,8 +17,8 @@ class GitAdapter:
             self.initialize_repo()
             self.repo = Repo(self.path)
 
-    def get_config(self):
-        return self.repo.config_reader()
+    def get_config(self, section, value):
+        return self.repo.config_reader().get_value(section, value)
 
     def set_config(self, section, variable, value):
         with self.repo.config_writer() as config:
@@ -46,17 +46,20 @@ class GitAdapter:
         self.repo.git.clone_from(remote_path, local_path)
 
     def local_branches(self):
-        local_branches = []
-        for head in self.repo.heads:
-            local_branches.append(head.name)
-
-        return local_branches
+        return sorted(list(map(lambda x: x.name, self.repo.heads)))
 
     def checkout_new_branch(self, branch_name):
         self.repo.git.checkout(f"-b{branch_name}")  # Sth adds space in front of name
 
     def checkout_existing_branch(self, branch_name):
         self.repo.git.checkout(branch_name)
+
+    def remove_branch(self, branch_name):
+        branch_to_del = list(filter(lambda x: x.name == branch_name, self.repo.heads))
+        assert (
+            len(branch_to_del) == 1
+        ), "Didn't found branch to delete of found too much"
+        self.repo.delete_head(branch_to_del[0], force=True)
 
     def remove_repo(self):
         rmtree(self.path)

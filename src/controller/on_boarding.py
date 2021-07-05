@@ -11,14 +11,18 @@ class OnBoardingCtrl(BaseCtrl):
         self.model = OnBoardingModel()
         self.page = 1
 
-    def get_elements(self):
+    def get_elements(self, update):
         if self.page == 1:
             return OnBoardingUI(self.model).select_project_intention()
         else:
-            return OnBoardingUI(self.model).git_details()
+            return OnBoardingUI(self.model).git_details(update)
 
-    def get_window(self, window_title, location=(None, None), modal=False):
-        return self.draw_window(window_title, self.get_elements(), location, modal)
+    def get_window(
+        self, window_title, location=(None, None), modal=False, update=False
+    ):
+        return self.draw_window(
+            window_title, self.get_elements(update), location, modal
+        )
 
     def event_handler(self, window, event, values):
         if event == "new":

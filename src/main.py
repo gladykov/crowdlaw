@@ -15,7 +15,7 @@ lang_en.install()
 
 if __name__ == "__main__":
 
-    on_boarding = True
+    on_boarding = False
 
     if on_boarding:
         on_boarding = OnBoardingCtrl()
@@ -48,3 +48,5 @@ if __name__ == "__main__":
 
             if window is None:
                 break
+
+        exit()

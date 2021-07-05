@@ -12,9 +12,30 @@ class MainWindowUI:
             [
                 [sg.Text(_(f"URL: {self.props.project_url}"))],
                 [sg.Text(_(f"User: {self.props.username}"), k="user")],
-                [sg.Text(_(f"Token: **********"), k="token")],
-                [sg.Text(_(f"Token name: token name"), k="token_name")],
-                [sg.Button(_(f"Update token info"), k="update_token_info")],
+                [
+                    sg.Column(
+                        [
+                            [
+                                sg.Text(
+                                    _(f"Token: {len(self.props.token) * '*'}"),
+                                    k="token",
+                                )
+                            ],
+                            [
+                                sg.Text(
+                                    _(f"Token name: {self.props.token_name}"),
+                                    k="token_name",
+                                )
+                            ],
+                        ]
+                    ),
+                    sg.VerticalSeparator(),
+                    sg.Column(
+                        [
+                            [sg.Button(_(f"Update token info"), k="update_token_info")],
+                        ]
+                    ),
+                ],
                 self.project_selector(),
             ],
             font=("Helvetica", 25),
@@ -92,6 +113,7 @@ class MainWindowUI:
                         k="branch_selector",
                     ),
                     sg.Button(_("Add new set"), k="add_new_set"),
+                    sg.Button(_("Remove set"), k="remove_set"),
                 ]
             ],
         )

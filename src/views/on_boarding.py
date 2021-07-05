@@ -53,7 +53,7 @@ class OnBoardingUI:
 
         return main_frame
 
-    def git_details(self):
+    def git_details(self, update=False):
         horizontal_line = [sg.HorizontalSeparator()]
 
         elements = []
@@ -82,23 +82,24 @@ class OnBoardingUI:
             ],
         ]
 
-        for i in select_git_provider:
-            elements.append(i)
+        if not update:
+            for i in select_git_provider:
+                elements.append(i)
 
-        elements.append(horizontal_line)
+            elements.append(horizontal_line)
 
         username_token = [
             [
                 sg.Text(
                     _(f"Provide {self.props.git_provider or _('gitlab')} username"),
-                    key="username_label",
+                    k="username_label",
                 ),
-                sg.InputText(self.props.username, k="username_input"),
+                sg.InputText(self.props.username, k="username_input", disabled=update),
                 sg.Text(
                     _("No account? Create new."),
                     text_color="blue",
                     enable_events=True,
-                    key="create_account",
+                    k="create_account",
                     font="Helvetica 10 underline",
                 ),
             ],
@@ -124,13 +125,21 @@ class OnBoardingUI:
 
         for element in username_token:
             elements.append(element)
-        elements.append(
-            [
-                sg.Button(_("Back"), k="back"),
-                sg.CloseButton(_("Cancel"), k="close"),
-                sg.Button(_("Start!"), k="start"),
-            ]
-        )
+
+        if update:
+            elements.append(
+                [
+                    sg.Button(_("Update token info"), k="update"),
+                ]
+            )
+        else:
+            elements.append(
+                [
+                    sg.Button(_("Back"), k="back"),
+                    sg.CloseButton(_("Cancel"), k="close"),
+                    sg.Button(_("Start!"), k="start"),
+                ]
+            )
 
         main_frame = sg.Frame(_("Git details"), elements, font=("Helvetica", 25))
 

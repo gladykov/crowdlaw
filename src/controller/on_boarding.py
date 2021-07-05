@@ -40,6 +40,10 @@ class OnBoardingCtrl(BaseCtrl):
                 new_window = self.get_window(
                     "git details title", window.CurrentLocation()
                 )
+                if self.model.git_provider is not None and (
+                    self.model.username in [None, ""]
+                ):
+                    self.model.fill_credentials(new_window, self.model.git_provider)
                 window.close()
                 return new_window
             else:
@@ -53,7 +57,7 @@ class OnBoardingCtrl(BaseCtrl):
             return new_window
 
         if event == "git_provider":
-            self.model.fill_credentials(window, values)
+            self.model.fill_credentials(window, values["git_provider"])
 
         if event == "create_account":
             self.model.open_create_git_account()

@@ -72,7 +72,7 @@ class OnBoardingModel(Base):
         self.token_name = values["token_name_input"]
         self.git_provider = values["git_provider"]
 
-    def fill_credentials(self, window, values):
+    def fill_credentials(self, window, git_provider):
         window["username_input"].update("")
         window["token_input"].update("")
         window["token_name_input"].update("")
@@ -80,15 +80,14 @@ class OnBoardingModel(Base):
         self.token = None
         self.token_name = None
         window.refresh()
-        self.git_provider = values["git_provider"]
+        self.git_provider = git_provider
 
         if self.config.get("git_providers") is None:
             return False
 
-        if self.config["git_providers"].get(values["git_provider"]) is None:
+        if self.config["git_providers"].get(git_provider) is None:
             return False
 
-        self.git_provider = values["git_provider"]
         self.username = self.config["git_providers"][self.git_provider]["username"]
         self.token = self.config["git_providers"][self.git_provider]["token"]
         self.token_name = self.config["git_providers"][self.git_provider]["token_name"]

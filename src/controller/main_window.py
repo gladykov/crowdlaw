@@ -76,10 +76,18 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_project(window)
                 return window
 
+            self.model.save_working_set()
             self.model = self.model.switch_project(values["project_selector"])
             return self.redraw_window(window)
 
         if event == "add_new_project":
+            if self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                self.model.select_current_project(window)
+                return window
+
             on_boarding = OnBoardingCtrl()
             on_boarding_window = on_boarding.get_window(_("On boarding"))
 
@@ -92,6 +100,7 @@ class MainWindowCtrl(BaseCtrl):
                 if on_boarding_window is None:
                     break
                 if on_boarding_window is True:
+                    self.model.save_working_set()
                     self.model = MainWindowModel()
                     self.set_new_branch()
                     return self.redraw_window(window)
@@ -100,7 +109,9 @@ class MainWindowCtrl(BaseCtrl):
             reply = popup_yes_no_cancel(
                 _("Are you sure you want to remove project?"),
                 [
-                    _("WARNING: This will remove all your files from your local computer"),
+                    _(
+                        "WARNING: This will remove all your files from your local computer"
+                    ),
                     _(f"associated with project {self.project_name}."),
                     _("Copy will be left on the server"),
                     _(f"To remove server version go to {self.project_url}"),
@@ -153,6 +164,7 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_branch(window)
                 return window
 
+            self.model.save_working_set()
             if self.model.set_working_branch(values["branch_selector"]):
                 return self.redraw_window(window)
 
@@ -164,6 +176,7 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_branch(window)
                 return window
 
+            self.model.save_working_set()
             self.model.add_new_branch()
             return self.redraw_window(window)
 
@@ -179,6 +192,17 @@ class MainWindowCtrl(BaseCtrl):
             if reply == "yes":
                 self.model.remove_current_branch()
                 return self.redraw_window(window)
+
+        if event == "send_to_review":
+            self.model.send_to_review(values)
+            self.model.update_review_info()
+            return self.redraw_window(window)
+
+        if event == "update_review":
+            self.model.update_review(values)
+
+        if event is not None and event.startswith("URL"):
+            self.model.open_url_in_browser(event.split(" ")[1])
 
         if event in [_("Close"), sg.WIN_CLOSED]:
             window.close()

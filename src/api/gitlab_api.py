@@ -26,6 +26,10 @@ class GitlabAPI:
             self.user = user
         self.gl = gitlab.Gitlab("https://gitlab.com", private_token=token)
         self.gl.auth()
+        self.project = None
+
+    def set_current_project(self, username, project_path):
+        self.project = self.get_project_by_user_path(username, project_path)
 
     def get_project_by_user_path(self, username, project_path):
         return self.gl.projects.get(username + "/" + project_path)
@@ -72,6 +76,29 @@ class GitlabAPI:
 
     def get_credentials_git_url(self, token_name, path):
         return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
+
+    def create_merge_request(
+        self, username, project_path, source_branch, target_branch, title
+    ):
+        project = self.get_project_by_user_path(username, project_path)
+
+        result = project.mergerequests.create(
+            {
+                "source_branch": source_branch,
+                "target_branch": target_branch,
+                "title": title,
+            }
+        )
+        print(result)
+        return result
+
+    def get_my_merge_requests(self, author, source_branch):
+        print(author)
+        listmr = self.project.mergerequests.list(
+            state="opened", source_branch=source_branch, author_username=author
+        )
+        print(listmr)
+        return listmr
 
 
 if __name__ == "__main__":

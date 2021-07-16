@@ -3,13 +3,11 @@ from time import time
 
 import PySimpleGUI as sg
 
+from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root,
-    get_tokenname_token,
-    replace_string_between_subs,
-    strip_string,
+    get_project_root, get_token_name_token, replace_string_between_subs, strip_string
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 
@@ -39,7 +37,7 @@ class MainWindowModel(Base):
         )
 
         repo_url = self.git_adapter.get_config('remote "origin"', "url")
-        self.token_name, self.token = get_tokenname_token(repo_url)
+        self.token_name, self.token = get_token_name_token(repo_url)
         self.projects = self.folder_list(os.path.join(get_project_root(), "projects"))
         self.branch_names = self.git_adapter.local_branches()
         self.branch_name = self.git_adapter.repo.active_branch.name
@@ -60,6 +58,19 @@ class MainWindowModel(Base):
         self.project_folder = self.config["projects"][self.project_name]["folder"]
         self.git_provider = self.config["projects"][self.project_name]["provider"]
         self.list_of_files = self.tree_data()
+
+        RemoteAPI = get_api(self.git_provider, self.git_providers())
+        self.remote_api = RemoteAPI(self.username, self.token)
+        self.remote_api.set_current_project(self.username, self.project_name)
+
+        self.merge_request = None
+        self.update_review_info()
+
+    def update_review_info(self):
+        merge_requests = self.remote_api.get_my_merge_requests(
+            self.username, self.branch_name
+        )
+        self.merge_request = merge_requests[0].web_url if merge_requests else None
 
     def update_list_of_files(self):
         self.list_of_files = self.tree_data()
@@ -261,17 +272,24 @@ class MainWindowModel(Base):
         # TODO: Make proper branch name validation
         return strip_string(branch_name) + "_" + str(time())[-3:]
 
-    def set_working_branch(self, branch_name):
+    def set_working_branch(self, branch_name, from_master=True):
         self.branch_name = branch_name
         if self.branch_exists(self.branch_name):
             self.git_adapter.checkout_existing_branch(self.branch_name)
             print("branch exists")
         else:
             print("branch not exists")
-            self.git_adapter.checkout_new_branch(self.branch_name)
-            self.branch_names = self.git_adapter.local_branches()
+            if from_master:
+                self.git_adapter.checkout_master()
+                self.git_adapter.checkout_new_branch(self.branch_name)
+                self.branch_names = self.git_adapter.local_branches()
 
+        self.git_adapter.showsth(self.branch_name)
         self.update_list_of_files()
+        self.editor_text = ""
+        self.edited_file = None
+        self.editor_disabled = True
+        self.update_review_info()
 
         return True
 
@@ -343,3 +361,41 @@ class MainWindowModel(Base):
         ]
         self.set_config(self.config)
         return True
+
+    def save_working_set(self):
+
+        if self.git_adapter.changes_exist():
+            self.git_adapter.add_all_untracked()
+            self.git_adapter.commit("Saved working set")
+
+    def send_to_review(self, values):
+        self.protect_unsaved_changes(values["document_editor"])
+        if self.git_adapter.changes_exist():
+            self.git_adapter.add_all_untracked()
+            self.git_adapter.commit("Saved working set")
+
+        self.git_adapter.push()
+
+        merge_request_title = sg.popup_get_text(
+            _("Provide title for your proposed changes"),
+            _("Provide title for your proposed changes"),
+        )
+
+        if merge_request_title is None:
+            return None
+
+        self.remote_api.create_merge_request(
+            self.username,
+            self.project_name,
+            self.branch_name,
+            "master",
+            merge_request_title,
+        )
+
+    def update_review(self, values):
+        self.protect_unsaved_changes(values["document_editor"])
+        if self.git_adapter.changes_exist():
+            self.git_adapter.add_all_untracked()
+            self.git_adapter.commit("Saved working set")
+
+        self.git_adapter.push()

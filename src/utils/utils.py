@@ -26,7 +26,7 @@ def strip_string(string):
     return string.strip().lower().replace(" ", "-")
 
 
-def get_tokenname_token(url):
+def get_token_name_token(url):
     # https://tokenname:MwJxgVNCdBcky6R@gitlab.com/gladykov/mynewnice.git
     parts = url.split(":")
     token_name = parts[1].split("//")[1]

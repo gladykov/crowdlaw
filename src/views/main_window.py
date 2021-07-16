@@ -1,6 +1,9 @@
 import PySimpleGUI as sg
 
 
+title_font_size = 17
+
+
 class MainWindowUI:
     def __init__(self, controller_props):
         self.props = controller_props
@@ -38,7 +41,7 @@ class MainWindowUI:
                 ],
                 self.project_selector(),
             ],
-            font=("Helvetica", 25),
+            font=("Helvetica", title_font_size),
         )
 
     def project_selector(self):
@@ -76,10 +79,15 @@ class MainWindowUI:
                     sg.Button(_("Remove selected file"), k="remove_file"),
                 ],
             ],
+            font=("Helvetica", title_font_size),
         )
 
     def stage(self):
-        return sg.Frame("Current stage", [[sg.Text("Current stage")]])
+        return sg.Frame(
+            "Current stage",
+            [[sg.Text("Current stage")]],
+            font=("Helvetica", title_font_size),
+        )
 
     def editor_background_color(self):
         return "grey" if self.props.editor_disabled else "white"
@@ -116,6 +124,36 @@ class MainWindowUI:
                     sg.Button(_("Remove set"), k="remove_set"),
                 ]
             ],
+            font=("Helvetica", title_font_size),
+        )
+        return frame
+
+    def online_reviews(self):
+
+        button = (
+            [sg.Button(_("Send working set for a review"), k="send_to_review")]
+            if self.props.merge_request is None
+            else [sg.Button(_("Update current review"), k="update_review")]
+        )
+
+        text = (
+            [
+                sg.Text(
+                    self.props.merge_request,
+                    text_color="blue",
+                    enable_events=True,
+                    k=f"URL {self.props.merge_request}",
+                    font="Helvetica 10 underline",
+                )
+            ]
+            if self.props.merge_request is not None
+            else [sg.Text("")]
+        )
+
+        frame = sg.Frame(
+            _("Reviews"),
+            [button, text],
+            font=("Helvetica", title_font_size),
         )
         return frame
 
@@ -138,8 +176,21 @@ class MainWindowUI:
             ]
         )
 
+        right_col = sg.Column(
+            [
+                [self.online_reviews()],
+                [sg.HorizontalSeparator()],
+            ]
+        )
+
         layout = [
-            [left_col, sg.VerticalSeparator(), center_col],
+            [
+                left_col,
+                sg.VerticalSeparator(),
+                center_col,
+                sg.VerticalSeparator(),
+                right_col,
+            ],
         ]
 
         return layout

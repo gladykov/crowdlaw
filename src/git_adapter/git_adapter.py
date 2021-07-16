@@ -36,6 +36,9 @@ class GitAdapter:
     def commit(self, commit_message):
         self.repo.git.commit(f"-m {commit_message}")
 
+    def changes_exist(self):
+        return bool(self.repo.git.ls_files(["-o", "-m", "--exclude-standard"]))
+
     def push(self):
         self.repo.git.push()
 
@@ -49,10 +52,18 @@ class GitAdapter:
         return sorted(list(map(lambda x: x.name, self.repo.heads)))
 
     def checkout_new_branch(self, branch_name):
-        self.repo.git.checkout(f"-b{branch_name}")  # Sth adds space in front of name
+        self.repo.git.checkout(["-b", branch_name])
+
+    def checkout_master(self):
+        self.repo.git.checkout(["master"])
 
     def checkout_existing_branch(self, branch_name):
         self.repo.git.checkout(branch_name)
+
+    def showsth(self, branch):
+        myxt = f"{branch}..{branch}"
+        for sth in self.repo.iter_commits(myxt + "@{u}"):
+            print(sth)
 
     def remove_branch(self, branch_name):
         branch_to_del = list(filter(lambda x: x.name == branch_name, self.repo.heads))

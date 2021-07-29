@@ -9,9 +9,9 @@ class MainWindowUI:
         self.props = controller_props
         sg.theme(self.props.theme)
 
-    def repo_info(self):
+    def server_info(self):
         return sg.Frame(
-            _("Project info"),
+            _("Server info"),
             [
                 [sg.Text(_(f"URL: {self.props.project_url}"))],
                 [sg.Text(_(f"User: {self.props.username}"), k="user")],
@@ -39,6 +39,22 @@ class MainWindowUI:
                         ]
                     ),
                 ],
+            ],
+            font=("Helvetica", title_font_size),
+        )
+
+    def project_info(self):
+        return sg.Frame(
+            _("Project name"),
+            [
+                [
+                    sg.Text(_(f"{self.props.project_name}"), size=(22, 1)),
+                    sg.Text(
+                        _("[change project]"),
+                        enable_events=True,
+                        k="click_change_project",
+                    ),
+                ],
                 self.project_selector(),
             ],
             font=("Helvetica", title_font_size),
@@ -60,7 +76,7 @@ class MainWindowUI:
 
     def documents_list(self):
         return sg.Frame(
-            _("Documents"),
+            _("Documents in the set"),
             [
                 [sg.Text("Click document to start editing")],
                 [
@@ -69,7 +85,7 @@ class MainWindowUI:
                         data=self.props.list_of_files,
                         key="doctree",
                         num_rows=10,
-                        col0_width=20,
+                        col0_width=30,
                         enable_events=True,
                         select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                     )
@@ -99,13 +115,14 @@ class MainWindowUI:
                 [
                     sg.Multiline(
                         default_text=self.props.editor_text,
-                        size=(60, 20),
+                        size=(80, 20),
                         k="document_editor",
                         disabled=self.props.editor_disabled,
                         background_color=self.editor_background_color(),
                     )
                 ]
             ],
+            font=("Helvetica", title_font_size),
         )
         return frame
 
@@ -140,10 +157,8 @@ class MainWindowUI:
             [
                 sg.Text(
                     self.props.merge_request,
-                    text_color="blue",
                     enable_events=True,
                     k=f"URL {self.props.merge_request}",
-                    font="Helvetica 10 underline",
                 )
             ]
             if self.props.merge_request is not None
@@ -160,11 +175,12 @@ class MainWindowUI:
     def layout(self):
         left_col = sg.Column(
             [
-                [self.repo_info()],
+                [self.project_info()],
                 [sg.HorizontalSeparator()],
-                [self.documents_list()],
                 [self.branch_selector()],
-            ]
+                [self.documents_list()],
+            ],
+            vertical_alignment="top",
         )
 
         center_col = sg.Column(
@@ -173,14 +189,18 @@ class MainWindowUI:
                 [sg.HorizontalSeparator()],
                 [self.text_editor()],
                 [sg.Button(_("Save"), k="save")],
-            ]
+            ],
+            vertical_alignment="top",
         )
 
         right_col = sg.Column(
             [
+                [self.server_info()],
+                [sg.HorizontalSeparator()],
                 [self.online_reviews()],
                 [sg.HorizontalSeparator()],
-            ]
+            ],
+            vertical_alignment="top",
         )
 
         layout = [

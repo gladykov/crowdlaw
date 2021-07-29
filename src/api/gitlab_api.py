@@ -77,6 +77,14 @@ class GitlabAPI:
     def get_credentials_git_url(self, token_name, path):
         return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
 
+    @staticmethod
+    def get_base_project_id(project):
+        return (
+            project.forked_from_project["id"]
+            if hasattr(project, "forked_from_project")
+            else project.id
+        )
+
     def create_merge_request(
         self, username, project_path, source_branch, target_branch, title
     ):
@@ -87,18 +95,24 @@ class GitlabAPI:
                 "source_branch": source_branch,
                 "target_branch": target_branch,
                 "title": title,
+                "target_project_id": self.get_base_project_id(project),
             }
         )
         print(result)
         return result
 
     def get_my_merge_requests(self, author, source_branch):
-        print(author)
-        listmr = self.project.mergerequests.list(
-            state="opened", source_branch=source_branch, author_username=author
+        project = self.gl.projects.get(self.get_base_project_id(self.project))
+        listmr = project.mergerequests.list(
+            state="opened",
+            source_branch=source_branch,
+            author_username=author,
         )
         print(listmr)
         return listmr
+
+    def get_branches(self):
+        return list(map(lambda x: x.name, self.project.branches.list()))
 
 
 if __name__ == "__main__":

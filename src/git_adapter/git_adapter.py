@@ -40,7 +40,7 @@ class GitAdapter:
         return bool(self.repo.git.ls_files(["-o", "-m", "--exclude-standard"]))
 
     def push(self):
-        self.repo.git.push()
+        self.repo.git.push("--set-upstream", "origin", self.repo.head.name)
 
     def pull(self):
         self.repo.git.pull()

@@ -1,5 +1,4 @@
 import os
-from time import time
 
 import PySimpleGUI as sg
 
@@ -267,10 +266,11 @@ class MainWindowModel(Base):
         if not branch_name:
             branch_name = self.get_new_branch_name()
 
-        self.branch_name_readable = branch_name
-        # Make sure branch name is unique
-        # TODO: Make proper branch name validation
-        return strip_string(branch_name) + "_" + str(time())[-3:]
+        if branch_name in self.remote_api.get_branches():
+            sg.popup_ok(_(f"Working set with name {branch_name} already exists"))
+            branch_name = self.get_new_branch_name()
+
+        return branch_name
 
     def set_working_branch(self, branch_name, from_master=True):
         self.branch_name = branch_name
@@ -282,9 +282,10 @@ class MainWindowModel(Base):
             if from_master:
                 self.git_adapter.checkout_master()
                 self.git_adapter.checkout_new_branch(self.branch_name)
+                self.git_adapter.push()
+                self.git_adapter.pull()
                 self.branch_names = self.git_adapter.local_branches()
 
-        self.git_adapter.showsth(self.branch_name)
         self.update_list_of_files()
         self.editor_text = ""
         self.edited_file = None

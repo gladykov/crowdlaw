@@ -37,6 +37,7 @@ class MainWindowCtrl(BaseCtrl):
         return False
 
     def event_handler(self, window, event, values):
+
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
             return window

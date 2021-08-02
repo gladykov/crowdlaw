@@ -42,6 +42,11 @@ class MainWindowCtrl(BaseCtrl):
             self.ignore_event = not self.ignore_event
             return window
 
+        if event == "click_change_project":
+            reply = MainWindowUI.change_project_popup()
+            if reply not in [None, "Cancel"]:
+                event = reply
+
         if event == "update_token_info":
             reply = popup_yes_no_cancel(
                 _("Are you sure you want to update token info?"),
@@ -113,9 +118,9 @@ class MainWindowCtrl(BaseCtrl):
                     _(
                         "WARNING: This will remove all your files from your local computer"
                     ),
-                    _(f"associated with project {self.project_name}."),
+                    _(f"associated with project {self.model.project_name}."),
                     _("Copy will be left on the server"),
-                    _(f"To remove server version go to {self.project_url}"),
+                    _(f"To remove server version go to {self.model.project_url}"),
                     _("Are you sure you want ro remove files from local computer?"),
                 ],
             )
@@ -178,8 +183,8 @@ class MainWindowCtrl(BaseCtrl):
                 return window
 
             self.model.save_working_set()
-            self.model.add_new_branch()
-            return self.redraw_window(window)
+            result = self.model.add_new_branch()
+            return self.redraw_window(window) if result is True else window
 
         if event == "remove_set":
             reply = popup_yes_no_cancel(

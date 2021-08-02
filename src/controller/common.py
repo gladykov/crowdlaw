@@ -1,3 +1,5 @@
+import logging
+
 import PySimpleGUI as sg
 
 
@@ -10,6 +12,9 @@ def redo(text):
 
 
 class BaseCtrl:
+    def __init__(self):
+        self.logger = logging.getLogger("root")
+
     def enable_undo(self, window, key):
         # Enable undo in multiline field
         text = window[key].Widget
@@ -20,7 +25,8 @@ class BaseCtrl:
 
     def enable_link(self, element):
         element.set_cursor("hand2")
-        element.update(font="Helvetica 10 underline", text_color="#add8e6")
+        if element.Type == "text":
+            element.update(font="Helvetica 10 underline", text_color="#add8e6")
 
     def draw_window(self, window_title, layout, location=(None, None), modal=False):
         window = sg.Window(
@@ -32,14 +38,22 @@ class BaseCtrl:
             resizable=True,
         )
         for element in window.AllKeysDict.keys():
-            if window.AllKeysDict[element].Type in [
-                "multiline"
-            ]:  # TODO: Add to input as well
+            if (
+                window.AllKeysDict[element].Type
+                in [
+                    "multiline",
+                    # TODO: Add to input as well
+                ]
+                and element != "stdout"
+            ):
                 self.enable_undo(window, element)
 
             if isinstance(element, str) and (
                 element.startswith("click") or element.startswith("URL")
             ):
                 self.enable_link(window.AllKeysDict[element])
+
+        window["stdout"].reroute_stdout_to_here()
+        window["stdout"].reroute_stderr_to_here()
 
         return window

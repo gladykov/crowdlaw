@@ -1,8 +1,11 @@
+import os
+
 import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
 from src.model.on_boarding import OnBoardingModel
-from src.views.common import warning_popup
+from src.utils.utils import get_project_root
+from src.views.common import image_popup, warning_popup
 from src.views.on_boarding import OnBoardingUI
 
 
@@ -63,11 +66,21 @@ class OnBoardingCtrl(BaseCtrl):
         if event == "git_provider":
             self.model.fill_credentials(window, values["git_provider"])
 
-        if event == "create_account":
+        if event == "click_create_account":
             self.model.open_create_git_account()
 
-        if event == "obtain_token":
+        if event == "click_obtain_token":
             self.model.open_obtain_token()
+
+        if event == "click_show_gitlab_help":
+            image_popup(
+                _(
+                    "Clicking 'Obtain token' will take you to the git page. Fill fields as on picture"
+                ),
+                os.path.join(
+                    get_project_root(), "resources", "images", "gitlab_pat.png"
+                ),
+            )
 
         if event == "start":
             validation_result = self.model.validate_page_2(values)

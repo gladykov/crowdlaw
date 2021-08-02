@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import validators
 
@@ -168,6 +169,11 @@ class OnBoardingModel(Base):
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
                 with open(os.path.join(project_dir, example_file), "w") as fp:
                     fp.write(_(f"Contents of {example_file}"))
+
+            shutil.copy(
+                os.path.join(get_project_root(), "resources", "stages.yaml"),
+                os.path.join(project_dir, "stages.yaml"),
+            )
 
             git_adapter.add_all_untracked()
             git_adapter.commit(_(f"Initial commit for project {self.project_name}"))

@@ -6,9 +6,14 @@ from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root, get_token_name_token, replace_string_between_subs, strip_string
+    get_project_root,
+    get_token_name_token,
+    replace_string_between_subs,
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
+import logging
+
+logger = logging.getLogger("root")
 
 
 class MainWindowModel(Base):
@@ -64,6 +69,8 @@ class MainWindowModel(Base):
 
         self.merge_request = None
         self.update_review_info()
+
+        self.stages = self.get_stages(self.project_name)
 
     def update_review_info(self):
         merge_requests = self.remote_api.get_my_merge_requests(
@@ -276,9 +283,9 @@ class MainWindowModel(Base):
         self.branch_name = branch_name
         if self.branch_exists(self.branch_name):
             self.git_adapter.checkout_existing_branch(self.branch_name)
-            print("branch exists")
+            logger.info("Branch exists. Switch only.")
         else:
-            print("branch not exists")
+            logger.info("Branch does not exists. Create new one.")
             if from_master:
                 self.git_adapter.checkout_master()
                 self.git_adapter.checkout_new_branch(self.branch_name)

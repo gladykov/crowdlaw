@@ -1,9 +1,8 @@
+import logging
 import os
 import re
 from pathlib import Path
 from zipfile import ZipFile
-
-import yaml
 
 
 def get_project_root() -> Path:
@@ -38,3 +37,29 @@ def replace_string_between_subs(original, start_str, new_str, end_str):
     reg = "(?<=%s).*?(?=%s)" % (start_str, end_str)
     r = re.compile(reg, re.DOTALL)
     return r.sub(new_str, original)
+
+
+def get_logger(name, propagate=False, log_level="info"):
+    """
+
+    Args:
+        name: str
+        propagate: bool - if logger entries should propagate up in the chain
+        log_level: str - ex. info, debug
+
+    Returns:
+        logger
+    """
+
+    log_level = logging.DEBUG if log_level == "debug" else logging.INFO
+    logger = logging.getLogger(name)
+    logger.setLevel(log_level)
+    logger.propagate = propagate
+    ch = logging.StreamHandler()
+    ch.setLevel(log_level)
+    formatter = logging.Formatter(
+        "%(asctime)s %(levelname)s %(name)s %(message)s", "%y/%m/%d %H:%M:%S"
+    )
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    return logger

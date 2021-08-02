@@ -1,4 +1,5 @@
 import gettext
+import logging
 import os
 import time
 
@@ -12,6 +13,7 @@ locale_dir = os.path.join(get_project_root(), "locale")
 lang_en = gettext.translation("crowdlaw", localedir=locale_dir, languages=["en"])
 lang_pl = gettext.translation("crowdlaw", localedir=locale_dir, languages=["pl"])
 lang_pl.install()
+logger = logging.getLogger("root")
 
 
 class GitlabAPI:
@@ -51,9 +53,9 @@ class GitlabAPI:
         path = new_path if new_path else project.path
         project.forks.create({"name": name, "path": path})
         forked_project = self.get_project_by_user_path(self.user, path)
-        print(_("Waiting for fork to complete. Grab a coffee."))
+        logger.info(_("Waiting for fork to complete. Grab a coffee."))
         while forked_project.import_status == "started":
-            print(_("waiting"))
+            logger.info(_("waiting"))
             time.sleep(5)
             forked_project = self.get_project_by_user_path(self.user, path)
 
@@ -61,15 +63,6 @@ class GitlabAPI:
 
     def update_project_name_path(self, project, new_name, new_path):
         self.gl.projects.update(project.id, {"name": new_name, "path": new_path})
-
-    def download_project_archive(self, project):
-        output_path = os.path.join(get_project_root(), "tmp", "archive.zip")
-        file = self.gl.http_get(f"/projects/{project.id}/repository/archive.zip")
-        with open(output_path, "wb") as f:
-            f.write(file.content)
-
-        print(_(f"Downloaded project archive to {output_path}"))
-        return output_path
 
     def create_empty_project(self, project_name):
         return self.gl.projects.create({"name": project_name, "visibility": "public"})
@@ -98,7 +91,6 @@ class GitlabAPI:
                 "target_project_id": self.get_base_project_id(project),
             }
         )
-        print(result)
         return result
 
     def get_my_merge_requests(self, author, source_branch):
@@ -108,23 +100,7 @@ class GitlabAPI:
             source_branch=source_branch,
             author_username=author,
         )
-        print(listmr)
         return listmr
 
     def get_branches(self):
         return list(map(lambda x: x.name, self.project.branches.list()))
-
-
-if __name__ == "__main__":
-    gl = GitlabAPI()
-    # archive_path = gl.download_project_archive(gl.get_project_by_user_path(original_user, original_project))
-    # gl.upload_project_archive("new_name3", archive_path)
-    # forked_project = gl.fork_project(gl.get_project_by_user_path(original_user, original_project), "new_name", "new_path")
-    # forked_project.delete_fork_relation()
-    # gl.create_empty_project("empty_proj")
-    # unzip_file(os.path.join(get_project_root(), 'tmp', 'archive.zip'))
-    # dir_name, dir_path = get_unpacked_repo_root(original_project)
-    # repo_root = os.path.join(get_project_root(), 'repos', 'base_repo')
-    # os.rename(os.path.join(dir_path, dir_name), repo_root)
-    forked_project = gl.get_project_by_user_path("gladykov", "monopipeline")
-    print(forked_project.import_status)

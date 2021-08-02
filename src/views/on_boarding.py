@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-
+from src.views.common import help_icon_clickable
 
 class OnBoardingUI:
     def __init__(self, controller_props):
@@ -97,10 +97,8 @@ class OnBoardingUI:
                 sg.InputText(self.props.username, k="username_input", disabled=update),
                 sg.Text(
                     _("No account? Create new."),
-                    text_color="blue",
+                    k="click_create_account",
                     enable_events=True,
-                    k="create_account",
-                    font="Helvetica 10 underline",
                 ),
             ],
             [
@@ -110,12 +108,9 @@ class OnBoardingUI:
                 ),
                 sg.InputText(self.props.token, k="token_input"),
                 sg.Text(
-                    _("Obtain token"),
-                    text_color="blue",
-                    enable_events=True,
-                    key="obtain_token",
-                    font="Helvetica 10 underline",
+                    _("Obtain token"), key="click_obtain_token", enable_events=True
                 ),
+                help_icon_clickable("click_show_gitlab_help"),
             ],
             [
                 sg.Text(_(f"Provide token name"), k="token_name_label"),

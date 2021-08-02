@@ -24,6 +24,19 @@ class Base:
         return config
 
     @staticmethod
+    def get_stages(project_name):
+        stages_file = os.path.join(
+            get_project_root(), "projects", project_name, "stages.yaml"
+        )
+        if not os.path.exists(stages_file):
+            return False
+
+        with open(stages_file, "r") as stream:
+            stages = yaml.safe_load(stream)
+
+        return stages
+
+    @staticmethod
     def set_config(config_dict):
         config_file = os.path.join(get_project_root(), "projects", "config.yaml")
 

@@ -6,26 +6,36 @@ from zipfile import ZipFile
 
 
 def get_project_root() -> Path:
+    """
+    Get project root
+
+    Returns:
+        path
+    """
     return Path(__file__).parent.parent.parent
 
 
-def unzip_file(path):
-    with ZipFile(path, "r") as zipObj:
-        zipObj.extractall(os.path.join(get_project_root(), "tmp"))
-
-
-def get_unpacked_repo_root(starting_pattern):
-    for path in Path(os.path.join(get_project_root(), "tmp")).glob(
-        starting_pattern + "*"
-    ):
-        return path.name, str(path.parent)
-
-
 def strip_string(string):
+    """
+    Remove white spaces and replace spaces with -
+    Args:
+        string:
+
+    Returns:
+        string
+    """
     return string.strip().lower().replace(" ", "-")
 
 
 def get_token_name_token(url):
+    """
+    Get token name and token from URLs in Git config files
+    Args:
+        url:
+
+    Returns:
+        tuple (token_name, token)
+    """
     # https://tokenname:MwJxgVNCdBcky6R@gitlab.com/gladykov/mynewnice.git
     parts = url.split(":")
     token_name = parts[1].split("//")[1]
@@ -34,6 +44,17 @@ def get_token_name_token(url):
 
 
 def replace_string_between_subs(original, start_str, new_str, end_str):
+    """
+
+    Args:
+        original: string
+        start_str: start pattern to be found
+        new_str: replacement part
+        end_str: end pattern to be found
+
+    Returns:
+        string
+    """
     reg = "(?<=%s).*?(?=%s)" % (start_str, end_str)
     r = re.compile(reg, re.DOTALL)
     return r.sub(new_str, original)

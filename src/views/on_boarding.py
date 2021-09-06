@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from src.views.common import help_icon_clickable
 
+
 class OnBoardingUI:
     def __init__(self, controller_props):
         self.props = controller_props
@@ -110,7 +111,7 @@ class OnBoardingUI:
                 sg.Text(
                     _("Obtain token"), key="click_obtain_token", enable_events=True
                 ),
-                help_icon_clickable("click_show_gitlab_help"),
+                help_icon_clickable("show_gitlab_help"),
             ],
             [
                 sg.Text(_(f"Provide token name"), k="token_name_label"),

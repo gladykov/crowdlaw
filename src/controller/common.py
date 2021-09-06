@@ -12,23 +12,53 @@ def redo(text):
 
 
 class BaseCtrl:
-    def __init__(self):
-        self.logger = logging.getLogger("root")
+    @staticmethod
+    def enable_undo(window, key):
+        """
+        Enable undo in multiline field
 
-    def enable_undo(self, window, key):
-        # Enable undo in multiline field
+        Args:
+            window:
+            key: str
+
+        Returns:
+            None
+        """
+
         text = window[key].Widget
         # Enable the undo mechanism
         text.configure(undo=True)
         # Bind redo mechanism to key Ctrl-Shift-Z
         text.bind("<Control-Shift-Key-Z>", lambda event, text=text: redo(text))
 
-    def enable_link(self, element):
+    @staticmethod
+    def enable_link(element):
+        """
+        Adds color, underline and hand cursor over clickable text/images/elements
+
+        Args:
+            element: PySg element
+
+        Returns:
+            None
+        """
         element.set_cursor("hand2")
         if element.Type == "text":
             element.update(font="Helvetica 10 underline", text_color="#add8e6")
 
     def draw_window(self, window_title, layout, location=(None, None), modal=False):
+        """
+        Draws final window on the screen.
+
+        Args:
+            window_title: str
+            layout: sg layout
+            location: tuple
+            modal: bool - if true, will act as modal and block underlying window
+
+        Returns:
+            window
+        """
         window = sg.Window(
             window_title,
             [[layout]],
@@ -37,15 +67,13 @@ class BaseCtrl:
             modal=modal,
             resizable=True,
         )
+
         for element in window.AllKeysDict.keys():
-            if (
-                window.AllKeysDict[element].Type
-                in [
-                    "multiline",
-                    # TODO: Add to input as well
-                ]
-                and element != "stdout"
-            ):
+            if window.AllKeysDict[element].Type in [
+                "multiline",
+                # "input",
+                # TODO: Add to input as well
+            ]:
                 self.enable_undo(window, element)
 
             if isinstance(element, str) and (
@@ -53,7 +81,7 @@ class BaseCtrl:
             ):
                 self.enable_link(window.AllKeysDict[element])
 
-        window["stdout"].reroute_stdout_to_here()
-        window["stdout"].reroute_stderr_to_here()
+        # window["stdout"].reroute_stdout_to_here()
+        # window["stdout"].reroute_stderr_to_here()
 
         return window

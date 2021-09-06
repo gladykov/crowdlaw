@@ -73,7 +73,7 @@ class MainWindowModel(Base):
         self.stages = self.get_stages(self.project_name)
 
     def update_review_info(self):
-        merge_requests = self.remote_api.get_my_merge_requests(
+        merge_requests = self.remote_api.get_merge_requests(
             self.username, self.branch_name
         )
         self.merge_request = merge_requests[0].web_url if merge_requests else None

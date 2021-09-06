@@ -10,16 +10,45 @@ file_icon = b"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsSAAALEg
 
 
 def warning_popup(issues):
+    """
+    Display simple warning popup with OK
+
+    Args:
+        issues: list - list of strings to show
+
+    Returns:
+        None
+    """
     # Expand box so title can be visible always
     issues.insert(0, "___________________________________________________________")
     sg.popup_ok(*issues, title=_("Found some issues, please correct them."))
 
 
 def image_popup(popup_text, image_path):
+    """
+    Display popup with image and OK
+
+    Args:
+        popup_text: str - text to show below image
+        image_path: str - image path to show in popup
+
+    Returns:
+        None
+    """
     sg.popup_ok(popup_text, title=_("Help"), image=image_path)
 
 
 def popup_yes_no_cancel(title, issues):
+    """
+    Show popup with Yes, No, Cancel options
+
+    Args:
+        title: str
+        issues: list
+
+    Returns:
+        str, None
+    """
     # Expand box so title can be visible always
     issues.insert(0, "___________________________________________________________")
     text = "\n".join(issues)
@@ -38,7 +67,15 @@ def popup_yes_no_cancel(title, issues):
 
 
 def help_icon(tooltip_text):
+    """
+    Get help icon with tooltip text
 
+    Args:
+        tooltip_text: str
+
+    Returns:
+        sg.Image
+    """
     tooltip_text = tooltip_text.replace(". ", ". \n")
 
     return sg.Image(
@@ -53,7 +90,15 @@ def help_icon(tooltip_text):
 
 
 def help_icon_clickable(element_key):
+    """
+    Get help icon which can be clicked.
+    By adding "click" as key beginning, method "enable_link" will add cursor
+    Args:
+        element_key: str
 
+    Returns:
+        sg.Image
+    """
     return sg.Image(
         os.path.join(
             get_project_root(),
@@ -62,5 +107,5 @@ def help_icon_clickable(element_key):
             "question-circle-regular.png",
         ),
         enable_events=True,
-        key=element_key,
+        key="click_" + element_key,
     )

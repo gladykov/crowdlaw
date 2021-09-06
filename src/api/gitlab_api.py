@@ -1,22 +1,15 @@
-import gettext
 import logging
-import os
 import time
 
 import gitlab
 
-from src.utils.utils import get_project_root, get_unpacked_repo_root, unzip_file
 
-
-locale_dir = os.path.join(get_project_root(), "locale")
-
-lang_en = gettext.translation("crowdlaw", localedir=locale_dir, languages=["en"])
-lang_pl = gettext.translation("crowdlaw", localedir=locale_dir, languages=["pl"])
-lang_pl.install()
 logger = logging.getLogger("root")
 
 
 class GitlabAPI:
+    """Main class handling communication with Gitlab servers"""
+
     def __init__(self, user=None, token=None):
         if token is None:
             self.token = "MwJxgVNCdBcQ8Nk6zy6R"
@@ -31,13 +24,42 @@ class GitlabAPI:
         self.project = None
 
     def set_current_project(self, username, project_path):
+        """
+        Set Gitlab project we are working on.
+
+        Args:
+            username: str
+            project_path: str - gitlab url project name
+
+        Returns:
+
+        """
         self.project = self.get_project_by_user_path(username, project_path)
 
     def get_project_by_user_path(self, username, project_path):
+        """
+        Get project by username and path, ex: gladykov/crowdlaw
+
+        Args:
+            username: str
+            project_path: str
+
+        Returns:
+
+        """
         return self.gl.projects.get(username + "/" + project_path)
 
     @staticmethod
     def get_project_info(project):
+        """
+        Get various properties of a Gitlab project
+
+        Args:
+            project: gitlab project
+
+        Returns:
+            dict
+        """
         return {
             "username": project.owner["username"],
             "user_name": project.owner["name"],
@@ -49,6 +71,17 @@ class GitlabAPI:
         }
 
     def fork_project(self, project, new_name=None, new_path=None):
+        """
+        Fork existing project
+
+        Args:
+            project: existing project
+            new_name: name for new project
+            new_path: path of new project
+
+        Returns:
+            project
+        """
         name = new_name if new_name else project.name
         path = new_path if new_path else project.path
         project.forks.create({"name": name, "path": path})
@@ -62,9 +95,29 @@ class GitlabAPI:
         return forked_project
 
     def update_project_name_path(self, project, new_name, new_path):
+        """
+        Updates project name and path
+
+        Args:
+            project: gitlab project
+            new_name: str
+            new_path: str
+
+        Returns:
+            None
+        """
         self.gl.projects.update(project.id, {"name": new_name, "path": new_path})
 
     def create_empty_project(self, project_name):
+        """
+        Creates empty project
+
+        Args:
+            project_name: str
+
+        Returns:
+            project
+        """
         return self.gl.projects.create({"name": project_name, "visibility": "public"})
 
     def get_credentials_git_url(self, token_name, path):
@@ -72,6 +125,15 @@ class GitlabAPI:
 
     @staticmethod
     def get_base_project_id(project):
+        """
+        Get ID of base project
+
+        Args:
+            project:
+
+        Returns:
+            str
+        """
         return (
             project.forked_from_project["id"]
             if hasattr(project, "forked_from_project")
@@ -81,6 +143,19 @@ class GitlabAPI:
     def create_merge_request(
         self, username, project_path, source_branch, target_branch, title
     ):
+        """
+        Create merge request
+
+        Args:
+            username: str
+            project_path: str
+            source_branch: str
+            target_branch: str
+            title: str
+
+        Returns:
+            result
+        """
         project = self.get_project_by_user_path(username, project_path)
 
         result = project.mergerequests.create(
@@ -93,7 +168,17 @@ class GitlabAPI:
         )
         return result
 
-    def get_my_merge_requests(self, author, source_branch):
+    def get_merge_requests(self, author, source_branch):
+        """
+        Get merge requests of current user
+
+        Args:
+            author: str
+            source_branch: str
+
+        Returns:
+            list
+        """
         project = self.gl.projects.get(self.get_base_project_id(self.project))
         listmr = project.mergerequests.list(
             state="opened",
@@ -103,4 +188,10 @@ class GitlabAPI:
         return listmr
 
     def get_branches(self):
+        """
+        Get branches from current project
+
+        Returns:
+            list
+        """
         return list(map(lambda x: x.name, self.project.branches.list()))

@@ -7,6 +7,7 @@ title_font_size = 17
 
 
 class MainWindowUI:
+    """Main window of app, shown after on boarding"""
     def __init__(self, controller_props):
         self.props = controller_props
         sg.theme(self.props.theme)

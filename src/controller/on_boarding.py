@@ -10,11 +10,21 @@ from src.views.on_boarding import OnBoardingUI
 
 
 class OnBoardingCtrl(BaseCtrl):
+    """Controller handling joining project or creating new one"""
+
     def __init__(self):
         self.model = OnBoardingModel()
         self.page = 1
 
     def get_elements(self, update):
+        """
+        Get all elements to draw a window
+        Args:
+            update: bool - if true, only performs update of token info in repos
+
+        Returns:
+            PySG frame
+        """
         if self.page == 1:
             return OnBoardingUI(self.model).select_project_intention()
         else:
@@ -23,11 +33,33 @@ class OnBoardingCtrl(BaseCtrl):
     def get_window(
         self, window_title, location=(None, None), modal=False, update=False
     ):
+        """
+        Draws window with given set of elements
+        Args:
+            window_title: str
+            location: tuple
+            modal: bool
+            update: bool - True, if only used to update token info
+
+        Returns:
+
+        """
         return self.draw_window(
             window_title, self.get_elements(update), location, modal
         )
 
     def event_handler(self, window, event, values):
+        """
+        Main event handler of events in window, for window loop
+
+        Args:
+            window:
+            event: str
+            values: dict
+
+        Returns:
+            window, None
+        """
         if event == "new":
             self.model.new_existing = event
             new_window = self.get_window("updated", window.CurrentLocation())

@@ -8,17 +8,44 @@ from src.views.main_window import MainWindowUI
 
 
 class MainWindowCtrl(BaseCtrl):
+    """Base controller to manage main window"""
+
     def __init__(self):
         self.model = MainWindowModel()
         self.ignore_event = False  # Special flag for special cases
 
     def get_elements(self):
+        """
+        Collect all elements in layout to draw a window
+
+        Returns:
+            layout
+        """
         return MainWindowUI(self.model).layout()
 
     def get_window(self, window_title, location=(None, None)):
+        """
+        Draws window with given set of elements
+
+        Args:
+            window_title: str
+            location: tuple
+
+        Returns:
+            window
+        """
         return self.draw_window(window_title, self.get_elements(), location)
 
     def redraw_window(self, window):
+        """
+        Redraws window in a way, it will overlap previous window, and destroys old one.
+
+        Args:
+            window:
+
+        Returns:
+            window
+        """
         new_window = self.get_window(
             "title titel be a variable", window.CurrentLocation()
         )
@@ -26,6 +53,12 @@ class MainWindowCtrl(BaseCtrl):
         return new_window
 
     def set_new_branch(self):
+        """
+        Set current working branch
+
+        Returns:
+            bool - True if branch was set properly, False if not
+        """
         if self.model.branch_name is None:
             branch_name = self.model.get_new_branch_name()
             if branch_name in [None, "Cancel", ""]:
@@ -37,7 +70,17 @@ class MainWindowCtrl(BaseCtrl):
         return False
 
     def event_handler(self, window, event, values):
+        """
+        Main handler of events for window loop
 
+        Args:
+            window:
+            event: str
+            values: dict
+
+        Returns:
+            window, after succesfull handling of event; None if window is about to be destroyed
+        """
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
             return window

@@ -10,6 +10,8 @@ from src.utils.utils import get_project_root, strip_string
 
 
 class OnBoardingModel(Base):
+    """Used when configuring app for the first time to use with Git repo and also when updating token info across all repos"""
+
     def __init__(self):
         self.new_existing = None
         self.project_url = None
@@ -18,11 +20,20 @@ class OnBoardingModel(Base):
         self.username = None
         self.token = None
         self.token_name = None
-        self.theme = "DarkTeal6"  # Move to some common place
+        self.theme = "DarkTeal6"  # TODO: Move to some common place
         self.supported_git_providers = list(self.git_providers().keys())
         self.config = self.get_config()
 
     def validate_page_1(self, values):
+        """
+        Check if first window was filled properly.
+
+        Args:
+            values: dict - all values from first window
+
+        Returns:
+            bool, list - True when everything is OK, list if found some issues
+        """
         issues = []
         if not values["new"] and not values["existing"]:
             issues.append(
@@ -48,15 +59,32 @@ class OnBoardingModel(Base):
         return issues if issues else True
 
     def collect_page_1(self, values):
+        """
+        Sets properties based on data entered in first window
+
+        Args:
+            values: dict
+
+        Returns:
+            None
+        """
         if values["new"]:
             self.project_name = values["project_name"]
         else:
             self.project_url = values["project_url"]
             self.project_name = values["project_url"].split("/")[-1].split(".")[0]
-            print(self.project_name)
 
     @staticmethod
     def validate_page_2(values):
+        """
+        Check if 2nd window was filled properly.
+
+        Args:
+            values: dict - all values from 2nd window
+
+        Returns:
+            bool, list - True when everything is OK, list if found some issues
+        """
         issues = []
         if not values["username_input"]:
             issues.append(_("Provide username"))
@@ -68,12 +96,31 @@ class OnBoardingModel(Base):
         return issues if issues else True
 
     def collect_page_2(self, values):
+        """
+        Sets properties based on data entered in 2nd window
+
+        Args:
+            values: dict
+
+        Returns:
+            None
+        """
         self.username = values["username_input"]
         self.token = values["token_input"]
         self.token_name = values["token_name_input"]
         self.git_provider = values["git_provider"]
 
     def fill_credentials(self, window, git_provider):
+        """
+        Fill credentials info in credentials fields for given provider.
+
+        Args:
+            window: window
+            git_provider: str
+
+        Returns:
+            bool - True if credentials were filled, otherwise False
+        """
         window["username_input"].update("")
         window["token_input"].update("")
         window["token_name_input"].update("")
@@ -100,18 +147,21 @@ class OnBoardingModel(Base):
         return True
 
     def open_create_git_account(self):
+        """Open create account page in browser"""
         self.open_url_in_browser(
             self.git_providers()[self.git_provider]["base_url"]
             + self.git_providers()[self.git_provider]["create_account"]
         )
 
     def open_obtain_token(self):
+        """Open obtain token page in browser"""
         self.open_url_in_browser(
             self.git_providers()[self.git_provider]["base_url"]
             + self.git_providers()[self.git_provider]["get_token"]
         )
 
     def initialize_project(self):
+        """Set all properties and configs needed to work with project, based on user input."""
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         remote_api = RemoteAPI(self.username, self.token)
 

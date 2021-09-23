@@ -11,6 +11,7 @@ class GitlabAPI:
     """Main class handling communication with Gitlab servers"""
 
     def __init__(self, user=None, token=None):
+        self.authenticated = False
         if token is None:
             self.token = "MwJxgVNCdBcQ8Nk6zy6R"
         else:
@@ -20,7 +21,13 @@ class GitlabAPI:
         else:
             self.user = user
         self.gl = gitlab.Gitlab("https://gitlab.com", private_token=token)
-        self.gl.auth()
+        try:
+            self.gl.auth()
+            logger.info("Successfully authenticated")
+            self.authenticated = True
+
+        except gitlab.exceptions.GitlabAuthenticationError:
+            logger.error("Not authenticated")
         self.project = None
 
     def set_current_project(self, username, project_path):

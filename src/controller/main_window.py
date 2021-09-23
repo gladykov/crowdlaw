@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 from src.controller.common import BaseCtrl
 from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
-from src.views.common import popup_yes_no_cancel, warning_popup
+from src.views.common import animated_waiting, popup_yes_no_cancel, warning_popup
 from src.views.main_window import MainWindowUI
 
 
@@ -69,6 +69,34 @@ class MainWindowCtrl(BaseCtrl):
 
         return False
 
+    def update_token_info(self):
+        on_boarding = OnBoardingCtrl()
+        on_boarding.page = 2
+        on_boarding.model.username = self.model.username
+        on_boarding.model.token = self.model.token
+        on_boarding.model.token_name = self.model.token_name
+        on_boarding.model.git_provider = self.model.git_provider
+        on_boarding_window = on_boarding.get_window(_("Update token info"), update=True)
+
+        while True:
+            update_token_event, update_token_values = on_boarding_window.read()
+            print(update_token_event, "|", update_token_values)
+            on_boarding_window = on_boarding.event_handler(
+                on_boarding_window, update_token_event, update_token_values
+            )
+
+            if update_token_event == "update":
+                print("Update event")
+                self.model.update_token_info(update_token_values)
+                self.model = MainWindowModel()
+                if self.model.remote_api.authenticated:
+                    on_boarding_window.close()
+                    break
+                else:
+                    on_boarding_window["token_error"].update(
+                        _("Couldn't authenticate with current token info")
+                    )
+
     def event_handler(self, window, event, values):
         """
         Main handler of events for window loop
@@ -100,34 +128,22 @@ class MainWindowCtrl(BaseCtrl):
                 ],
             )
             if reply == "yes":
-                on_boarding = OnBoardingCtrl()
-                on_boarding.page = 2
-                on_boarding.model.username = self.model.username
-                on_boarding.model.token = self.model.token
-                on_boarding.model.token_name = self.model.token_name
-                on_boarding_window = on_boarding.get_window(
-                    _("Update token info"), update=True
-                )
-
-                update_token_event, update_token_values = on_boarding_window.read(
-                    close=True
-                )
-                if update_token_event == "update":
-                    self.model.update_token_info(update_token_values)
-                    self.model = MainWindowModel()
-                    return self.redraw_window(window)
+                self.update_token_info()
+                return self.redraw_window(window)
 
         if event == "project_selector":
-            if self.model.protect_unsaved_changes(values["document_editor"]) in [
-                "cancel",
-                None,
-            ]:
-                self.model.select_current_project(window)
-                return window
+            if not values["project_selector"] == self.model.project_name:
+                animated_waiting()
+                if self.model.protect_unsaved_changes(values["document_editor"]) in [
+                    "cancel",
+                    None,
+                ]:
+                    self.model.select_current_project(window)
+                    return window
 
-            self.model.save_working_set()
-            self.model = self.model.switch_project(values["project_selector"])
-            return self.redraw_window(window)
+                self.model.save_working_set()
+                self.model = self.model.switch_project(values["project_selector"])
+                return self.redraw_window(window)
 
         if event == "add_new_project":
             if self.model.protect_unsaved_changes(values["document_editor"]) in [

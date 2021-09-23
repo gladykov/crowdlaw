@@ -54,7 +54,7 @@ class Base:
             get_project_root(), "projects", project_name, "stages.yaml"
         )
         if not os.path.exists(stages_file):
-            return False
+            raise EnvironmentError("Couldn't find valid stages.yaml file")
 
         with open(stages_file, "r") as stream:
             stages = yaml.safe_load(stream)

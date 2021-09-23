@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+
 from src.views.common import help_icon_clickable
 
 
@@ -126,6 +127,7 @@ class OnBoardingUI:
             elements.append(
                 [
                     sg.Button(_("Update token info"), k="update"),
+                    sg.Text("", size=(50, 1), text_color="red", k="token_error"),
                 ]
             )
         else:
@@ -134,6 +136,7 @@ class OnBoardingUI:
                     sg.Button(_("Back"), k="back"),
                     sg.CloseButton(_("Cancel"), k="close"),
                     sg.Button(_("Start!"), k="start"),
+                    sg.Text("", size=(50, 1), text_color="red", k="token_error"),
                 ]
             )
 

@@ -8,6 +8,7 @@ title_font_size = 17
 
 class MainWindowUI:
     """Main window of app, shown after on boarding"""
+
     def __init__(self, controller_props):
         self.props = controller_props
         sg.theme(self.props.theme)
@@ -102,7 +103,7 @@ class MainWindowUI:
         )
 
     def stage(self):
-        help_stage = help_icon("This shows what is actual status of your project.")
+        help_stage = help_icon(_("This shows what is actual status of your project."))
         stage_list = []
         for stage_number, stage in self.props.stages.items():
             if stage["status"] == "finished":

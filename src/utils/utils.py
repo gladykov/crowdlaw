@@ -1,6 +1,10 @@
+import ctypes
 import logging
 import os
+import platform
 import re
+import sys
+from ctypes import wintypes
 from pathlib import Path
 from zipfile import ZipFile
 

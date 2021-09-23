@@ -1,4 +1,4 @@
-import logging
+import platform
 
 import PySimpleGUI as sg
 

@@ -1,3 +1,4 @@
+import logging
 import os
 
 import PySimpleGUI as sg
@@ -6,12 +7,10 @@ from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root,
-    get_token_name_token,
-    replace_string_between_subs,
+    get_project_root, get_token_name_token, replace_string_between_subs, strip_string
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
-import logging
+
 
 logger = logging.getLogger("root")
 
@@ -34,7 +33,9 @@ class MainWindowModel(Base):
 
         self.config = self.get_config()
         self.project_name = self.config["last_project"]
-
+        logger.info(
+            _(f"Trying to initialize controller for project {self.project_name}")
+        )
         self.git_adapter = GitAdapter(
             os.path.join(get_project_root(), "projects", self.project_name),
             initialized=True,
@@ -65,12 +66,12 @@ class MainWindowModel(Base):
 
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         self.remote_api = RemoteAPI(self.username, self.token)
-        self.remote_api.set_current_project(self.username, self.project_name)
 
-        self.merge_request = None
-        self.update_review_info()
-
-        self.stages = self.get_stages(self.project_name)
+        if self.remote_api.authenticated:
+            self.remote_api.set_current_project(self.username, self.project_name)
+            self.merge_request = None
+            self.update_review_info()
+            self.stages = self.get_stages(self.project_name)
 
     def update_review_info(self):
         merge_requests = self.remote_api.get_merge_requests(
@@ -197,13 +198,14 @@ class MainWindowModel(Base):
 
     @staticmethod
     def get_file_content(file_path):
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
+
         return content
 
     @staticmethod
     def put_file_content(file_path, content):
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(content.strip())
 
     @staticmethod
@@ -272,6 +274,8 @@ class MainWindowModel(Base):
 
         if not branch_name:
             branch_name = self.get_new_branch_name()
+
+        branch_name = strip_string(branch_name)
 
         if branch_name in self.remote_api.get_branches():
             sg.popup_ok(_(f"Working set with name {branch_name} already exists"))

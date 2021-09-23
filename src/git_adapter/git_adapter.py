@@ -1,10 +1,10 @@
+import logging
 import os
 
 from git import Repo, rmtree
 
-from src.utils.utils import get_project_root
+from src.utils.utils import get_project_root, strip_string
 
-import logging
 
 logger = logging.getLogger("root")
 repo_root = os.path.join(get_project_root(), "repos", "base_repo")
@@ -135,12 +135,16 @@ class GitAdapter:
 
     def local_branches(self):
         """
-        List local baranches
+        List local branches
 
         Returns:
             list
         """
-        return sorted(list(map(lambda x: x.name, self.repo.heads)))
+        local_branches = sorted(list(map(lambda x: x.name, self.repo.heads)))
+        if "master" in local_branches:
+            local_branches.remove("master")
+
+        return local_branches
 
     def checkout_new_branch(self, branch_name):
         """
@@ -152,6 +156,7 @@ class GitAdapter:
         Returns:
             None
         """
+        branch_name = strip_string(branch_name)
         logger.info(f"Checking out new branch {branch_name}")
         self.repo.git.checkout(["-b", branch_name])
 

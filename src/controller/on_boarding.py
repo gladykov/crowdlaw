@@ -50,6 +50,22 @@ class OnBoardingCtrl(BaseCtrl):
             window_title, self.get_elements(update), location, modal
         )
 
+    def redraw_window(self, window):
+        """
+        Redraws window in a way, it will overlap previous window, and destroys old one.
+
+        Args:
+            window:
+
+        Returns:
+            window
+        """
+        new_window = self.get_window(
+            "title titel be a variable", window.CurrentLocation()
+        )
+        window.close()
+        return new_window
+
     def event_handler(self, window, event, values):
         """
         Main event handler of events in window, for window loop
@@ -62,8 +78,7 @@ class OnBoardingCtrl(BaseCtrl):
         Returns:
             window, None
         """
-        if event is not None:  # Menu events look like this: Label::key
-            event = event.split("::")[-1]
+        event = self.events_preprocessor(event)
 
         if event == "change_language":
             reply = change_language_selector(
@@ -82,20 +97,14 @@ class OnBoardingCtrl(BaseCtrl):
                     )
 
                 LanguageCtrl.switch_app_lang(new_lang)
-                new_window = self.get_window("updated", window.CurrentLocation())
-                window.close()
-                return new_window
+                return self.redraw_window(window)
 
         if event == "new":
             self.model.new_existing = event
-            new_window = self.get_window("updated", window.CurrentLocation())
-            window.close()
-            return new_window
+            return self.redraw_window(window)
         if event == "existing":
             self.model.new_existing = event
-            new_window = self.get_window("existing", window.CurrentLocation())
-            window.close()
-            return new_window
+            return self.redraw_window(window)
 
         if event == "next":
             validation_result = self.model.validate_page_1(values)
@@ -117,9 +126,7 @@ class OnBoardingCtrl(BaseCtrl):
         if event == "back":
             self.page = 1
             self.model.collect_page_2(values)
-            new_window = self.get_window("git details title", window.CurrentLocation())
-            window.close()
-            return new_window
+            return self.redraw_window(window)
 
         if event == "git_provider":
             self.model.fill_credentials(window, values["git_provider"])

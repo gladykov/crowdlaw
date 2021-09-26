@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
         while True:
             event, values = window.read()
-            logger.debug(event, "|", values)
+            print(event, "|", values)
             window = main_window.event_handler(window, event, values)
             # Close any animated popup window
             sg.popup_animated(None)

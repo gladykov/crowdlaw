@@ -83,3 +83,9 @@ class BaseCtrl:
         # window["stdout"].reroute_stderr_to_here()
 
         return window
+
+    @staticmethod
+    def events_preprocessor(event):
+        return (
+            event.split("::")[-1] if event is not None else event
+        )  # Menu events look like this: Label::key

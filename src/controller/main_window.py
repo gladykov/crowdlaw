@@ -121,8 +121,7 @@ class MainWindowCtrl(BaseCtrl):
             self.ignore_event = not self.ignore_event
             return window
 
-        if event is not None:  # Menu events look like this: Label::key
-            event = event.split("::")[-1]
+        event = self.events_preprocessor(event)
 
         if event == "change_language":
             reply = change_language_selector(

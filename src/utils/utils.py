@@ -76,8 +76,10 @@ def get_logger(name, propagate=False, log_level="info"):
         logger
     """
 
-    log_level = logging.DEBUG if log_level == "debug" else logging.INFO
     logger = logging.getLogger(name)
+    if logger.hasHandlers():  # Already exists
+        return logger
+    log_level = logging.DEBUG if log_level == "debug" else logging.INFO
     logger.setLevel(log_level)
     logger.propagate = propagate
     ch = logging.StreamHandler()

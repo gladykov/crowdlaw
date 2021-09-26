@@ -1,31 +1,17 @@
 # -*- coding: utf8 -*-
-from utils.utils import get_logger, get_project_root
-
-
-logger = get_logger("root", log_level="debug")
-
-import gettext
-import os
-import platform
-
 import PySimpleGUI as sg
 
 from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
-from utils.supported_langs import get_app_lang, set_keyboard_language
+from src.controller.language import LanguageCtrl
+from utils.utils import get_logger
 
 
-locale_dir = os.path.join(get_project_root(), "locale")
-lang_code = get_app_lang()
-lang_2_chars = lang_code.split("_")[0]
-logger.debug(f"Detected lang to be used {lang_2_chars}")
-lang = gettext.translation("crowdlaw", localedir=locale_dir, languages=[lang_2_chars])
-lang.install()
-if platform.system() == "Windows":
-    set_keyboard_language(lang_code)
+logger = get_logger("root", log_level="debug")
+
 
 if __name__ == "__main__":
-
+    LanguageCtrl.install_lang()
     logger.info("Starting Crowd Law app version 1.0")
 
     on_boarding = False
@@ -37,7 +23,7 @@ if __name__ == "__main__":
 
         while True:
             event, values = window.read()
-            print(event, "|", values)
+            logger.debug(event, "|", values)
             window = on_boarding.event_handler(window, event, values)
             if window is None:
                 break
@@ -61,7 +47,7 @@ if __name__ == "__main__":
 
         while True:
             event, values = window.read()
-            print(event, "|", values)
+            logger.debug(event, "|", values)
             window = main_window.event_handler(window, event, values)
             # Close any animated popup window
             sg.popup_animated(None)

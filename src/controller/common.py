@@ -1,5 +1,3 @@
-import platform
-
 import PySimpleGUI as sg
 
 

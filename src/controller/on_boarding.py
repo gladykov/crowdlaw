@@ -3,9 +3,11 @@ import os
 import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
+from src.controller.language import LanguageCtrl
 from src.model.on_boarding import OnBoardingModel
+from src.utils.supported_langs import get_language_name_by_shortcut
 from src.utils.utils import get_project_root
-from src.views.common import image_popup, warning_popup
+from src.views.common import change_language_selector, image_popup, warning_popup
 from src.views.on_boarding import OnBoardingUI
 
 
@@ -60,6 +62,30 @@ class OnBoardingCtrl(BaseCtrl):
         Returns:
             window, None
         """
+        if event is not None:  # Menu events look like this: Label::key
+            event = event.split("::")[-1]
+
+        if event == "change_language":
+            reply = change_language_selector(
+                LanguageCtrl.supported_langs(),
+                get_language_name_by_shortcut(self.model.config["lang"]),
+            )
+            if reply[0] == "switch_language":
+                new_lang = reply[1]["language_selector"]
+                print(new_lang)
+                if (
+                    get_language_name_by_shortcut(LanguageCtrl.get_app_lang())
+                    != new_lang
+                ):
+                    print(
+                        f"Old lang {get_language_name_by_shortcut(LanguageCtrl.get_app_lang())} does not match new one {new_lang}"
+                    )
+
+                LanguageCtrl.switch_app_lang(new_lang)
+                new_window = self.get_window("updated", window.CurrentLocation())
+                window.close()
+                return new_window
+
         if event == "new":
             self.model.new_existing = event
             new_window = self.get_window("updated", window.CurrentLocation())

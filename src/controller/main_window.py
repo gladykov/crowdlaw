@@ -1,9 +1,13 @@
 import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
+from src.controller.language import LanguageCtrl
 from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
-from src.views.common import animated_waiting, popup_yes_no_cancel, warning_popup
+from src.utils.supported_langs import get_language_name_by_shortcut
+from src.views.common import (
+    animated_waiting, change_language_selector, popup_yes_no_cancel, warning_popup
+)
 from src.views.main_window import MainWindowUI
 
 
@@ -70,6 +74,11 @@ class MainWindowCtrl(BaseCtrl):
         return False
 
     def update_token_info(self):
+        """
+        Update token info for all projects using same git provider
+        Returns:
+            None
+        """
         on_boarding = OnBoardingCtrl()
         on_boarding.page = 2
         on_boarding.model.username = self.model.username
@@ -86,7 +95,6 @@ class MainWindowCtrl(BaseCtrl):
             )
 
             if update_token_event == "update":
-                print("Update event")
                 self.model.update_token_info(update_token_values)
                 self.model = MainWindowModel()
                 if self.model.remote_api.authenticated:
@@ -107,11 +115,33 @@ class MainWindowCtrl(BaseCtrl):
             values: dict
 
         Returns:
-            window, after succesfull handling of event; None if window is about to be destroyed
+            window, after successful handling of event; None if window is about to be destroyed
         """
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
             return window
+
+        if event is not None:  # Menu events look like this: Label::key
+            event = event.split("::")[-1]
+
+        if event == "change_language":
+            reply = change_language_selector(
+                LanguageCtrl.supported_langs(),
+                get_language_name_by_shortcut(self.model.config["lang"]),
+            )
+            if reply[0] == "switch_language":
+                new_lang = reply[1]["language_selector"]
+                print(new_lang)
+                if (
+                    get_language_name_by_shortcut(LanguageCtrl.get_app_lang())
+                    != new_lang
+                ):
+                    print(
+                        f"Old lang {get_language_name_by_shortcut(LanguageCtrl.get_app_lang())} does not match new one {new_lang}"
+                    )
+
+                LanguageCtrl.switch_app_lang(new_lang)
+                return self.redraw_window(window)
 
         if event == "click_change_project":
             reply = MainWindowUI.change_project_popup()

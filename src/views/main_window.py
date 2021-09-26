@@ -1,9 +1,6 @@
 import PySimpleGUI as sg
 
-from src.views.common import help_icon
-
-
-title_font_size = 17
+from src.views.common import help_icon, menu_toolbar, title_font_size
 
 
 class MainWindowUI:
@@ -270,6 +267,7 @@ class MainWindowUI:
         )
 
         layout = [
+            [menu_toolbar()],
             [
                 left_col,
                 sg.VerticalSeparator(),

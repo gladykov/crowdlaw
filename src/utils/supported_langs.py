@@ -4,15 +4,8 @@ Add every new language using
 https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs
 """
 import ctypes
-import locale
 import logging
-import os
-import platform
-import re
-import sys
 from ctypes import wintypes
-
-from src.model.base import Base
 
 
 logger = logging.getLogger("root")
@@ -314,31 +307,3 @@ def get_language_name_by_shortcut(shortcut):
             return k
 
     raise ValueError(f"Didn't find lang with shortcut {shortcut}")
-
-
-def get_app_lang():
-    config = Base.get_config()
-    if config["lang"] == "None":  # First time run
-        current_locale = locale.getdefaultlocale()[0]  # ('pl_PL', 'cp1252')
-        logger.debug(f"Detected system language as {current_locale}")
-        for supported_locale_dict in supported_langs.values():
-            if supported_locale_dict["shortcut"] == current_locale:
-                use_lang_shortcut = supported_locale_dict["shortcut"]
-
-                config["lang"] = use_lang_shortcut
-                Base.set_config(config)
-                return use_lang_shortcut
-
-        # Default to English
-        config["lang"] = "en_US"
-        Base.set_config(config)
-        return config["lang"]
-
-    else:
-        return config["lang"]
-
-
-def set_app_lang(lang_shortcut):
-    config = Base.get_config()
-    config["lang"] = lang_shortcut
-    Base.set_config(config)

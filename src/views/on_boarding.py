@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-from src.views.common import help_icon_clickable
+from src.views.common import help_icon_clickable, menu_toolbar
 
 
 class OnBoardingUI:
@@ -11,6 +11,7 @@ class OnBoardingUI:
     def select_project_intention(self):
 
         elements = [
+            [menu_toolbar()],
             [sg.Text(_("Before you start writing Law, we need few answers."))],
             [sg.Text(_("What do you want to do?"))],
             [
@@ -58,7 +59,7 @@ class OnBoardingUI:
     def git_details(self, update=False):
         horizontal_line = [sg.HorizontalSeparator()]
 
-        elements = []
+        elements = [menu_toolbar()]
 
         select_git_provider = [
             [

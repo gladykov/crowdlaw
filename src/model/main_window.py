@@ -284,7 +284,11 @@ class MainWindowModel(Base):
         branch_name = strip_string(branch_name)
 
         if branch_name in self.remote_api.get_branches():
-            sg.popup_ok(_("Working set with name {branch_name} already exists").format(branch_name=branch_name))
+            sg.popup_ok(
+                _("Working set with name {branch_name} already exists").format(
+                    branch_name=branch_name
+                )
+            )
             branch_name = self.get_new_branch_name()
 
         return branch_name

@@ -264,7 +264,7 @@ class OnBoardingModel(Base):
             if is_owner:
                 git_adapter.localise_remote_branches()
             else:
-                # For existing origin, which we are not owners, we fork. When we fork, no branches to localise
+                # For existing origin, which we are not owners, we fork.
                 # TODO: Detect default branch and remove all other remote branches from fork not to pollute user
                 git_adapter.localise_remote_branch("master")
                 git_adapter.checkout_existing_branch("master")

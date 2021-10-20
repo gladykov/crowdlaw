@@ -21,7 +21,6 @@ class GitAdapter:
             self.repo = Repo(self.path)
         else:
             self.initialize_repo()
-            self.repo = Repo(self.path)
 
     def get_config(self, section, value):
         """
@@ -182,6 +181,47 @@ class GitAdapter:
         """
         logger.info(f"Checking out existing branch {branch_name}")
         self.repo.git.checkout(branch_name)
+
+    def localise_remote_branches(self):
+        """
+        When new origin is added, we know nothing about remote branches.
+        Make all remote branches available as local branches
+
+        Args:
+
+        Returns:
+            None
+        """
+        self.repo.git.fetch()
+        origin = self.repo.remotes.origin
+        for branch in self.repo.remote().refs:
+            branch_name = branch.name.split("/")[1]
+
+            self.repo.create_head(
+                branch_name, branch
+            )  # create local branch "x" from remote "x"
+            self.repo.heads.__getattr__(branch_name).set_tracking_branch(
+                origin.refs.__getattr__(branch_name)
+            )  # Set tracking information
+
+    def localise_remote_branch(self, branch_name):
+        """
+        When new origin is added, we know nothing about remote branches.
+        Make all remote branches available as local branches
+
+        Args:
+
+        Returns:
+            None
+        """
+        self.repo.git.fetch()
+        origin = self.repo.remotes.origin
+        self.repo.create_head(
+            branch_name, "origin/" + branch_name
+        )  # create local branch "master" from remote "master"
+        self.repo.heads.__getattr__(branch_name).set_tracking_branch(
+            origin.refs.__getattr__(branch_name)
+        )  # Set tracking information
 
     def remove_branch(self, branch_name):
         """

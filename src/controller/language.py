@@ -16,10 +16,9 @@ class LanguageCtrl:
     def install_lang():
         locale_dir = os.path.join(get_project_root(), "locale")
         lang_code = LanguageCtrl.get_app_lang()
-        lang_2_chars = lang_code.split("_")[0]
-        logger.debug(f"Detected lang to be used {lang_2_chars}")
+        logger.debug(f"Detected lang to be used {lang_code}")
         lang = gettext.translation(
-            "crowdlaw", localedir=locale_dir, languages=[lang_2_chars]
+            "crowdlaw", localedir=locale_dir, languages=[lang_code]
         )
         lang.install()
         if platform.system() == "Windows":

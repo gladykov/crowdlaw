@@ -169,3 +169,17 @@ def show_change_lang_modal():
         [change_language_selector()],
         modal=True,
     ).read(close=True)[0]
+
+
+def select_language():
+    return sg.Window(
+        "Select app language",
+        [
+            [sg.Titlebar("Select app language")],
+            [sg.Radio("English", "language", key="en_US")],
+            [sg.Radio("Polski", "language", key="pl_PL")],
+            [sg.Button("OK"), sg.Button("Cancel / Close")],
+        ],
+        modal=True,
+        grab_anywhere=True,
+    ).read(close=True)

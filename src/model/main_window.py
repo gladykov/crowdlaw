@@ -55,7 +55,7 @@ class MainWindowModel(Base):
 
         # Special case in case of crash
         if self.branch_name == "master":
-            if len(self.branch_names) == 1:
+            if len(self.branch_names) == 0:  # When only master, it will be 0
                 self.branch_name = None
             else:
                 self.branch_name = list(

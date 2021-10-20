@@ -10,7 +10,10 @@ from src.utils.utils import get_project_root, strip_string
 
 
 class OnBoardingModel(Base):
-    """Used when configuring app for the first time to use with Git repo and also when updating token info across all repos"""
+    """
+    Used when configuring app for the first time to use with Git
+    1repo and also when updating token info across all repos
+    """
 
     def __init__(self):
         self.new_existing = None
@@ -71,8 +74,8 @@ class OnBoardingModel(Base):
         if values["new"]:
             self.project_name = values["project_name"]
         else:
-            self.project_url = values["project_url"]
-            self.project_name = values["project_url"].split("/")[-1].split(".")[0]
+            self.project_url = values["project_url"].strip().rstrip("/")
+            self.project_name = self.project_url.split("/")[-1].split(".")[0]
 
     @staticmethod
     def validate_page_2(values):
@@ -177,7 +180,11 @@ class OnBoardingModel(Base):
                 ]
             )
 
-        if self.config and self.project_name in self.config["projects"].keys():
+        if (
+            self.config
+            and "projects" in self.config.keys()
+            and self.project_name in self.config["projects"].keys()
+        ):
             return [
                 _("Project {project_name} already exists").format(
                     project_name=self.project_name
@@ -198,22 +205,28 @@ class OnBoardingModel(Base):
             ]
 
         if new_project:
+            is_owner = True
             project = remote_api.get_project_info(
                 remote_api.create_empty_project(self.project_name)
             )
         else:
             project_details = self.project_url.split("/")
-            project_to_fork = remote_api.get_project_by_user_path(
+            source_project = remote_api.get_project_by_user_path(
                 project_details[-2], project_details[-1]
             )
-            forked_proj = remote_api.fork_project(project_to_fork)
-            project = remote_api.get_project_info(forked_proj)
+            # We may be owner of existing we are joining, after some break
+            if project_details[-2] == self.username:
+                is_owner = True
+                project = remote_api.get_project_info(source_project)
+            else:
+                is_owner = False
+                forked_proj = remote_api.fork_project(source_project)
+                project = remote_api.get_project_info(forked_proj)
 
         username = project["username"]
         user_name = project["user_name"]
         email = project["email"]
         repo_name = project["repo_name"]
-        repo_git_url = project["repo_git_url"]
         repo_web_url = project["repo_web_url"]
         path = project["path"]
 
@@ -222,6 +235,9 @@ class OnBoardingModel(Base):
         git_adapter.set_config("user", "email", email)
         repo_git_url = remote_api.get_credentials_git_url(self.token_name, path)
         git_adapter.set_config('remote "origin"', "url", repo_git_url)
+        git_adapter.set_config(
+            'remote "origin"', "fetch", "+refs/heads/*:refs/remotes/origin/*"
+        )
 
         if new_project:
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
@@ -245,7 +261,13 @@ class OnBoardingModel(Base):
             )
             git_adapter.push()
         else:
-            git_adapter.pull()
+            if is_owner:
+                git_adapter.localise_remote_branches()
+            else:
+                # For existing origin, which we are not owners, we fork. When we fork, no branches to localise
+                # TODO: Detect default branch and remove all other remote branches from fork not to pollute user
+                git_adapter.localise_remote_branch("master")
+                git_adapter.checkout_existing_branch("master")
 
         # And now we can write config
         project_dict = {
@@ -253,19 +275,20 @@ class OnBoardingModel(Base):
             "provider": self.git_provider,
             "username": username,
             "project_url": repo_web_url,
-            "is_owner": new_project,
+            "is_owner": is_owner,
             "folder": project_dir,
         }
 
-        if not self.config:
+        # At this moment at least language is already selected
+        if self.config["init"] is False:
             self.config = {
-                "init": True,
                 "projects": {},
-                "lang": "en",  # TODO: Set and Get current language during on boarding
                 "git_providers": {},
-            }
+            } | self.config
 
-        # Always update to latest for given provider
+            self.config["init"] = True
+
+        # Always update to latest credentials for given provider
         self.config["git_providers"][self.git_provider] = {
             "username": self.username,
             "token": self.token,

@@ -72,9 +72,12 @@ class Base:
         Returns:
             None
         """
-        config_file = os.path.join(get_project_root(), "projects", "config.yaml")
-
-        with open(config_file, "w") as stream:
+        config_file_dir = os.path.join(get_project_root(), "projects")
+        config_file = "config.yaml"
+        config_file_path = os.path.join(config_file_dir, config_file)
+        if not os.path.exists(config_file_dir):
+            os.makedirs(config_file_dir)
+        with open(config_file_path, "w") as stream:
             yaml.dump(config_dict, stream)
 
     @staticmethod

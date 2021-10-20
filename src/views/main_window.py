@@ -14,20 +14,22 @@ class MainWindowUI:
         return sg.Frame(
             _("Server info"),
             [
-                [sg.Text(_(f"URL: {self.props.project_url}"))],
-                [sg.Text(_(f"User: {self.props.username}"), k="user")],
+                [sg.Text(_("URL: {url}").format(url=self.props.project_url))],
+                [sg.Text(_("User: {user}").format(user=self.props.username), k="user")],
                 [
                     sg.Column(
                         [
                             [
                                 sg.Text(
-                                    _(f"Token: {len(self.props.token) * '*'}"),
+                                    _("Token: ********"),
                                     k="token",
                                 )
                             ],
                             [
                                 sg.Text(
-                                    _(f"Token name: {self.props.token_name}"),
+                                    _("Token name: {token_name}").format(
+                                        token_name=self.props.token_name
+                                    ),
                                     k="token_name",
                                 )
                             ],
@@ -36,7 +38,7 @@ class MainWindowUI:
                     sg.VerticalSeparator(),
                     sg.Column(
                         [
-                            [sg.Button(_(f"Update token info"), k="update_token_info")],
+                            [sg.Button(_("Update token info"), k="update_token_info")],
                         ]
                     ),
                 ],

@@ -38,7 +38,9 @@ class MainWindowModel(Base):
         self.config = self.get_config()
         self.project_name = self.config["last_project"]
         logger.info(
-            _(f"Trying to initialize controller for project {self.project_name}")
+            _("Trying to initialize controller for project {project_name}").format(
+                project_name=self.project_name
+            )
         )
         self.git_adapter = GitAdapter(
             os.path.join(get_project_root(), "projects", self.project_name),
@@ -282,7 +284,7 @@ class MainWindowModel(Base):
         branch_name = strip_string(branch_name)
 
         if branch_name in self.remote_api.get_branches():
-            sg.popup_ok(_(f"Working set with name {branch_name} already exists"))
+            sg.popup_ok(_("Working set with name {branch_name} already exists").format(branch_name=branch_name))
             branch_name = self.get_new_branch_name()
 
         return branch_name

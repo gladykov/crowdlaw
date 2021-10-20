@@ -155,8 +155,10 @@ class MainWindowCtrl(BaseCtrl):
                 _("Are you sure you want to update token info?"),
                 [
                     _("Updating token info, will update it for all projects"),
-                    _(f"Which use {self.model.git_provider}"),
-                    _(f"Are you sure?"),
+                    _("which use {git_provider}").format(
+                        git_provider=self.model.git_provider
+                    ),
+                    _("Are you sure?"),
                 ],
             )
             if reply == "yes":
@@ -211,9 +213,13 @@ class MainWindowCtrl(BaseCtrl):
                     _(
                         "WARNING: This will remove all your files from your local computer"
                     ),
-                    _(f"associated with project {self.model.project_name}."),
+                    _("associated with project {project_name}.").format(
+                        project_name=self.model.project_name
+                    ),
                     _("Copy will be left on the server"),
-                    _(f"To remove server version go to {self.model.project_url}"),
+                    _("To remove server version go to {server_url}").format(
+                        server_url=self.model.project_url
+                    ),
                     _("Are you sure you want ro remove files from local computer?"),
                 ],
             )
@@ -240,7 +246,11 @@ class MainWindowCtrl(BaseCtrl):
         if event == "remove_file":
             reply = popup_yes_no_cancel(
                 _("Confirm file deletion"),
-                [_(f"Are you sure you want to remove file {values['doctree'][0]}")],
+                [
+                    _("Are you sure you want to remove file {file}").format(
+                        file=values["doctree"][0]
+                    )
+                ],
             )
 
             if reply == "yes":

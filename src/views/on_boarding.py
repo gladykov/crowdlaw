@@ -94,7 +94,9 @@ class OnBoardingUI:
         username_token = [
             [
                 sg.Text(
-                    _(f"Provide {self.props.git_provider or _('gitlab')} username"),
+                    _("Provide {git} username").format(
+                        git=self.props.git_provider or _("gitlab")
+                    ),
                     k="username_label",
                 ),
                 sg.InputText(self.props.username, k="username_input", disabled=update),
@@ -106,7 +108,9 @@ class OnBoardingUI:
             ],
             [
                 sg.Text(
-                    _(f"Provide {self.props.git_provider or _('gitlab')} token"),
+                    _("Provide {git_provider} token").format(
+                        git_provider=self.props.git_provider or _("gitlab")
+                    ),
                     key="token_label",
                 ),
                 sg.InputText(self.props.token, k="token_input"),
@@ -116,7 +120,7 @@ class OnBoardingUI:
                 help_icon_clickable("show_gitlab_help"),
             ],
             [
-                sg.Text(_(f"Provide token name"), k="token_name_label"),
+                sg.Text(_("Provide token name"), k="token_name_label"),
                 sg.InputText(self.props.token_name, k="token_name_input"),
             ],
         ]

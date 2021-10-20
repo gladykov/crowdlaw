@@ -178,7 +178,11 @@ class OnBoardingModel(Base):
             )
 
         if self.config and self.project_name in self.config["projects"].keys():
-            return [_(f"Project {self.project_name} already exists")]
+            return [
+                _("Project {project_name} already exists").format(
+                    project_name=self.project_name
+                )
+            ]
 
         project_dir = os.path.join(
             get_project_root(), "projects", project_stripped_name
@@ -187,7 +191,11 @@ class OnBoardingModel(Base):
         if not os.path.exists(project_dir):
             os.mkdir(project_dir)
         else:
-            return [_(f"Project folder {project_dir} already exists")]
+            return [
+                _("Project folder {project_dir} already exists").format(
+                    project_dir=project_dir
+                )
+            ]
 
         if new_project:
             project = remote_api.get_project_info(
@@ -218,7 +226,11 @@ class OnBoardingModel(Base):
         if new_project:
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
                 with open(os.path.join(project_dir, example_file), "w") as fp:
-                    fp.write(_(f"Contents of {example_file}"))
+                    fp.write(
+                        _("Contents of {example_file}").format(
+                            example_file=example_file
+                        )
+                    )
 
             shutil.copy(
                 os.path.join(get_project_root(), "resources", "stages.yaml"),
@@ -226,7 +238,11 @@ class OnBoardingModel(Base):
             )
 
             git_adapter.add_all_untracked()
-            git_adapter.commit(_(f"Initial commit for project {self.project_name}"))
+            git_adapter.commit(
+                _("Initial commit for project {project_name}").format(
+                    project_name=self.project_name
+                )
+            )
             git_adapter.push()
         else:
             git_adapter.pull()

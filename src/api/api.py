@@ -9,7 +9,7 @@ def get_api(api, git_providers):
     :return: object
     """
     if api not in list(git_providers.keys()):
-        raise ValueError(_(f"Unsupported API provided: {api}"))
+        raise ValueError(_("Unsupported API provided: {api}").format(api=api))
 
     if api == "gitlab":
         return GitlabAPI

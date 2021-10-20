@@ -2,7 +2,7 @@ import logging
 import time
 
 import gitlab
-
+import requests
 
 logger = logging.getLogger("root")
 
@@ -12,6 +12,8 @@ class GitlabAPI:
 
     def __init__(self, user=None, token=None):
         self.authenticated = False
+        self.connected = False
+
         if token is None:
             self.token = "MwJxgVNCdBcQ8Nk6zy6R"
         else:
@@ -25,9 +27,14 @@ class GitlabAPI:
             self.gl.auth()
             logger.info("Successfully authenticated")
             self.authenticated = True
+            self.connected = True
+
+        except requests.exceptions.ConnectionError:
+            logger.error("Not connected")
 
         except gitlab.exceptions.GitlabAuthenticationError:
             logger.error("Not authenticated")
+
         self.project = None
 
     def set_current_project(self, username, project_path):

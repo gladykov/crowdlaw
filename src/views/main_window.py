@@ -192,7 +192,11 @@ class MainWindowUI:
 
         button = (
             [
-                sg.Button(_("Send working set for a review"), k="send_to_review"),
+                sg.Button(
+                    _("Send working set for a review"),
+                    k="send_to_review",
+                    disabled=not self.props.remote_api.connected,
+                ),
                 help_reviews,
             ]
             if self.props.merge_request is None

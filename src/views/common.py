@@ -56,8 +56,6 @@ def popup_yes_no_cancel(title, issues):
     Returns:
         str, None
     """
-    # Expand box so title can be visible always
-    issues.insert(0, "___________________________________________________________")
     text = "\n".join(issues)
     return sg.Window(
         title,

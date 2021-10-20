@@ -11,8 +11,8 @@ logger = get_logger("root", log_level="debug")
 
 
 if __name__ == "__main__":
-    LanguageCtrl.install_lang()
     logger.info("Starting Crowd Law app version 1.0")
+    LanguageCtrl.install_lang()
 
     on_boarding = False
 
@@ -35,15 +35,16 @@ if __name__ == "__main__":
     if on_boarding_success:
         logger.info("Initializing main window.")
         main_window = MainWindowCtrl()
-        if not main_window.model.remote_api.authenticated:
-            # Need to update token
-            main_window.update_token_info()
+        if main_window.model.remote_api.connected:
+            if not main_window.model.remote_api.authenticated:
+                # Need to update token
+                main_window.update_token_info()
 
-        window = main_window.get_window("Code Law 1.0")
+        window = main_window.get_window(main_window.model.app_title)
 
         if main_window.set_new_branch():  # Needed on first run after starting new proj
             window.close()
-            window = main_window.get_window("Code Law 1.0")
+            window = main_window.get_window(main_window.model.app_title)
 
         while True:
             event, values = window.read()

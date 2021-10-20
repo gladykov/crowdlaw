@@ -59,7 +59,7 @@ class OnBoardingUI:
     def git_details(self, update=False):
         horizontal_line = [sg.HorizontalSeparator()]
 
-        elements = [menu_toolbar()]
+        elements = [[menu_toolbar()]]
 
         select_git_provider = [
             [

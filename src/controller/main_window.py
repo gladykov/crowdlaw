@@ -6,7 +6,10 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    animated_waiting, change_language_selector, popup_yes_no_cancel, warning_popup
+    animated_waiting,
+    change_language_selector,
+    popup_yes_no_cancel,
+    warning_popup,
 )
 from src.views.main_window import MainWindowUI
 
@@ -50,9 +53,7 @@ class MainWindowCtrl(BaseCtrl):
         Returns:
             window
         """
-        new_window = self.get_window(
-            "title titel be a variable", window.CurrentLocation()
-        )
+        new_window = self.get_window(self.model.app_title, window.CurrentLocation())
         window.close()
         return new_window
 
@@ -104,6 +105,8 @@ class MainWindowCtrl(BaseCtrl):
                     on_boarding_window["token_error"].update(
                         _("Couldn't authenticate with current token info")
                     )
+            elif update_token_event in [_("Close"), sg.WIN_CLOSED]:
+                break
 
     def event_handler(self, window, event, values):
         """
@@ -183,7 +186,9 @@ class MainWindowCtrl(BaseCtrl):
                 return window
 
             on_boarding = OnBoardingCtrl()
-            on_boarding_window = on_boarding.get_window(_("On boarding"))
+            on_boarding_window = on_boarding.get_window(
+                _("Add new project"), modal=True
+            )
 
             while True:
                 on_boarding_event, on_boarding_values = on_boarding_window.read()

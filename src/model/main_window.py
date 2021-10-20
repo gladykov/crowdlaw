@@ -7,7 +7,10 @@ from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root, get_token_name_token, replace_string_between_subs, strip_string
+    get_project_root,
+    get_token_name_token,
+    replace_string_between_subs,
+    strip_string,
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 
@@ -17,6 +20,7 @@ logger = logging.getLogger("root")
 
 class MainWindowModel(Base):
     def __init__(self):
+        self.app_title = "Crowd Law 1.0"
         self.edited_file = None
         self.new_existing = None
         self.project_url = None
@@ -66,12 +70,12 @@ class MainWindowModel(Base):
 
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         self.remote_api = RemoteAPI(self.username, self.token)
+        self.stages = self.get_stages(self.project_name)
+        self.merge_request = None
 
         if self.remote_api.authenticated:
             self.remote_api.set_current_project(self.username, self.project_name)
-            self.merge_request = None
             self.update_review_info()
-            self.stages = self.get_stages(self.project_name)
 
     def update_review_info(self):
         merge_requests = self.remote_api.get_merge_requests(

@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 
+from sys import exit
 from src.controller.common import BaseCtrl
 from src.controller.language import LanguageCtrl
 from src.controller.on_boarding import OnBoardingCtrl

@@ -3,18 +3,17 @@ import PySimpleGUI as sg
 
 from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
-from src.controller.language import LanguageCtrl
+from controller.language import LanguageCtrl
 from utils.utils import get_logger
-from src.model.base import Base
-from src.views.common import select_language
-
+from model.base import Base
+from views.common import select_language
+from sys import exit
 
 logger = get_logger("root", log_level="debug")
 
 
 if __name__ == "__main__":
     logger.info("Starting Crowd Law app version 1.0")
-    initialized = False
     initialized = bool(Base.get_config())
 
     if not initialized:

@@ -44,7 +44,14 @@ class BaseCtrl:
         if element.Type == "text":
             element.update(font="Helvetica 10 underline", text_color="#add8e6")
 
-    def draw_window(self, window_title, layout, location=(None, None), modal=False):
+    def draw_window(
+        self,
+        window_title,
+        layout,
+        location=(None, None),
+        modal=False,
+        enable_close_attempted_event=False,
+    ):
         """
         Draws final window on the screen.
 
@@ -53,6 +60,7 @@ class BaseCtrl:
             layout: sg layout
             location: tuple
             modal: bool - if true, will act as modal and block underlying window
+            enable_close_attempted_event: bool; should we confirm closing it
 
         Returns:
             window
@@ -64,6 +72,7 @@ class BaseCtrl:
             location=location,
             modal=modal,
             resizable=True,
+            enable_close_attempted_event=enable_close_attempted_event,
         )
 
         for element in window.AllKeysDict.keys():

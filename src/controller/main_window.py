@@ -1,16 +1,14 @@
+from sys import exit
+
 import PySimpleGUI as sg
 
-from sys import exit
 from src.controller.common import BaseCtrl
 from src.controller.language import LanguageCtrl
 from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    animated_waiting,
-    change_language_selector,
-    popup_yes_no_cancel,
-    warning_popup,
+    animated_waiting, change_language_selector, popup_yes_no_cancel, warning_popup
 )
 from src.views.main_window import MainWindowUI
 
@@ -42,7 +40,12 @@ class MainWindowCtrl(BaseCtrl):
         Returns:
             window
         """
-        return self.draw_window(window_title, self.get_elements(), location)
+        return self.draw_window(
+            window_title,
+            self.get_elements(),
+            location,
+            enable_close_attempted_event=True,
+        )
 
     def redraw_window(self, window):
         """
@@ -314,8 +317,12 @@ class MainWindowCtrl(BaseCtrl):
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])
 
-        if event in [_("Close"), sg.WIN_CLOSED]:
-            window.close()
-            return None
+        if event in [_("Close"), sg.WINDOW_CLOSE_ATTEMPTED_EVENT]:
+            if not self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                window.close()
+                return None
 
         return window

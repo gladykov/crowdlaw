@@ -8,7 +8,8 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    animated_waiting, change_language_selector, popup_yes_no_cancel, warning_popup
+    animated_waiting, change_language_selector,
+    ok_popup, popup_yes_no_cancel, warning_popup
 )
 from src.views.main_window import MainWindowUI
 
@@ -316,6 +317,16 @@ class MainWindowCtrl(BaseCtrl):
 
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])
+
+        if event == "click_add_contact_info":
+            if not self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                ci_event, ci_values = MainWindowUI.add_contact_info_popup()
+                if ci_event not in [None, "Cancel"] and ci_values["contact_info"]:
+                    self.model.set_maintainer_file("contact", ci_values["contact_info"])
+                    window["contact_info"].update(ci_values["contact_info"])
 
         if event in [_("Close"), sg.WINDOW_CLOSE_ATTEMPTED_EVENT]:
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [

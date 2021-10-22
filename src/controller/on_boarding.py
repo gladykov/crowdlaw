@@ -60,7 +60,7 @@ class OnBoardingCtrl(BaseCtrl):
         Returns:
             window
         """
-        new_window = self.get_window("On Boarding", window.CurrentLocation())
+        new_window = self.get_window(_("On Boarding"), window.CurrentLocation())
         window.close()
         return new_window
 

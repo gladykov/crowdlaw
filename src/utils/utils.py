@@ -90,3 +90,8 @@ def get_logger(name, propagate=False, log_level="info"):
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     return logger
+
+
+def urljoin(parts):
+    # https: // stackoverflow.com / a / 63678718
+    return "/".join(parts).replace("//", "/").replace(":/", "://")

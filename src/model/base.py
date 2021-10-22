@@ -1,6 +1,7 @@
 import os
 import webbrowser
 
+import requests
 import yaml
 
 from src.utils.utils import get_project_root
@@ -17,7 +18,7 @@ class Base:
         Returns:
             dict
         """
-        config_file = os.path.join(get_project_root(), "git_providers.yaml")
+        config_file = os.path.join(get_project_root(), "src", "git_providers.yaml")
         with open(config_file, "r") as stream:
             config = yaml.safe_load(stream)
         return config
@@ -39,27 +40,28 @@ class Base:
 
         return config
 
-    @staticmethod
-    def get_stages(project_name):
-        """
-        Get stages for current project and their state
-
-        Args:
-            project_name: str
-
-        Returns:
-            dict
-        """
-        stages_file = os.path.join(
-            get_project_root(), "projects", project_name, "stages.yaml"
-        )
-        if not os.path.exists(stages_file):
-            raise EnvironmentError("Couldn't find valid stages.yaml file")
-
-        with open(stages_file, "r") as stream:
-            stages = yaml.safe_load(stream)
-
-        return stages
+    # def get_stages(self, project_name):
+    #     """
+    #     Get stages for current project and their state
+    #
+    #     Args:
+    #         project_name: str
+    #
+    #     Returns:
+    #         dict
+    #     """
+    #     # stages_file = os.path.join(
+    #     #     get_project_root(), "projects", project_name, "stages.yaml"
+    #     # )
+    #     # if not os.path.exists(stages_file):
+    #     #     raise EnvironmentError("Couldn't find valid stages.yaml file")
+    #     #
+    #     # with open(stages_file, "r") as stream:
+    #     #     stages = yaml.safe_load(stream)
+    #
+    #     self.get_file_from_master("stages.yaml")
+    #
+    #     return stages
 
     @staticmethod
     def set_config(config_dict):
@@ -83,7 +85,7 @@ class Base:
     @staticmethod
     def open_url_in_browser(url):
         """
-        Open URL in Webbrowser
+        Open URL in Web browser
 
         Args:
             url: str
@@ -92,3 +94,13 @@ class Base:
             None
         """
         webbrowser.open(url)
+
+    @staticmethod
+    def get_file_from_url(url):
+        r = requests.get(url)
+        return r.text if r.status_code == 200 else None
+
+    @staticmethod
+    def get_version():
+        with open(os.path.join(get_project_root(), "VERSION"), "r") as f:
+            return f.readline()

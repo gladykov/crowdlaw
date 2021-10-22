@@ -4,3 +4,5 @@ PySimpleGUI~=4.43.0
 PyYAML~=5.4.1
 
 validators~=0.18.2
+
+requests~=2.26.0

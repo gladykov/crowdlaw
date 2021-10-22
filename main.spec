@@ -8,7 +8,7 @@ a = Analysis(
     ['src\\main.py'],
     pathex=[os.path.join(os.getcwd(), "src"), os.path.join(os.getcwd(), "venv", "Lib", "site-packages")],
     binaries=[],
-    datas=[('locale', 'locale'), ('resources', 'resources'), ('git_providers.yaml', '.')],
+    datas=[('locale', 'locale'), ('resources', 'resources'), ('src/git_providers.yaml', 'src'), ('VERSION', 'VERSION')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

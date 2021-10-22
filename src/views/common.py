@@ -183,3 +183,14 @@ def select_language():
         modal=True,
         grab_anywhere=True,
     ).read(close=True)
+
+
+def ok_popup(text):
+    return sg.Window(
+        _("Info"),
+        [
+            [sg.Text(text)],
+            [sg.Button(_("OK"))],
+        ],
+        modal=True,
+    ).read(close=True)

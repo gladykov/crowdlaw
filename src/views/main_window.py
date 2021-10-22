@@ -10,6 +10,38 @@ class MainWindowUI:
         self.props = controller_props
         sg.theme(self.props.theme)
 
+    def contact_info(self):
+        clickable_text = (
+            _("[edit contact info]")
+            if self.props.contact_info
+            else _("[add contact info]")
+        )
+        return sg.Frame(
+            _("Contact info"),
+            [
+                [
+                    sg.Text(self.props.contact_info, k="contact_info")
+                    if self.props.contact_info
+                    else sg.Text(
+                        _("contact info not set by maintainer"), k="contact_info"
+                    ),
+                    help_icon(
+                        _("Information about group contact provided by maintainer")
+                    ),
+                ],
+                [
+                    sg.Text(
+                        clickable_text,
+                        enable_events=True,
+                        k="click_add_contact_info",
+                    )
+                    if self.props.is_owner
+                    else sg.Text()
+                ],
+            ],
+            font=("Helvetica", title_font_size),
+        )
+
     def server_info(self):
         return sg.Frame(
             _("Server info"),
@@ -237,6 +269,7 @@ class MainWindowUI:
                 [sg.HorizontalSeparator()],
                 [self.branch_selector()],
                 [self.documents_list()],
+                [self.contact_info()],
             ],
             vertical_alignment="top",
         )
@@ -298,3 +331,26 @@ class MainWindowUI:
             ],
             modal=True,
         ).read(close=True)[0]
+
+    @staticmethod
+    def add_contact_info_popup():
+        return sg.Window(
+            _("Add / edit contact info"),
+            [
+                [
+                    sg.Text(
+                        _(
+                            "Provide contact info (Whatsapp group, FB group, mailing list, etc), where all participants can communicate with each other"
+                        ),
+                    ),
+                ],
+                [
+                    sg.Input(k="contact_info"),
+                ],
+                [
+                    sg.Button(_("Add / edit contact info"), k="add_contact_info"),
+                    sg.Button(_("Cancel"), k="cancel"),
+                ],
+            ],
+            modal=True,
+        ).read(close=True)

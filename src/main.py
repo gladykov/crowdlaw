@@ -13,7 +13,7 @@ logger = get_logger("root", log_level="debug")
 
 
 if __name__ == "__main__":
-    logger.info("Starting Crowd Law app version 1.0")
+    logger.info(f"Starting Crowd Law app version {Base.get_version()}")
     initialized = bool(Base.get_config())
 
     if not initialized:

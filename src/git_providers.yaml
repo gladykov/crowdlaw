@@ -2,9 +2,10 @@ gitlab:
     base_url: https://gitlab.com
     create_account: /users/sign_up
     get_token: /-/profile/personal_access_tokens
-    template_repo: gladykov/crodwlab_template
+    get_raw_file_from_master: /-/raw/
 github:
     base_url: https://github.com
     create_account: /signup
     get_token: /settings/tokens/new
-    template_repo: gladykov/crodwlab_template
+    get_raw_file_from_master: /
+

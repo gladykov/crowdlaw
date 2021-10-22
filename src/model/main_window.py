@@ -2,12 +2,14 @@ import logging
 import os
 
 import PySimpleGUI as sg
+import yaml
 
 from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root, get_token_name_token, replace_string_between_subs, strip_string
+    get_project_root, get_token_name_token,
+    replace_string_between_subs, strip_string, urljoin
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 
@@ -17,7 +19,7 @@ logger = logging.getLogger("root")
 
 class MainWindowModel(Base):
     def __init__(self):
-        self.app_title = "Crowd Law 1.0"
+        self.app_title = f"Crowd Law {self.get_version()}"
         self.edited_file = None
         self.new_existing = None
         self.project_url = None
@@ -52,6 +54,7 @@ class MainWindowModel(Base):
 
         # Special case in case of crash
         if self.branch_name == "master":
+            # TODO: Retest this
             if len(self.branch_names) == 0:  # When only master, it will be 0
                 self.branch_name = None
             else:
@@ -63,18 +66,96 @@ class MainWindowModel(Base):
         self.branch_name_readable = ""
         self.project_url = self.config["projects"][self.project_name]["project_url"]
         self.username = self.config["projects"][self.project_name]["username"]
+        self.is_owner = False
+        # self.is_owner = self.config["projects"][self.project_name]["is_owner"]
         self.project_folder = self.config["projects"][self.project_name]["folder"]
         self.git_provider = self.config["projects"][self.project_name]["provider"]
         self.list_of_files = self.tree_data()
 
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         self.remote_api = RemoteAPI(self.username, self.token)
-        self.stages = self.get_stages(self.project_name)
         self.merge_request = None
+        self.contact_info = None
+        self.stages = None
 
         if self.remote_api.authenticated:
             self.remote_api.set_current_project(self.username, self.project_name)
             self.update_review_info()
+
+        self.contact_info = self.get_maintainer_file("contact")
+        self.stages = self.get_stages()
+
+    def set_maintainer_file(self, filename, file):
+        """Write directly to root of repo on master branch
+
+        Args:
+            filename: str
+            file: str - contents of file
+
+        Returns:
+            None
+        """
+        self.git_adapter.checkout_master()
+        self.git_adapter.pull()
+        with open(os.path.join(self.project_folder, filename), "w") as f:
+            f.write(file)
+        self.git_adapter.add_all_untracked()
+        self.git_adapter.commit(
+            "Pushing maintainer file {filename} directly to master branch".format(
+                filename=filename
+            )
+        )
+        self.git_adapter.push()
+        self.git_adapter.checkout_existing_branch(self.branch_name)
+
+    def get_maintainer_file(self, filename):
+        """
+        Maintainer files, are special files, with latest info, which we try to fetch from master.
+        If not available, we can try local version.
+
+        Args:
+            filenam - str
+
+        Returns:
+            str, None
+        """
+        if self.remote_api.authenticated:
+            file = self.get_file_from_master(filename)
+            if file is not None:
+                return file
+
+        return self.get_file_content(os.path.join(self.project_folder, filename))
+
+    def get_stages(self):
+        """Stages are our definition of current stage of the collaboration"""
+        file = self.get_maintainer_file("stages.yaml")
+        if file is not None:
+            stages = yaml.safe_load(file)
+            return stages
+
+        return None
+
+    def get_file_from_master(self, filename):
+        """Grab latest version of file from master, from root of repo
+
+        Args:
+            filename: str
+
+        Returns:
+            str, None
+        """
+        git_provider_dict = self.git_providers()[self.git_provider]
+        url = urljoin(
+            [
+                git_provider_dict["base_url"],
+                self.username,
+                self.project_name,
+                git_provider_dict["get_raw_file_from_master"],
+                "master",
+                filename,
+            ],
+        )
+        return self.get_file_from_url(url)
 
     def update_review_info(self):
         merge_requests = self.remote_api.get_merge_requests(
@@ -201,10 +282,12 @@ class MainWindowModel(Base):
 
     @staticmethod
     def get_file_content(file_path):
-        with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read()
+        if os.path.isfile(file_path):
+            with open(file_path, "r", encoding="utf-8") as file:
+                content = file.read()
+                return content
 
-        return content
+        return None
 
     @staticmethod
     def put_file_content(file_path, content):

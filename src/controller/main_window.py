@@ -9,8 +9,8 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    animated_waiting, change_language_selector,
-    ok_popup, popup_yes_no_cancel, warning_popup
+    change_language_selector, popup_yes_no_cancel,
+    wait_cursor_disable, wait_cursor_enable, warning_popup
 )
 from src.views.main_window import MainWindowUI
 
@@ -264,13 +264,14 @@ class MainWindowCtrl(BaseCtrl):
                 return self.redraw_window(window)
 
         if event == "project_selector":
+            wait_cursor_enable(window)
             if not values["project_selector"] == self.model.project_name:
-                animated_waiting()
                 if self.model.protect_unsaved_changes(values["document_editor"]) in [
                     "cancel",
                     None,
                 ]:
                     self.model.select_current_project(window)
+                    wait_cursor_disable(window)
                     return window
 
                 self.model.save_working_set()
@@ -323,10 +324,13 @@ class MainWindowCtrl(BaseCtrl):
             )
 
             if reply == "yes":
+                wait_cursor_enable(window)
                 remove_project_result = self.model.remove_project()
                 self.model = MainWindowModel()
                 if remove_project_result is True:
                     return self.redraw_window(window)
+                else:
+                    wait_cursor_disable(window)
 
         if event == "doctree":
             self.ignore_event = self.model.select_document(window, values)
@@ -371,6 +375,7 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_branch(window)
                 return window
 
+            wait_cursor_enable(window)
             self.model.save_working_set()
             if self.model.set_working_branch(values["branch_selector"]):
                 return self.redraw_window(window)
@@ -383,9 +388,14 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.select_current_branch(window)
                 return window
 
+            wait_cursor_enable(window)
             self.model.save_working_set()
             result = self.model.add_new_branch()
-            return self.redraw_window(window) if result is True else window
+            if result is True:
+                return self.redraw_window(window)
+            else:
+                wait_cursor_disable(window)
+                return window
 
         if event == "remove_set":
             reply = popup_yes_no_cancel(
@@ -397,16 +407,20 @@ class MainWindowCtrl(BaseCtrl):
                 ],
             )
             if reply == "yes":
+                wait_cursor_enable(window)
                 self.model.remove_current_branch()
                 return self.redraw_window(window)
 
         if event == "send_to_review":
+            wait_cursor_enable(window)
             self.model.send_to_review(values)
             self.model.update_review_info()
             return self.redraw_window(window)
 
         if event == "update_review":
+            wait_cursor_enable(window)
             self.model.update_review(values)
+            wait_cursor_disable()
 
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])
@@ -418,8 +432,11 @@ class MainWindowCtrl(BaseCtrl):
             ]:
                 ci_event, ci_values = MainWindowUI(self.model).add_contact_info_popup()
                 if ci_event not in [None, "Cancel"] and ci_values["contact_info"]:
+                    wait_cursor_enable(window)
+                    self.model.save_working_set()
                     self.model.set_maintainer_file("contact", ci_values["contact_info"])
                     window["contact_info"].update(ci_values["contact_info"])
+                    wait_cursor_disable(window)
 
         if event == "click_edit_stage_info":
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [
@@ -430,6 +447,8 @@ class MainWindowCtrl(BaseCtrl):
                     MainWindowUI(self.model).edit_stage_info()
                 )
                 if stage_dict is not None:
+                    wait_cursor_enable(window)
+                    self.model.save_working_set()
                     self.model.set_maintainer_file("stages.yaml", yaml.dump(stage_dict))
                     self.model.stages = stage_dict
                     return self.redraw_window(window)

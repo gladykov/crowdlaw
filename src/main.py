@@ -75,8 +75,6 @@ if __name__ == "__main__":
             event, values = window.read()
             print(event, "|", values)
             window = main_window.event_handler(window, event, values)
-            # Close any animated popup window
-            sg.popup_animated(None)
 
             if window is None:
                 logger.info("No main window anymore.")

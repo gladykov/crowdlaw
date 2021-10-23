@@ -387,9 +387,8 @@ class MainWindowModel(Base):
             logger.info("Branch does not exists. Create new one.")
             if from_master:
                 self.git_adapter.checkout_master()
-                self.git_adapter.checkout_new_branch(self.branch_name)
-                self.git_adapter.push()
                 self.git_adapter.pull()
+                self.git_adapter.checkout_new_branch(self.branch_name)
                 self.branch_names = self.git_adapter.local_branches()
 
         self.update_list_of_files()
@@ -481,15 +480,17 @@ class MainWindowModel(Base):
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
 
-        self.git_adapter.push()
-
         merge_request_title = sg.popup_get_text(
             _("Provide title for your proposed changes"),
             _("Provide title for your proposed changes"),
         )
 
         if merge_request_title is None:
-            return None
+            return
+
+        self.git_adapter.squash_before_pushing()
+        self.git_adapter.commit(merge_request_title)
+        self.git_adapter.push()
 
         self.remote_api.create_merge_request(
             self.username,
@@ -505,4 +506,6 @@ class MainWindowModel(Base):
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
 
+        self.git_adapter.squash_before_pushing()
+        self.git_adapter.commit("Updates to review")
         self.git_adapter.push()

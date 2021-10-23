@@ -251,3 +251,15 @@ class GitAdapter:
         logger.info(f"Attempting to remove repo {self.path}")
         rmtree(self.path)
         logger.info(f"Remove repo.")
+
+    def squash_before_pushing(self):
+        counter = 0
+        for commit in self.repo.iter_commits():
+            if commit.message.strip() == "Saved working set":
+                counter = counter + 1
+                continue
+
+            break
+
+        if counter > 0:
+            self.repo.head.reset(f"HEAD~{counter}", index=False, working_tree=False)

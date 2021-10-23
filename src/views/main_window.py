@@ -137,7 +137,7 @@ class MainWindowUI:
         help_stage = help_icon(_("This shows what is actual status of your project."))
         stage_list = []
         for stage_number, stage in self.props.stages.items():
-            if stage["status"] == "finished":
+            if stage["status"] == "completed":
                 stage_element = sg.Text(
                     f"{stage_number}. " + stage["name"], font="tahoma 10 overstrike"
                 )
@@ -160,9 +160,24 @@ class MainWindowUI:
         stage_list.pop(-1)
         stage_list.append(help_stage)
 
+        final_elements_list = (
+            [
+                stage_list,
+                [
+                    sg.Text(
+                        _("[edit stage info]"),
+                        k="click_edit_stage_info",
+                        enable_events=True,
+                    )
+                ],
+            ]
+            if self.props.is_owner
+            else [stage_list]
+        )
+
         return sg.Frame(
             "Project stage",
-            [stage_list],
+            final_elements_list,
             font=("Helvetica", title_font_size),
         )
 
@@ -332,8 +347,7 @@ class MainWindowUI:
             modal=True,
         ).read(close=True)[0]
 
-    @staticmethod
-    def add_contact_info_popup():
+    def add_contact_info_popup(self):
         return sg.Window(
             _("Add / edit contact info"),
             [
@@ -345,7 +359,7 @@ class MainWindowUI:
                     ),
                 ],
                 [
-                    sg.Input(k="contact_info"),
+                    sg.Input(k="contact_info", default_text=self.props.contact_info),
                 ],
                 [
                     sg.Button(_("Add / edit contact info"), k="add_contact_info"),
@@ -354,3 +368,54 @@ class MainWindowUI:
             ],
             modal=True,
         ).read(close=True)
+
+    def edit_stage_info(self):
+        element_list = [
+            [
+                sg.Text(_("Active\nstage")),
+                sg.Text(_("Stage name")),
+                sg.Text(_("Remove stage")),
+            ]
+        ]
+
+        for stage_number, stage in self.props.stages.items():
+            element_list.append(
+                [
+                    sg.Radio(
+                        "",
+                        "current",
+                        k=f"stage_is_active_{stage_number}",
+                        default=(stage["status"] == "active"),
+                    ),
+                    sg.Input(
+                        default_text=stage["name"],
+                        k=f"stage_name_{stage_number}",
+                        size=(30, 10),
+                    ),
+                    sg.Button("-", k=f"remove_stage_{stage_number}"),
+                ]
+            )
+
+        return sg.Window(
+            _("Edit stage info"),
+            [
+                [
+                    sg.Col(
+                        element_list,
+                        size=(300, 300),
+                        scrollable=True,
+                        vertical_scroll_only=True,
+                        k="stages_col",
+                    )
+                ],
+                [
+                    sg.Button(_("Add stage"), k="add_stage"),
+                    sg.Button(_("Mark all as done"), k="all_done"),
+                    sg.Button(_("Save"), k="save"),
+                    sg.Button(_("Cancel"), k="cancel"),
+                ],
+                [sg.Text("", k="error", size=(40, 1), text_color="red")],
+            ],
+            finalize=True,
+            size=(350, 380),
+        )

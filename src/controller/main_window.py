@@ -1,6 +1,7 @@
 from sys import exit
 
 import PySimpleGUI as sg
+import yaml
 
 from src.controller.common import BaseCtrl
 from src.controller.language import LanguageCtrl
@@ -112,6 +113,98 @@ class MainWindowCtrl(BaseCtrl):
                     )
             elif update_token_event in [_("Close"), sg.WIN_CLOSED]:
                 break
+
+    def update_stage_info(self, window):
+        while True:
+            event, values = window.read()
+            print(event)
+            print(values)
+            if event in ["cancel", sg.WINDOW_CLOSED]:
+                window.close()
+                return None
+
+            if event == "add_stage":
+                stage_numbers = [
+                    int(x.split("_")[-1])
+                    for x in values.keys()
+                    if x.startswith("stage_name_")
+                ]
+                new_stage_number = sorted(stage_numbers, reverse=True)[0] + 1
+
+                window.extend_layout(
+                    window["stages_col"],
+                    [
+                        [
+                            sg.Radio(
+                                "", "current", k=f"stage_is_active_{new_stage_number}"
+                            ),
+                            sg.Input(
+                                default_text="",
+                                k=f"stage_name_{new_stage_number}",
+                                size=(30, 10),
+                            ),
+                            sg.Button("-", k=f"remove_stage_{new_stage_number}"),
+                        ]
+                    ],
+                )
+
+            if event.startswith("remove_stage_"):
+                stage_number = event.split("_")[-1]
+                for element in [
+                    "stage_is_active_",
+                    "stage_name_",
+                    "remove_stage_",
+                ]:
+                    window[element + stage_number].update(visible=False)
+
+            if event in ["save", "all_done"]:
+                validation_error = False
+                window["error"].update("")
+                stage_numbers = [
+                    x.split("_")[-1]
+                    for x in values.keys()
+                    if x.startswith("stage_name_")
+                ]
+                visible_stages = [
+                    x for x in stage_numbers if window["stage_name_" + x].visible
+                ]
+                visible_stages.sort()
+                active_stage = [
+                    x for x in visible_stages if values["stage_is_active_" + x]
+                ]
+
+                if not active_stage and event != "all_done":
+                    validation_error = True
+                    window["error"].update(
+                        _("At least one stage should be marked as active")
+                    )
+
+                if not validation_error:
+                    for visible_stage in visible_stages:
+                        if values["stage_name_" + visible_stage] == "":
+                            window["error"].update(_("Provide name for every stage"))
+                            validation_error = True
+
+                if not validation_error:
+                    stages_dict = {}
+                    status = "completed"
+                    new_number = 1
+                    active_stage = active_stage[0] if event != "all_done" else "x"
+
+                    for visible_stage in visible_stages:
+                        if visible_stage == active_stage:
+                            status = "active"
+                        stages_dict[new_number] = {}
+                        stages_dict[new_number]["name"] = values[
+                            "stage_name_" + visible_stage
+                        ]
+                        stages_dict[new_number]["status"] = status
+                        if status == "active":
+                            status = "future"
+                        new_number = new_number + 1
+
+                    window.close()
+                    return stages_dict
 
     def event_handler(self, window, event, values):
         """
@@ -323,10 +416,23 @@ class MainWindowCtrl(BaseCtrl):
                 "cancel",
                 None,
             ]:
-                ci_event, ci_values = MainWindowUI.add_contact_info_popup()
+                ci_event, ci_values = MainWindowUI(self.model).add_contact_info_popup()
                 if ci_event not in [None, "Cancel"] and ci_values["contact_info"]:
                     self.model.set_maintainer_file("contact", ci_values["contact_info"])
                     window["contact_info"].update(ci_values["contact_info"])
+
+        if event == "click_edit_stage_info":
+            if not self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                stage_dict = self.update_stage_info(
+                    MainWindowUI(self.model).edit_stage_info()
+                )
+                if stage_dict is not None:
+                    self.model.set_maintainer_file("stages.yaml", yaml.dump(stage_dict))
+                    self.model.stages = stage_dict
+                    return self.redraw_window(window)
 
         if event in [_("Close"), sg.WINDOW_CLOSE_ATTEMPTED_EVENT]:
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [

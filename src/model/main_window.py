@@ -66,8 +66,8 @@ class MainWindowModel(Base):
         self.branch_name_readable = ""
         self.project_url = self.config["projects"][self.project_name]["project_url"]
         self.username = self.config["projects"][self.project_name]["username"]
-        self.is_owner = False
-        # self.is_owner = self.config["projects"][self.project_name]["is_owner"]
+        # self.is_owner = False
+        self.is_owner = self.config["projects"][self.project_name]["is_owner"]
         self.project_folder = self.config["projects"][self.project_name]["folder"]
         self.git_provider = self.config["projects"][self.project_name]["provider"]
         self.list_of_files = self.tree_data()
@@ -97,8 +97,13 @@ class MainWindowModel(Base):
         """
         self.git_adapter.checkout_master()
         self.git_adapter.pull()
-        with open(os.path.join(self.project_folder, filename), "w") as f:
+        with open(os.path.join(self.project_folder, filename), "w", newline="\n") as f:
             f.write(file)
+
+        if not self.git_adapter.changes_exist():
+            self.git_adapter.checkout_existing_branch(self.branch_name)
+            return
+
         self.git_adapter.add_all_untracked()
         self.git_adapter.commit(
             "Pushing maintainer file {filename} directly to master branch".format(

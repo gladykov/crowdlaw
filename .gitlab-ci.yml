@@ -1,6 +1,6 @@
 verify-pr:
   script: black
-  stage: Black Formatter
+  stage: test
   image: pyfound/black:latest
   only:
     - merge_requests

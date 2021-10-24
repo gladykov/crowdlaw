@@ -1,6 +1,22 @@
-verify-pr:
-  script: black
-  stage: Black Formatter
-  image: pyfound/black:latest
+image: python:latest
+
+stages:
+  - install
+  - verify
+
+install:
+  script:
+    - python setup.py test
+    - pip install black isort pycodestyle
+  stage: install
+  only:
+    - merge_requests
+
+verify:
+  script:
+    - black . --check --diff --color
+    - isort . --check-only --diff --color
+    - pycodestyle --config=setup.cfg .
+  stage: verify
   only:
     - merge_requests

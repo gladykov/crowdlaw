@@ -6,7 +6,6 @@ stages:
 
 install:
   script:
-    - python setup.py test
     - pip install black isort pycodestyle
   stage: install
   only:

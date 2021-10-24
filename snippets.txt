@@ -2,3 +2,6 @@ Useful commands
 
 Pylint with all Py files known to git
 git ls-files "*.py" | xargs pylint > result.txt
+
+Start preparing package (Win)
+pyinstaller main.spec --noconfirm

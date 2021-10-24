@@ -1,12 +1,7 @@
-import ctypes
+"""Utils and helpers"""
 import logging
-import os
-import platform
 import re
-import sys
-from ctypes import wintypes
 from pathlib import Path
-from zipfile import ZipFile
 
 
 def get_project_root() -> Path:
@@ -14,7 +9,7 @@ def get_project_root() -> Path:
     Get project root
 
     Returns:
-        path
+        path, str
     """
     return Path(__file__).parent.parent.parent
 
@@ -23,10 +18,10 @@ def strip_string(string):
     """
     Remove white spaces and replace spaces with -
     Args:
-        string:
+        string: str
 
     Returns:
-        string
+        str
     """
     return string.strip().lower().replace(" ", "-")
 
@@ -49,6 +44,7 @@ def get_token_name_token(url):
 
 def replace_string_between_subs(original, start_str, new_str, end_str):
     """
+    Replace string between start and end
 
     Args:
         original: string
@@ -66,6 +62,7 @@ def replace_string_between_subs(original, start_str, new_str, end_str):
 
 def get_logger(name, propagate=False, log_level="info"):
     """
+    Get logger
 
     Args:
         name: str
@@ -93,5 +90,14 @@ def get_logger(name, propagate=False, log_level="info"):
 
 
 def urljoin(parts):
-    # https: // stackoverflow.com / a / 63678718
+    """
+    os.path.join but for URLs
+
+    Args:
+        parts: list
+
+    Returns:
+        str
+    """
+    # https://stackoverflow.com/a/63678718
     return "/".join(parts).replace("//", "/").replace(":/", "://")

@@ -6,3 +6,6 @@ profile = "black"
 color_output = true
 line_length = 88
 lines_after_imports = 2
+
+[tool.pylint.'OPTIONS']
+additional-builtins = "_"

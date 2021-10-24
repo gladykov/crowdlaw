@@ -1,7 +1,5 @@
-# -*- coding: utf8 -*-
+"""Main entry program of Crowd Law"""
 from sys import exit
-
-import PySimpleGUI as sg
 
 from controller.language import LanguageCtrl
 from controller.main_window import MainWindowCtrl
@@ -20,7 +18,6 @@ if __name__ == "__main__":
 
     if not initialized:
         language_selector = select_language()
-        print(language_selector)
         if language_selector[0] != "OK":
             exit("Didn't choose valid language. Bye bye!")
 
@@ -33,7 +30,6 @@ if __name__ == "__main__":
         if selected_lang is None:
             exit("Didn't choose valid language. Bye bye!")
 
-        print(selected_lang)
         config = {"lang": selected_lang, "init": False}
         Base.set_config(config)
 

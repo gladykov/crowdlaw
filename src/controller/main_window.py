@@ -1,3 +1,4 @@
+"""Controller for application main window"""
 from sys import exit
 
 import PySimpleGUI as sg
@@ -19,7 +20,7 @@ from src.views.main_window import MainWindowUI
 
 
 class MainWindowCtrl(BaseCtrl):
-    """Base controller to manage main window"""
+    """Controller to manage main window"""
 
     def __init__(self):
         self.model = MainWindowModel()
@@ -66,6 +67,17 @@ class MainWindowCtrl(BaseCtrl):
         window.close()
         return new_window
 
+    def select_current_project(self, window):
+        """
+        Select current project in UI
+
+        Args:
+            window: window
+        Returns:
+            None
+        """
+        window["project_selector"].update(self.model.project_name)
+
     def set_new_branch(self):
         """
         Set current working branch
@@ -82,6 +94,18 @@ class MainWindowCtrl(BaseCtrl):
             return True
 
         return False
+
+    def select_current_branch(self, window):
+        """
+        Select branch in UI
+
+        Args:
+            window:
+
+        Returns:
+            None
+        """
+        window["branch_selector"].update(self.model.branch_name)
 
     def update_token_info(self):
         """
@@ -109,14 +133,25 @@ class MainWindowCtrl(BaseCtrl):
                 if self.model.remote_api.authenticated:
                     on_boarding_window.close()
                     break
-                else:
-                    on_boarding_window["token_error"].update(
-                        _("Couldn't authenticate with current token info")
-                    )
+
+                on_boarding_window["token_error"].update(
+                    _("Couldn't authenticate with current token info")
+                )
+
             elif update_token_event in [_("Close"), sg.WIN_CLOSED]:
                 break
 
-    def update_stage_info(self, window):
+    @staticmethod
+    def update_stage_info(window):
+        """
+        Creates window to edit stages, validate user input and collect it.
+
+        Args:
+            window:
+
+        Returns:
+            dict, None:  When successful dict of stages
+        """
         while True:
             event, values = window.read()
             if event in ["cancel", sg.WINDOW_CLOSED]:
@@ -318,12 +353,9 @@ class MainWindowCtrl(BaseCtrl):
 
             if reply == "yes":
                 wait_cursor_enable(window)
-                remove_project_result = self.model.remove_project()
+                self.model.remove_project()
                 self.model = MainWindowModel()
-                if remove_project_result is True:
-                    return self.redraw_window(window)
-                else:
-                    wait_cursor_disable(window)
+                return self.redraw_window(window)
 
         if event == "doctree":
             self.ignore_event = self.model.select_document(window, values)
@@ -351,8 +383,7 @@ class MainWindowCtrl(BaseCtrl):
             if reply == "yes":
                 self.model.remove_document(values)
                 return self.redraw_window(window)
-            else:
-                return window
+            return window
 
         if event == "save":
             if self.model.edited_file is not None:
@@ -365,20 +396,20 @@ class MainWindowCtrl(BaseCtrl):
                 "cancel",
                 None,
             ]:
-                self.model.select_current_branch(window)
+                self.select_current_branch(window)
                 return window
 
             wait_cursor_enable(window)
             self.model.save_working_set()
-            if self.model.set_working_branch(values["branch_selector"]):
-                return self.redraw_window(window)
+            self.model.set_working_branch(values["branch_selector"])
+            return self.redraw_window(window)
 
         if event == "add_new_set":
             if self.model.protect_unsaved_changes(values["document_editor"]) in [
                 "cancel",
                 None,
             ]:
-                self.model.select_current_branch(window)
+                self.select_current_branch(window)
                 return window
 
             wait_cursor_enable(window)
@@ -386,9 +417,9 @@ class MainWindowCtrl(BaseCtrl):
             result = self.model.add_new_branch()
             if result is True:
                 return self.redraw_window(window)
-            else:
-                wait_cursor_disable(window)
-                return window
+
+            wait_cursor_disable(window)
+            return window
 
         if event == "remove_set":
             reply = popup_yes_no_cancel(
@@ -413,7 +444,7 @@ class MainWindowCtrl(BaseCtrl):
         if event == "update_review":
             wait_cursor_enable(window)
             self.model.update_review(values)
-            wait_cursor_disable()
+            wait_cursor_disable(window)
 
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])

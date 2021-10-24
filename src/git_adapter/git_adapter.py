@@ -1,3 +1,4 @@
+"""Local Git manipulations with GitPython and native Git"""
 import logging
 import os
 
@@ -166,7 +167,7 @@ class GitAdapter:
         Returns:
             None
         """
-        logger.info(f"Checkout master")
+        logger.info("Checkout master")
         self.repo.git.checkout(["master"])
 
     def checkout_existing_branch(self, branch_name):
@@ -250,9 +251,13 @@ class GitAdapter:
         """
         logger.info(f"Attempting to remove repo {self.path}")
         rmtree(self.path)
-        logger.info(f"Remove repo.")
+        logger.info("Remove repo.")
 
-    def squash_before_pushing(self):
+    def reset_identical_commits(self):
+        """
+        Reset all commits with same name locally, so we can commit new name.
+        There is no data loss here.
+        """
         counter = 0
         for commit in self.repo.iter_commits():
             if commit.message.strip() == "Saved working set":

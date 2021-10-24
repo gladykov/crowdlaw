@@ -96,7 +96,6 @@ class MainWindowCtrl(BaseCtrl):
 
         while True:
             update_token_event, update_token_values = on_boarding_window.read()
-            print(update_token_event, "|", update_token_values)
             on_boarding_window = on_boarding.event_handler(
                 on_boarding_window, update_token_event, update_token_values
             )
@@ -117,8 +116,6 @@ class MainWindowCtrl(BaseCtrl):
     def update_stage_info(self, window):
         while True:
             event, values = window.read()
-            print(event)
-            print(values)
             if event in ["cancel", sg.WINDOW_CLOSED]:
                 window.close()
                 return None

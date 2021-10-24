@@ -230,13 +230,14 @@ class MainWindowModel(BaseModel):
                         )
                         add_files_in_folder(fullname, fullname)
                 else:
-                    tree_data.Insert(
-                        parent,
-                        fullname,
-                        file,
-                        values=[],
-                        icon=FILE_ICON,
-                    )
+                    if ".txt" in file:
+                        tree_data.Insert(
+                            parent,
+                            fullname,
+                            file,
+                            values=[],
+                            icon=FILE_ICON,
+                        )
 
         add_files_in_folder(
             "", os.path.join(get_project_root(), "projects", self.project_name)

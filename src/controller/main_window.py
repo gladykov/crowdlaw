@@ -9,8 +9,11 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    change_language_selector, popup_yes_no_cancel,
-    wait_cursor_disable, wait_cursor_enable, warning_popup
+    change_language_selector,
+    popup_yes_no_cancel,
+    wait_cursor_disable,
+    wait_cursor_enable,
+    warning_popup,
 )
 from src.views.main_window import MainWindowUI
 

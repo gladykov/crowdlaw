@@ -8,8 +8,11 @@ from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root, get_token_name_token,
-    replace_string_between_subs, strip_string, urljoin
+    get_project_root,
+    get_token_name_token,
+    replace_string_between_subs,
+    strip_string,
+    urljoin,
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 

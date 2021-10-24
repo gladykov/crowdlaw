@@ -164,7 +164,10 @@ class OnBoardingModel(Base):
         )
 
     def initialize_project(self):
-        """Set all properties and configs needed to work with project, based on user input."""
+        """
+        Set all properties and configs needed to work with project,
+        based on user input.
+        """
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         remote_api = RemoteAPI(self.username, self.token)
 
@@ -265,7 +268,8 @@ class OnBoardingModel(Base):
                 git_adapter.localise_remote_branches()
             else:
                 # For existing origin, which we are not owners, we fork.
-                # TODO: Detect default branch and remove all other remote branches from fork not to pollute user
+                # TODO: Detect default branch and remove all other remote branches
+                #  from fork not to pollute user
                 git_adapter.localise_remote_branch("master")
                 git_adapter.checkout_existing_branch("master")
 

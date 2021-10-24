@@ -118,11 +118,12 @@ class MainWindowModel(Base):
 
     def get_maintainer_file(self, filename):
         """
-        Maintainer files, are special files, with latest info, which we try to fetch from master.
-        If not available, we can try local version.
+        Maintainer files, are special files, with latest info,
+         which we try to fetch from master.
+        If not available, try local version.
 
         Args:
-            filenam - str
+            filename - str
 
         Returns:
             str, None
@@ -188,7 +189,7 @@ class MainWindowModel(Base):
             for f in files:
                 fullname = os.path.join(dir_name, f)
                 if os.path.isdir(fullname):  # If it's a folder, add folder and recurse
-                    if not ".git" in fullname.split(os.sep):  # Ignore .git folders
+                    if ".git" not in fullname.split(os.sep):  # Ignore .git folders
                         tree_data.Insert(
                             parent, fullname, f, values=[], icon=folder_icon
                         )

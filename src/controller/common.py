@@ -3,10 +3,7 @@ import PySimpleGUI as sg
 
 def redo(text):
     # https://github.com/PySimpleGUI/PySimpleGUI/issues/2836
-    try:  # if nothing to redo will cause "_tkinter.TclError: nothing to redo"
-        text.edit_redo()
-    except:
-        pass
+    text.edit_redo()
 
 
 class BaseCtrl:

@@ -1,13 +1,15 @@
 # -*- coding: utf8 -*-
+from sys import exit
+
 import PySimpleGUI as sg
 
+from controller.language import LanguageCtrl
 from controller.main_window import MainWindowCtrl
 from controller.on_boarding import OnBoardingCtrl
-from controller.language import LanguageCtrl
-from utils.utils import get_logger
 from model.base import Base
+from utils.utils import get_logger
 from views.common import select_language
-from sys import exit
+
 
 logger = get_logger("root", log_level="debug")
 

@@ -5,7 +5,7 @@ stages:
 
 verify:
   script:
-    - pip install black isort pycodestyle
+    - pip install black isort[colors] pycodestyle
     - black . --check --diff --color
     - isort . --check-only --diff --color
     - pycodestyle --config=setup.cfg .

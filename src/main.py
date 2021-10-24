@@ -1,12 +1,12 @@
 """Main entry program of Crowd Law"""
 from sys import exit
 
-from controller.language import LanguageCtrl
-from controller.main_window import MainWindowCtrl
-from controller.on_boarding import OnBoardingCtrl
-from model.base import Base
-from utils.utils import get_logger
-from views.common import select_language
+from src.controller.language import LanguageCtrl
+from src.controller.main_window import MainWindowCtrl
+from src.controller.on_boarding import OnBoardingCtrl
+from src.model.base import Base
+from src.utils.utils import get_logger
+from src.views.common import select_language
 
 
 logger = get_logger("root", log_level="debug")

@@ -4,4 +4,10 @@ Pylint with all Py files known to git
 git ls-files "*.py" | xargs pylint > result.txt
 
 Start preparing package (Win)
+- activate venv
 pyinstaller main.spec --noconfirm
+
+Run locally
+- install all packages (preferably in venv)
+- activate venv
+- python -m src.main

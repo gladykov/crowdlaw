@@ -23,6 +23,12 @@ You edit all documents locally, and when you are ready you send changes to one o
 
 Download one of install packages for your system. Install and start using - app should be self-explanatory. If it is not, there is always room for improvement.
 
+# I found an issue!
+
+Great, let me know:
+[Fill Gitlab issue](https://gitlab.com/gladykov/crowdlaw/-/issues/new)
+or drop me an email: gladykov gmail com
+
 # Documentation
 
 Does not exist (yet)

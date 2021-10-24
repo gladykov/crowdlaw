@@ -202,10 +202,8 @@ def about():
     """
     Show simple popup with OK button and simple info
 
-    Args:
-        None
-
     Returns:
+        Window
     """
     return sg.Window(
         _("Info"),
@@ -220,6 +218,7 @@ def about():
                     enable_events=True,
                 )
             ],
+            [sg.Text("gladykov gmail com")],
             [sg.Button(_("OK"))],
         ],
         modal=True,

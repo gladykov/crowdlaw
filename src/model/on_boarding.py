@@ -1,3 +1,4 @@
+"""On boarding module"""
 import os
 import shutil
 
@@ -244,8 +245,8 @@ class OnBoardingModel(Base):
 
         if new_project:
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
-                with open(os.path.join(project_dir, example_file), "w") as fp:
-                    fp.write(
+                with open(os.path.join(project_dir, example_file), "w") as file:
+                    file.write(
                         _("Contents of {example_file}").format(
                             example_file=example_file
                         )

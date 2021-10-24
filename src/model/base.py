@@ -1,3 +1,4 @@
+"""Module with model helpers"""
 import os
 import webbrowser
 
@@ -74,10 +75,25 @@ class Base:
 
     @staticmethod
     def get_file_from_url(url):
-        r = requests.get(url)
-        return r.text if r.status_code == 200 else None
+        """
+        Get text content of file from URL
+
+        Args:
+            url: str
+
+        Returns:
+            str: text content of file
+        """
+        request = requests.get(url)
+        return request.text if request.status_code == 200 else None
 
     @staticmethod
     def get_version():
-        with open(os.path.join(get_project_root(), "VERSION"), "r") as f:
-            return f.readline()
+        """
+        Get app version from local file
+
+        Returns:
+            str
+        """
+        with open(os.path.join(get_project_root(), "VERSION"), "r") as file:
+            return file.readline()

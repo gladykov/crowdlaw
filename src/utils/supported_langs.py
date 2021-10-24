@@ -249,6 +249,9 @@ def get_keyboard_language():
     """
     Gets the keyboard language in use by the current
     active window process.
+
+    Returns:
+        str
     """
 
     user32 = ctypes.WinDLL("user32", use_last_error=True)
@@ -269,18 +272,27 @@ def get_keyboard_language():
     language_id_hex = hex(language_id)
 
     # Check if the hex value is in the dictionary.
-    if language_id_hex in all_languages.keys():
+    if language_id_hex in all_languages:
         logger.debug(f"Detected keyboard language {all_languages[language_id_hex]}")
         return all_languages[language_id_hex]
-    else:
-        logger.warning(
-            f"Unrecognized keyboard language detected {language_id_hex}. "
-            f"Defaulting to English - United Stated"
-        )
-        return all_languages["0x409"]
+
+    logger.warning(
+        f"Unrecognized keyboard language detected {language_id_hex}. "
+        f"De'faulting to English - United Stated"
+    )
+    return all_languages["0x409"]
 
 
 def activate_keyboard_language(language):
+    """
+    Activate keyboard layout on Windows
+
+    Args:
+        language: str
+
+    Returns:
+         None
+    """
     logger.debug(f"Activating lang {language}")
     KLF_ACTIVATE = 0x00000001
     locale_id_bytes = supported_langs[language]["byte_word"]
@@ -293,17 +305,34 @@ def activate_keyboard_language(language):
     LoadKeyboardLayout.restype = wintypes.HKL
     GetLastError = kernel32_dll.GetLastError
     GetLastError.restype = wintypes.DWORD
-    klh = LoadKeyboardLayout(klid, KLF_ACTIVATE)
+    LoadKeyboardLayout(klid, KLF_ACTIVATE)
 
 
 def set_keyboard_language(lang_code):
-    language = get_language_name_by_shortcut(lang_code)
+    """
+    Set keyboard layout set if needed
 
+    Args:
+        lang_code: str
+
+    Returns:
+        None
+    """
+    language = get_language_name_by_shortcut(lang_code)
     if get_keyboard_language() != language:
         activate_keyboard_language(language)
 
 
 def get_language_name_by_shortcut(shortcut):
+    """
+    Get language name by shortcut
+
+    Args:
+        shortcut: str
+
+    Returns:
+        str
+    """
     for k, v in supported_langs.items():
         if v["shortcut"] == shortcut:
             return k

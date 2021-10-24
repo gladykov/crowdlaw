@@ -1,3 +1,4 @@
+"""Talk with Gitlab using API"""
 import logging
 import time
 
@@ -14,18 +15,11 @@ class GitlabAPI:
     def __init__(self, user=None, token=None):
         self.authenticated = False
         self.connected = False
-
-        if token is None:
-            self.token = "MwJxgVNCdBcQ8Nk6zy6R"
-        else:
-            self.token = token
-        if user is None:
-            self.user = "gladykov"
-        else:
-            self.user = user
-        self.gl = gitlab.Gitlab("https://gitlab.com", private_token=token)
+        self.token = token
+        self.user = user
+        self.gitlab_api = gitlab.Gitlab("https://gitlab.com", private_token=token)
         try:
-            self.gl.auth()
+            self.gitlab_api.auth()
             logger.info("Successfully authenticated")
             self.authenticated = True
             self.connected = True
@@ -62,7 +56,7 @@ class GitlabAPI:
         Returns:
 
         """
-        return self.gl.projects.get(username + "/" + project_path)
+        return self.gitlab_api.projects.get(username + "/" + project_path)
 
     @staticmethod
     def get_project_info(project):
@@ -121,7 +115,9 @@ class GitlabAPI:
         Returns:
             None
         """
-        self.gl.projects.update(project.id, {"name": new_name, "path": new_path})
+        self.gitlab_api.projects.update(
+            project.id, {"name": new_name, "path": new_path}
+        )
 
     def create_empty_project(self, project_name):
         """
@@ -133,7 +129,9 @@ class GitlabAPI:
         Returns:
             project
         """
-        return self.gl.projects.create({"name": project_name, "visibility": "public"})
+        return self.gitlab_api.projects.create(
+            {"name": project_name, "visibility": "public"}
+        )
 
     def get_credentials_git_url(self, token_name, path):
         return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
@@ -194,13 +192,12 @@ class GitlabAPI:
         Returns:
             list
         """
-        project = self.gl.projects.get(self.get_base_project_id(self.project))
-        listmr = project.mergerequests.list(
+        project = self.gitlab_api.projects.get(self.get_base_project_id(self.project))
+        return project.mergerequests.list(
             state="opened",
             source_branch=source_branch,
             author_username=author,
         )
-        return listmr
 
     def get_branches(self):
         """

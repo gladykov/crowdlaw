@@ -1,3 +1,4 @@
+"""Controller for on boarding - collect all Git and project details"""
 import os
 
 import PySimpleGUI as sg
@@ -29,8 +30,8 @@ class OnBoardingCtrl(BaseCtrl):
         """
         if self.page == 1:
             return OnBoardingUI(self.model).select_project_intention()
-        else:
-            return OnBoardingUI(self.model).git_details(update)
+
+        return OnBoardingUI(self.model).git_details(update)
 
     def get_window(
         self, window_title, location=(None, None), modal=False, update=False
@@ -44,7 +45,7 @@ class OnBoardingCtrl(BaseCtrl):
             update: bool - True, if only used to update token info
 
         Returns:
-
+            window
         """
         return self.draw_window(
             window_title, self.get_elements(update), location, modal
@@ -109,8 +110,8 @@ class OnBoardingCtrl(BaseCtrl):
                     self.model.fill_credentials(new_window, self.model.git_provider)
                 window.close()
                 return new_window
-            else:
-                warning_popup(validation_result)
+
+            warning_popup(validation_result)
 
         if event == "back":
             self.page = 1
@@ -145,8 +146,8 @@ class OnBoardingCtrl(BaseCtrl):
                 if initialization_result is True:
                     window.close()
                     return True
-                else:
-                    warning_popup(initialization_result)
+
+                warning_popup(initialization_result)
             else:
                 warning_popup(validation_result)
 

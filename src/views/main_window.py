@@ -1,6 +1,7 @@
+"""UI element of main view"""
 import PySimpleGUI as sg
 
-from src.views.common import help_icon, menu_toolbar, title_font_size
+from src.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
 
 
 class MainWindowUI:
@@ -11,6 +12,12 @@ class MainWindowUI:
         sg.theme(self.props.theme)
 
     def contact_info(self):
+        """
+        Display contact info, for all team members.
+
+        Returns:
+            Frame
+        """
         clickable_text = (
             _("[edit contact info]")
             if self.props.contact_info
@@ -39,10 +46,15 @@ class MainWindowUI:
                     else sg.Text()
                 ],
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
 
     def server_info(self):
+        """
+        Display server info
+        Returns:
+            Frame
+        """
         return sg.Frame(
             _("Server info"),
             [
@@ -75,10 +87,15 @@ class MainWindowUI:
                     ),
                 ],
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
 
     def project_info(self):
+        """
+        Display project info
+        Returns:
+            Frame
+        """
         return sg.Frame(
             _("Project info"),
             [
@@ -108,10 +125,15 @@ class MainWindowUI:
                     ),
                 ],
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
 
     def documents_list(self):
+        """
+        Display document list
+        Returns:
+            Frame
+        """
         return sg.Frame(
             _("Documents in the set"),
             [
@@ -132,10 +154,15 @@ class MainWindowUI:
                     sg.Button(_("Remove selected file"), k="remove_file"),
                 ],
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
 
     def stage(self):
+        """
+        Display stage info
+        Returns:
+            Frame
+        """
         help_stage = help_icon(_("This shows what is actual status of your project."))
         stage_list = []
         for stage_number, stage in self.props.stages.items():
@@ -180,13 +207,23 @@ class MainWindowUI:
         return sg.Frame(
             "Project stage",
             final_elements_list,
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
 
     def editor_background_color(self):
+        """
+        Get editor background color, depending if it is disabled or enabled.
+        Returns:
+            str
+        """
         return "grey" if self.props.editor_disabled else "white"
 
     def text_editor(self):
+        """
+        Mighty text editor itself
+        Returns:
+            Frame
+        """
         frame = sg.Frame(
             _("Document editor"),
             [
@@ -200,11 +237,16 @@ class MainWindowUI:
                     )
                 ]
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
         return frame
 
     def branch_selector(self):
+        """
+        Dropdown select to select branch (working set)
+        Returns:
+            Frame
+        """
         frame = sg.Frame(
             _("Sets of changes"),
             [
@@ -227,12 +269,16 @@ class MainWindowUI:
                     ),
                 ]
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
         return frame
 
     def online_reviews(self):
-
+        """
+        Show links to merge requests.
+        Returns:
+            Frame
+        """
         help_reviews = help_icon(
             _(
                 "When you are ready to propose your changes, send them for a review. "
@@ -270,17 +316,22 @@ class MainWindowUI:
             else [sg.Text("")]
         )
 
-        frame = sg.Frame(
+        return sg.Frame(
             _("Reviews"),
             [
                 button,
                 text,
             ],
-            font=("Helvetica", title_font_size),
+            font=("Helvetica", TITLE_FONT_SIZE),
         )
-        return frame
 
     def layout(self):
+        """
+        Holy layout of main window
+
+        Returns:
+            list
+        """
         left_col = sg.Column(
             [
                 [self.project_info()],
@@ -308,17 +359,6 @@ class MainWindowUI:
                 [sg.HorizontalSeparator()],
                 [self.online_reviews()],
                 [sg.HorizontalSeparator()],
-                [
-                    sg.Multiline(
-                        size=(20, 30),
-                        autoscroll=True,
-                        auto_refresh=True,
-                        reroute_stdout=False,
-                        expand_x=True,
-                        expand_y=True,
-                        key="stdout",
-                    )
-                ],
             ],
             vertical_alignment="top",
         )
@@ -338,6 +378,12 @@ class MainWindowUI:
 
     @staticmethod
     def change_project_popup():
+        """
+        Popup to add / remove project
+
+        Returns:
+            str
+        """
         return sg.Window(
             _("Change project"),
             [
@@ -351,6 +397,12 @@ class MainWindowUI:
         ).read(close=True)[0]
 
     def add_contact_info_popup(self):
+        """
+        Add / edit contact info
+
+        Returns:
+            tuple(list, dict)
+        """
         return sg.Window(
             _("Add / edit contact info"),
             [
@@ -375,6 +427,12 @@ class MainWindowUI:
         ).read(close=True)
 
     def edit_stage_info(self):
+        """
+        Stage info editor
+
+        Returns:
+            Window
+        """
         element_list = [
             [
                 sg.Text(_("Active\nstage")),

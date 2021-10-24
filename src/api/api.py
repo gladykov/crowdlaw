@@ -1,3 +1,4 @@
+"""Synthetic module to get proper Git API"""
 from src.api.gitlab_api import GitlabAPI
 
 

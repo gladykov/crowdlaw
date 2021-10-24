@@ -1,15 +1,23 @@
+"""UI elements shown during on boarding and editing Git details"""
 import PySimpleGUI as sg
 
 from src.views.common import help_icon_clickable, menu_toolbar
 
 
 class OnBoardingUI:
+    """Add/Edit project, git details, token details"""
+
     def __init__(self, controller_props):
         self.props = controller_props
         sg.theme(self.props.theme)
 
     def select_project_intention(self):
+        """
+        Fresh / existing project; URL of existing project.
 
+        Returns:
+            Frame
+        """
         elements = [
             [menu_toolbar()],
             [sg.Text(_("Before you start writing Law, we need few answers."))],
@@ -50,13 +58,18 @@ class OnBoardingUI:
             [sg.Button(_("Next"), k="next"), sg.CloseButton(_("Cancel"), k="close")]
         )
 
-        main_frame = sg.Frame(
-            _("Welcome to Crowd Law app"), elements, font=("Helvetica", 25)
-        )
-
-        return main_frame
+        return sg.Frame(_("Welcome to Crowd Law app"), elements, font=("Helvetica", 25))
 
     def git_details(self, update=False):
+        """
+        Provide Git details - username, token
+
+        Args:
+            update: bool; when True we update existing data
+
+        Returns:
+            Frame
+        """
         horizontal_line = [sg.HorizontalSeparator()]
 
         elements = [[menu_toolbar()]]
@@ -145,6 +158,4 @@ class OnBoardingUI:
                 ]
             )
 
-        main_frame = sg.Frame(_("Git details"), elements, font=("Helvetica", 25))
-
-        return main_frame
+        return sg.Frame(_("Git details"), elements, font=("Helvetica", 25))

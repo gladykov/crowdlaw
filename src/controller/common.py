@@ -1,12 +1,17 @@
+"""Common controller methods"""
 import PySimpleGUI as sg
 
 
 def redo(text):
-    # https://github.com/PySimpleGUI/PySimpleGUI/issues/2836
+    """
+    https://github.com/PySimpleGUI/PySimpleGUI/issues/2836
+    """
     text.edit_redo()
 
 
 class BaseCtrl:
+    """Base controller for all other controllers"""
+
     @staticmethod
     def enable_undo(window, key):
         """
@@ -85,13 +90,11 @@ class BaseCtrl:
             ):
                 self.enable_link(window.AllKeysDict[element])
 
-        # window["stdout"].reroute_stdout_to_here()
-        # window["stdout"].reroute_stderr_to_here()
-
         return window
 
     @staticmethod
     def events_preprocessor(event):
-        return (
-            event.split("::")[-1] if event is not None else event
-        )  # Menu events look like this: Label::key
+        """
+        Menu events look like this: 'Label::key' . Extract key from events like that.
+        """
+        return event.split("::")[-1] if event is not None else event

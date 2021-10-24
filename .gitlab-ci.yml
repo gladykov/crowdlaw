@@ -1,18 +1,11 @@
 image: python:latest
 
 stages:
-  - install
   - verify
-
-install:
-  script:
-    - pip install black isort pycodestyle
-  stage: install
-  only:
-    - merge_requests
 
 verify:
   script:
+    - pip install black isort pycodestyle
     - black . --check --diff --color
     - isort . --check-only --diff --color
     - pycodestyle --config=setup.cfg .

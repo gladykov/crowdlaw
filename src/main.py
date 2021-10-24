@@ -4,7 +4,7 @@ from sys import exit
 from src.controller.language import LanguageCtrl
 from src.controller.main_window import MainWindowCtrl
 from src.controller.on_boarding import OnBoardingCtrl
-from src.model.base import Base
+from src.model.common import BaseModel
 from src.utils.utils import get_logger
 from src.views.common import select_language
 
@@ -13,8 +13,8 @@ logger = get_logger("root", log_level="debug")
 
 
 if __name__ == "__main__":
-    logger.info(f"Starting Crowd Law app version {Base.get_version()}")
-    initialized = bool(Base.get_config())
+    logger.info(f"Starting Crowd Law app version {BaseModel.get_version()}")
+    initialized = bool(BaseModel.get_config())
 
     if not initialized:
         language_selector = select_language()
@@ -31,11 +31,11 @@ if __name__ == "__main__":
             exit("Didn't choose valid language. Bye bye!")
 
         config = {"lang": selected_lang, "init": False}
-        Base.set_config(config)
+        BaseModel.set_config(config)
 
     LanguageCtrl.install_lang()
 
-    if Base.get_config()["init"] is True:
+    if BaseModel.get_config()["init"] is True:
         on_boarding_success = True
     else:
         on_boarding_success = False

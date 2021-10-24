@@ -6,11 +6,11 @@ import validators
 
 from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
-from src.model.base import Base
+from src.model.common import BaseModel
 from src.utils.utils import get_project_root, strip_string
 
 
-class OnBoardingModel(Base):
+class OnBoardingModel(BaseModel):
     """
     Used when configuring app for the first time to use with Git
     1repo and also when updating token info across all repos

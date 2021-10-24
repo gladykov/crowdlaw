@@ -7,7 +7,7 @@ import yaml
 
 from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
-from src.model.base import Base
+from src.model.common import BaseModel
 from src.utils.utils import (
     get_project_root,
     get_token_name_token,
@@ -21,7 +21,7 @@ from src.views.common import FILE_ICON, FOLDER_ICON, popup_yes_no_cancel
 logger = logging.getLogger("root")
 
 
-class MainWindowModel(Base):
+class MainWindowModel(BaseModel):
     """Main Window Model Class"""
 
     def __init__(self):

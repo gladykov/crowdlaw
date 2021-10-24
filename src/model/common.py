@@ -8,8 +8,8 @@ import yaml
 from src.utils.utils import get_project_root
 
 
-class Base:
-    """Base class with various helpers"""
+class BaseModel:
+    """BaseModel class with various helpers"""
 
     @staticmethod
     def git_providers():

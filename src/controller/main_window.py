@@ -10,6 +10,7 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
+    about,
     change_language_selector,
     popup_yes_no_cancel,
     wait_cursor_disable,
@@ -259,16 +260,8 @@ class MainWindowCtrl(BaseCtrl):
             return window
 
         event = self.events_preprocessor(event)
-
-        if event == "change_language":
-            reply = change_language_selector(
-                LanguageCtrl.supported_langs(),
-                get_language_name_by_shortcut(self.model.config["lang"]),
-            )
-            if reply[0] == "switch_language":
-                new_lang = reply[1]["language_selector"]
-                LanguageCtrl.switch_app_lang(new_lang)
-                return self.redraw_window(window)
+        if self.common_event_handler(event):
+            return self.redraw_window(window)
 
         if event == "click_change_project":
             reply = MainWindowUI.change_project_popup()
@@ -390,6 +383,7 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.put_file_content(
                     self.model.edited_file, values["document_editor"]
                 )
+            return window
 
         if event == "branch_selector":
             if self.model.protect_unsaved_changes(values["document_editor"]) in [
@@ -419,6 +413,7 @@ class MainWindowCtrl(BaseCtrl):
                 return self.redraw_window(window)
 
             wait_cursor_disable(window)
+
             return window
 
         if event == "remove_set":
@@ -435,6 +430,8 @@ class MainWindowCtrl(BaseCtrl):
                 self.model.remove_current_branch()
                 return self.redraw_window(window)
 
+            return window
+
         if event == "send_to_review":
             wait_cursor_enable(window)
             self.model.send_to_review(values)
@@ -445,9 +442,11 @@ class MainWindowCtrl(BaseCtrl):
             wait_cursor_enable(window)
             self.model.update_review(values)
             wait_cursor_disable(window)
+            return window
 
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])
+            return window
 
         if event == "click_add_contact_info":
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [
@@ -461,6 +460,8 @@ class MainWindowCtrl(BaseCtrl):
                     self.model.set_maintainer_file("contact", ci_values["contact_info"])
                     window["contact_info"].update(ci_values["contact_info"])
                     wait_cursor_disable(window)
+
+            return window
 
         if event == "click_edit_stage_info":
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [
@@ -476,6 +477,8 @@ class MainWindowCtrl(BaseCtrl):
                     self.model.set_maintainer_file("stages.yaml", yaml.dump(stage_dict))
                     self.model.stages = stage_dict
                     return self.redraw_window(window)
+
+            return window
 
         if event in [_("Close"), sg.WINDOW_CLOSE_ATTEMPTED_EVENT]:
             if not self.model.protect_unsaved_changes(values["document_editor"]) in [

@@ -4,7 +4,7 @@ import locale
 import os
 import platform
 
-from src.model.base import Base
+from src.model.common import BaseModel
 from src.utils.supported_langs import set_keyboard_language, supported_langs
 from src.utils.utils import get_logger, get_project_root
 
@@ -41,7 +41,7 @@ class LanguageCtrl:
         Returns:
             str, ex. 'en_US'
         """
-        config = Base.get_config()
+        config = BaseModel.get_config()
         if config["lang"] == "None":  # First time run
             current_locale = locale.getdefaultlocale()[0]  # ('pl_PL', 'cp1252')
             logger.debug(f"Detected system language as {current_locale}")
@@ -50,11 +50,11 @@ class LanguageCtrl:
                     use_lang_shortcut = supported_locale_dict["shortcut"]
 
                     config["lang"] = use_lang_shortcut
-                    Base.set_config(config)
+                    BaseModel.set_config(config)
 
             # Default to English
             config["lang"] = "en_US"
-            Base.set_config(config)
+            BaseModel.set_config(config)
 
         return config["lang"]
 
@@ -69,9 +69,9 @@ class LanguageCtrl:
         Returns:
             None
         """
-        config = Base.get_config()
+        config = BaseModel.get_config()
         config["lang"] = lang_shortcut
-        Base.set_config(config)
+        BaseModel.set_config(config)
 
     @staticmethod
     def supported_langs():

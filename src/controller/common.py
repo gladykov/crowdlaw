@@ -1,6 +1,11 @@
 """Common controller methods"""
 import PySimpleGUI as sg
 
+from src.controller.language import LanguageCtrl
+from src.model.common import BaseModel
+from src.utils.supported_langs import get_language_name_by_shortcut
+from src.views.common import about, change_language_selector
+
 
 def redo(text):
     """
@@ -10,7 +15,7 @@ def redo(text):
 
 
 class BaseCtrl:
-    """Base controller for all other controllers"""
+    """BaseModel controller for all other controllers"""
 
     @staticmethod
     def enable_undo(window, key):
@@ -40,11 +45,13 @@ class BaseCtrl:
             element: PySg element
 
         Returns:
-            None
+            Element
         """
         element.set_cursor("hand2")
         if element.Type == "text":
             element.update(font="Helvetica 10 underline", text_color="#add8e6")
+
+        return element
 
     def draw_window(
         self,
@@ -96,5 +103,54 @@ class BaseCtrl:
     def events_preprocessor(event):
         """
         Menu events look like this: 'Label::key' . Extract key from events like that.
+
+        Returns
+            str: event
         """
         return event.split("::")[-1] if event is not None else event
+
+    @staticmethod
+    def about():
+        """
+        Show about modal and open link if clicked
+
+        Returns:
+            None
+        """
+        window = about()
+        window["open_link"].set_cursor("hand2")
+
+        while True:
+            event, _value = window.read()
+            if event == "open_link":
+                BaseModel.open_url_in_browser("https://gitlab.com/gladykov/crowdlaw/")
+            else:
+                window.close()
+                break
+
+    def common_event_handler(self, event):
+        """
+        Handles menu item entries
+
+        Args:
+            event: str
+
+        Returns:
+            bool; True if window should be redrawn, False if not
+        """
+        if event == "about":
+            self.about()
+            return False
+
+        if event == "change_language":
+
+            reply = change_language_selector(
+                LanguageCtrl.supported_langs(),
+                get_language_name_by_shortcut(self.model.config["lang"]),
+            )
+            if reply[0] == "switch_language":
+                new_lang = reply[1]["language_selector"]
+                LanguageCtrl.switch_app_lang(new_lang)
+                return True
+
+        return False

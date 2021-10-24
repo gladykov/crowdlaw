@@ -4,6 +4,7 @@ from time import sleep
 
 import PySimpleGUI as sg
 
+from src.model.common import BaseModel
 from src.utils.utils import get_project_root
 
 
@@ -195,6 +196,35 @@ def ok_popup(text):
         ],
         modal=True,
     ).read(close=True)
+
+
+def about():
+    """
+    Show simple popup with OK button and simple info
+
+    Args:
+        None
+
+    Returns:
+    """
+    return sg.Window(
+        _("Info"),
+        [
+            [sg.Text(f"Crowd Law v {BaseModel.get_version()}")],
+            [
+                sg.Text(
+                    "https://gitlab.com/gladykov/crowdlaw/",
+                    k="open_link",
+                    font="Helvetica 10 underline",
+                    text_color="#add8e6",
+                    enable_events=True,
+                )
+            ],
+            [sg.Button(_("OK"))],
+        ],
+        modal=True,
+        finalize=True,
+    )
 
 
 def wait_cursor_enable(window):

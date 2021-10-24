@@ -8,7 +8,7 @@ from src.controller.language import LanguageCtrl
 from src.model.on_boarding import OnBoardingModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.utils.utils import get_project_root
-from src.views.common import change_language_selector, image_popup, warning_popup
+from src.views.common import about, change_language_selector, image_popup, warning_popup
 from src.views.on_boarding import OnBoardingUI
 
 
@@ -78,16 +78,8 @@ class OnBoardingCtrl(BaseCtrl):
             window, None
         """
         event = self.events_preprocessor(event)
-
-        if event == "change_language":
-            reply = change_language_selector(
-                LanguageCtrl.supported_langs(),
-                get_language_name_by_shortcut(self.model.config["lang"]),
-            )
-            if reply[0] == "switch_language":
-                new_lang = reply[1]["language_selector"]
-                LanguageCtrl.switch_app_lang(new_lang)
-                return self.redraw_window(window)
+        if self.common_event_handler(event):
+            return self.redraw_window(window)
 
         if event == "new":
             self.model.new_existing = event

@@ -86,9 +86,11 @@ class MainWindowUI:
                     sg.Text(_("Current project")),
                     help_icon(
                         _(
-                            "This is your main project, where you collaborate with other people. "
+                            "This is your main project, "
+                            "where you collaborate with other people. "
                             "Project is kept on server, but can be edited locally. "
-                            "When you will create your version, you will upload your changes to the server for a review by other team members."
+                            "When you will create your version, you will upload your "
+                            "changes to the server for a review by other team members."
                         ),
                     ),
                 ],
@@ -217,9 +219,10 @@ class MainWindowUI:
                     sg.Button(_("Remove set"), k="remove_set"),
                     help_icon(
                         _(
-                            "In one project you can prepare multiple versions of proposed changes. "
+                            "In one project you can prepare multiple versions of "
+                            "proposed changes. "
                             "Each version is called set of changes (or branch). "
-                            "You can work on different sets of changes in pararell."
+                            "You can work on different sets of changes in parallel."
                         )
                     ),
                 ]
@@ -354,7 +357,9 @@ class MainWindowUI:
                 [
                     sg.Text(
                         _(
-                            "Provide contact info (Whatsapp group, FB group, mailing list, etc), where all participants can communicate with each other"
+                            "Provide contact info (Whatsapp group, FB group, mailing "
+                            "list, etc), where all participants can communicate with "
+                            "each other"
                         ),
                     ),
                 ],

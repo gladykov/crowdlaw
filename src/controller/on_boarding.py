@@ -85,15 +85,6 @@ class OnBoardingCtrl(BaseCtrl):
             )
             if reply[0] == "switch_language":
                 new_lang = reply[1]["language_selector"]
-                print(new_lang)
-                if (
-                    get_language_name_by_shortcut(LanguageCtrl.get_app_lang())
-                    != new_lang
-                ):
-                    print(
-                        f"Old lang {get_language_name_by_shortcut(LanguageCtrl.get_app_lang())} does not match new one {new_lang}"
-                    )
-
                 LanguageCtrl.switch_app_lang(new_lang)
                 return self.redraw_window(window)
 
@@ -138,7 +129,8 @@ class OnBoardingCtrl(BaseCtrl):
         if event == "click_show_gitlab_help":
             image_popup(
                 _(
-                    "Clicking 'Obtain token' will take you to the git page. Fill fields as on picture"
+                    "Clicking 'Obtain token' will take you to the git page. "
+                    "Fill fields as on picture"
                 ),
                 os.path.join(
                     get_project_root(), "resources", "images", "gitlab_pat.png"

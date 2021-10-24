@@ -9,8 +9,11 @@ from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
 from src.utils.supported_langs import get_language_name_by_shortcut
 from src.views.common import (
-    change_language_selector, popup_yes_no_cancel,
-    wait_cursor_disable, wait_cursor_enable, warning_popup
+    change_language_selector,
+    popup_yes_no_cancel,
+    wait_cursor_disable,
+    wait_cursor_enable,
+    warning_popup,
 )
 from src.views.main_window import MainWindowUI
 
@@ -213,7 +216,8 @@ class MainWindowCtrl(BaseCtrl):
             values: dict
 
         Returns:
-            window, after successful handling of event; None if window is about to be destroyed
+            window, after successful handling of event;
+            None if window is about to be destroyed
         """
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
@@ -228,15 +232,6 @@ class MainWindowCtrl(BaseCtrl):
             )
             if reply[0] == "switch_language":
                 new_lang = reply[1]["language_selector"]
-                print(new_lang)
-                if (
-                    get_language_name_by_shortcut(LanguageCtrl.get_app_lang())
-                    != new_lang
-                ):
-                    print(
-                        f"Old lang {get_language_name_by_shortcut(LanguageCtrl.get_app_lang())} does not match new one {new_lang}"
-                    )
-
                 LanguageCtrl.switch_app_lang(new_lang)
                 return self.redraw_window(window)
 
@@ -307,7 +302,8 @@ class MainWindowCtrl(BaseCtrl):
                 _("Are you sure you want to remove project?"),
                 [
                     _(
-                        "WARNING: This will remove all your files from your local computer"
+                        "WARNING: This will remove all project files "
+                        "from your local computer"
                     ),
                     _("associated with project {project_name}.").format(
                         project_name=self.model.project_name

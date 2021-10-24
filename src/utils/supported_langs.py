@@ -1,7 +1,8 @@
 """
-This is part of a workaround for tkinter not properly dealing with language input keyboard layout
+This is part of a workaround for tkinter not properly dealing with language input
+keyboard layout.
 Add every new language using
-https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs
+https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs  # noqa
 """
 import ctypes
 import logging
@@ -273,7 +274,8 @@ def get_keyboard_language():
         return all_languages[language_id_hex]
     else:
         logger.warning(
-            f"Unrecognized keyboard language detected {language_id_hex}. Defaulting to English - United Stated"
+            f"Unrecognized keyboard language detected {language_id_hex}. "
+            f"Defaulting to English - United Stated"
         )
         return all_languages["0x409"]
 

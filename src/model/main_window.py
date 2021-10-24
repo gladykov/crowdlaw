@@ -8,8 +8,11 @@ from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.base import Base
 from src.utils.utils import (
-    get_project_root, get_token_name_token,
-    replace_string_between_subs, strip_string, urljoin
+    get_project_root,
+    get_token_name_token,
+    replace_string_between_subs,
+    strip_string,
+    urljoin,
 )
 from src.views.common import file_icon, folder_icon, popup_yes_no_cancel
 
@@ -115,11 +118,12 @@ class MainWindowModel(Base):
 
     def get_maintainer_file(self, filename):
         """
-        Maintainer files, are special files, with latest info, which we try to fetch from master.
-        If not available, we can try local version.
+        Maintainer files, are special files, with latest info,
+         which we try to fetch from master.
+        If not available, try local version.
 
         Args:
-            filenam - str
+            filename - str
 
         Returns:
             str, None
@@ -185,7 +189,7 @@ class MainWindowModel(Base):
             for f in files:
                 fullname = os.path.join(dir_name, f)
                 if os.path.isdir(fullname):  # If it's a folder, add folder and recurse
-                    if not ".git" in fullname.split(os.sep):  # Ignore .git folders
+                    if ".git" not in fullname.split(os.sep):  # Ignore .git folders
                         tree_data.Insert(
                             parent, fullname, f, values=[], icon=folder_icon
                         )

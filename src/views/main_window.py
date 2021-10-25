@@ -277,8 +277,9 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(5000, 2000),
+            size=(500, 500),
         )
+
         return frame
 
     def online_reviews(self):

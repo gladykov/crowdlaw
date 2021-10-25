@@ -95,9 +95,9 @@ class GitlabAPI:
         path = new_path if new_path else project.path
         project.forks.create({"name": name, "path": path})
         forked_project = self.get_project_by_user_path(self.user, path)
-        logger.info(_("Waiting for fork to complete. Grab a coffee."))
+        logger.info("Waiting for fork to complete. Grab a coffee.")
         while forked_project.import_status == "started":
-            logger.info(_("waiting"))
+            logger.info("waiting")
             time.sleep(5)
             forked_project = self.get_project_by_user_path(self.user, path)
 

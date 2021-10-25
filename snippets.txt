@@ -11,3 +11,6 @@ Run locally
 - install all packages (preferably in venv)
 - activate venv
 - python -m src.main
+
+Extract strings to pot
+pybabel extract -o output.pot ./src/

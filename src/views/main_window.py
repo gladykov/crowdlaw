@@ -4,6 +4,11 @@ import PySimpleGUI as sg
 from src.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
 
 
+LEFT_COLUMN_WIDTH = "X"
+CENTER_COLUMN_WIDTH = "X"
+RIGHT_COLUMN_WIDTH = "X"
+
+
 class MainWindowUI:
     """Main window of app, shown after on boarding"""
 
@@ -137,7 +142,7 @@ class MainWindowUI:
         return sg.Frame(
             _("Documents in the set"),
             [
-                [sg.Text("Click document to start editing")],
+                [sg.Text(_("Click document to start editing"))],
                 [
                     sg.Tree(
                         headings=[],
@@ -257,8 +262,6 @@ class MainWindowUI:
                         default_value=self.props.branch_name,
                         k="branch_selector",
                     ),
-                    sg.Button(_("Add new set"), k="add_new_set"),
-                    sg.Button(_("Remove set"), k="remove_set"),
                     help_icon(
                         _(
                             "In one project you can prepare multiple versions of "
@@ -267,9 +270,14 @@ class MainWindowUI:
                             "You can work on different sets of changes in parallel."
                         )
                     ),
-                ]
+                ],
+                [
+                    sg.Button(_("Add new set"), k="add_new_set"),
+                    sg.Button(_("Remove set"), k="remove_set"),
+                ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(5000, 2000),
         )
         return frame
 

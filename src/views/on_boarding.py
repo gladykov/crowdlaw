@@ -48,7 +48,7 @@ class OnBoardingUI:
                 ]
             else:
                 project_input = [
-                    sg.Text(_("Provide URL of existing project")),
+                    sg.Text(_("Provide web address of existing project")),
                     sg.InputText(self.props.project_url, k="project_url"),
                 ]
 
@@ -108,13 +108,13 @@ class OnBoardingUI:
             [
                 sg.Text(
                     _("Provide {git} username").format(
-                        git=self.props.git_provider or _("gitlab")
+                        git=self.props.git_provider or "gitlab"
                     ),
                     k="username_label",
                 ),
                 sg.InputText(self.props.username, k="username_input", disabled=update),
                 sg.Text(
-                    _("No account? Create new."),
+                    _("No account? Create now."),
                     k="click_create_account",
                     enable_events=True,
                 ),
@@ -122,7 +122,7 @@ class OnBoardingUI:
             [
                 sg.Text(
                     _("Provide {git_provider} token").format(
-                        git_provider=self.props.git_provider or _("gitlab")
+                        git_provider=self.props.git_provider or "gitlab"
                     ),
                     key="token_label",
                 ),

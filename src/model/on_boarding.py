@@ -41,12 +41,12 @@ class OnBoardingModel(BaseModel):
         issues = []
         if not values["new"] and not values["existing"]:
             issues.append(
-                _("Please select if you want to join new or existing project")
+                _("Please select if you want to create new or join existing project")
             )
         if values["new"] and not values["project_name"]:
             issues.append(_("Provide project name"))
         if values["existing"] and not values["project_url"]:
-            issues.append(_("Provide project URL"))
+            issues.append(_("Provide project web address"))
         if values["existing"] and values["project_url"]:
             if validators.url(values["project_url"]):
                 found = False
@@ -56,9 +56,9 @@ class OnBoardingModel(BaseModel):
                         self.git_provider = provider
                         break
                 if not found:
-                    issues.append(_("Provided unsupported website URL"))
+                    issues.append(_("Provided unsupported Git provider"))
             else:
-                issues.append(_("Provide valid project URL"))
+                issues.append(_("Provide valid web address of a project"))
 
         return issues if issues else True
 

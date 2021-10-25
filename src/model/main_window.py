@@ -42,11 +42,7 @@ class MainWindowModel(BaseModel):
 
         self.config = self.get_config()
         self.project_name = self.config["last_project"]
-        logger.info(
-            _("Trying to initialize controller for project {project_name}").format(
-                project_name=self.project_name
-            )
-        )
+        logger.info("Trying to initialize controller for project {project_name}")
         self.git_adapter = GitAdapter(
             os.path.join(get_project_root(), "projects", self.project_name),
             initialized=True,
@@ -319,15 +315,16 @@ class MainWindowModel(BaseModel):
         ]:
             return False
 
-        new_filename = sg.popup_get_text(
-            _("Provide new file name with .txt extension"), _("New filename")
-        )
+        new_filename = sg.popup_get_text(_("Provide new file name"), _("New filename"))
         if new_filename is None:
             return False
 
         issues = self.validate_new_filename(new_filename)
         if issues:
             return issues
+
+        if not new_filename.endswith(".txt"):
+            new_filename = new_filename + ".txt"
 
         new_file_path = os.path.join(
             get_project_root(), "projects", self.project_name, new_filename
@@ -453,9 +450,6 @@ class MainWindowModel(BaseModel):
         issues = []
         if len(possible_name) == 0:
             issues.append(_("Filename cannot be empty"))
-
-        if not possible_name.endswith(".txt"):
-            issues.append(_("Filename must end with .txt"))
 
         return issues
 

@@ -367,7 +367,7 @@ class MainWindowCtrl(BaseCtrl):
             reply = popup_yes_no_cancel(
                 _("Confirm file deletion"),
                 [
-                    _("Are you sure you want to remove file {file}").format(
+                    _("Are you sure you want to remove file {file} ?").format(
                         file=values["doctree"][0]
                     )
                 ],

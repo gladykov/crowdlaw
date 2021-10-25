@@ -500,6 +500,7 @@ class MainWindowModel(BaseModel):
         self.edited_file = values["doctree"][0]
         self.editor_text = self.get_file_content(self.edited_file)
         window["document_editor"].update(self.editor_text)
+        window["document_editor"].Widget.edit_reset()  # Clear undo history stack
         window["document_editor"].update(disabled=self.editor_disabled)
         window["document_editor"].update(background_color="white")
 

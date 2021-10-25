@@ -4,8 +4,8 @@ import PySimpleGUI as sg
 from src.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
 
 
-LEFT_COLUMN_WIDTH = "X"
-CENTER_COLUMN_WIDTH = "X"
+LEFT_COLUMN_WIDTH = 280
+CENTER_COLUMN_WIDTH = 500
 RIGHT_COLUMN_WIDTH = "X"
 
 
@@ -52,6 +52,7 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(LEFT_COLUMN_WIDTH, 90),
         )
 
     def server_info(self):
@@ -93,6 +94,7 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(LEFT_COLUMN_WIDTH, 90),
         )
 
     def project_info(self):
@@ -131,6 +133,7 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(LEFT_COLUMN_WIDTH, 90),
         )
 
     def documents_list(self):
@@ -149,7 +152,7 @@ class MainWindowUI:
                         data=self.props.list_of_files,
                         key="doctree",
                         num_rows=10,
-                        col0_width=30,
+                        col0_width=(LEFT_COLUMN_WIDTH // 10),
                         enable_events=True,
                         select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                     )
@@ -213,6 +216,7 @@ class MainWindowUI:
             "Project stage",
             final_elements_list,
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(CENTER_COLUMN_WIDTH, 100),
         )
 
     def editor_background_color(self):
@@ -235,7 +239,7 @@ class MainWindowUI:
                 [
                     sg.Multiline(
                         default_text=self.props.editor_text,
-                        size=(80, 20),
+                        size=(70, 25),
                         k="document_editor",
                         disabled=self.props.editor_disabled,
                         background_color=self.editor_background_color(),
@@ -277,7 +281,7 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(500, 500),
+            size=(LEFT_COLUMN_WIDTH, 90),
         )
 
         return frame
@@ -332,6 +336,7 @@ class MainWindowUI:
                 text,
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            size=(LEFT_COLUMN_WIDTH, 200),
         )
 
     def layout(self):

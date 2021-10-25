@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
         while True:
             event, values = window.read()
-            print(event, "|", values)
+            logger.debug(event + "|" + str(values))
             window = main_window.event_handler(window, event, values)
 
             if window is None:

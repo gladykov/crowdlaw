@@ -59,6 +59,7 @@ class BaseCtrl:
         layout,
         location=(None, None),
         modal=False,
+        size=(None, None),
         enable_close_attempted_event=False,
     ):
         """
@@ -69,6 +70,7 @@ class BaseCtrl:
             layout: sg layout
             location: tuple
             modal: bool - if true, will act as modal and block underlying window
+            size: tuple
             enable_close_attempted_event: bool; should we confirm closing it
 
         Returns:
@@ -79,6 +81,7 @@ class BaseCtrl:
             [[layout]],
             finalize=True,
             location=location,
+            size=size,
             modal=modal,
             resizable=True,
             enable_close_attempted_event=enable_close_attempted_event,
@@ -146,7 +149,7 @@ class BaseCtrl:
 
             reply = change_language_selector(
                 LanguageCtrl.supported_langs(),
-                get_language_name_by_shortcut(self.model.config["lang"]),
+                get_language_name_by_shortcut(BaseModel.get_config()["lang"]),
             )
             if reply[0] == "switch_language":
                 new_lang = reply[1]["language_selector"]
@@ -154,3 +157,18 @@ class BaseCtrl:
                 return True
 
         return False
+
+    @staticmethod
+    def maximized(window):
+        """
+        Check if given window is maximized.
+        If you encounter cross-platform issues check maximize and minimize methods of
+        PySimpleGUI for more cross platform hints.
+
+        Args:
+            window:
+
+        Returns:
+            bool
+        """
+        return window.TKroot.state() == "zoomed"

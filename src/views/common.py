@@ -237,7 +237,8 @@ def wait_cursor_enable(window):
         None
     """
     window.TKroot.config(cursor="watch")
-    sleep(0.6)  # Otherwise cursor change will not work
+    sleep(0.7)  # Otherwise cursor change will not work
+    # Still often does not work ¯\_(ツ)_/¯
     window.TKroot.update()
 
 

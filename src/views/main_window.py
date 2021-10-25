@@ -5,8 +5,8 @@ from src.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
 
 
 LEFT_COLUMN_WIDTH = 280
-CENTER_COLUMN_WIDTH = 500
-RIGHT_COLUMN_WIDTH = "X"
+CENTER_COLUMN_WIDTH = 700
+RIGHT_COLUMN_WIDTH = 350
 
 
 class MainWindowUI:
@@ -64,37 +64,32 @@ class MainWindowUI:
         return sg.Frame(
             _("Server info"),
             [
-                [sg.Text(_("URL: {url}").format(url=self.props.project_url))],
+                [
+                    sg.Text(
+                        _("URL: {url}").format(url=self.props.project_url),
+                        enable_events=True,
+                        k=f"URL {self.props.project_url}",
+                    )
+                ],
                 [sg.Text(_("User: {user}").format(user=self.props.username), k="user")],
                 [
-                    sg.Column(
-                        [
-                            [
-                                sg.Text(
-                                    _("Token: ********"),
-                                    k="token",
-                                )
-                            ],
-                            [
-                                sg.Text(
-                                    _("Token name: {token_name}").format(
-                                        token_name=self.props.token_name
-                                    ),
-                                    k="token_name",
-                                )
-                            ],
-                        ]
-                    ),
-                    sg.VerticalSeparator(),
-                    sg.Column(
-                        [
-                            [sg.Button(_("Update token info"), k="update_token_info")],
-                        ]
-                    ),
+                    sg.Text(
+                        _("Token: ********"),
+                        k="token",
+                    )
                 ],
+                [
+                    sg.Text(
+                        _("Token name: {token_name}").format(
+                            token_name=self.props.token_name
+                        ),
+                        k="token_name",
+                    )
+                ],
+                [sg.Button(_("Update token info"), k="update_token_info")],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(LEFT_COLUMN_WIDTH, 90),
+            size=(RIGHT_COLUMN_WIDTH, 180),
         )
 
     def project_info(self):
@@ -108,6 +103,11 @@ class MainWindowUI:
             [
                 [
                     sg.Text(_("Current project")),
+                    sg.Text(
+                        _("[change project]"),
+                        enable_events=True,
+                        k="click_change_project",
+                    ),
                     help_icon(
                         _(
                             "This is your main project, "
@@ -124,11 +124,6 @@ class MainWindowUI:
                         enable_events=True,
                         default_value=self.props.project_name,
                         k="project_selector",
-                    ),
-                    sg.Text(
-                        _("[change project]"),
-                        enable_events=True,
-                        k="click_change_project",
                     ),
                 ],
             ],
@@ -152,7 +147,7 @@ class MainWindowUI:
                         data=self.props.list_of_files,
                         key="doctree",
                         num_rows=10,
-                        col0_width=(LEFT_COLUMN_WIDTH // 10),
+                        col0_width=((LEFT_COLUMN_WIDTH // 10) - 1),
                         enable_events=True,
                         select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                     )
@@ -213,10 +208,11 @@ class MainWindowUI:
         )
 
         return sg.Frame(
-            "Project stage",
+            _("Project stage"),
             final_elements_list,
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(CENTER_COLUMN_WIDTH, 100),
+            size=(CENTER_COLUMN_WIDTH, 80),
+            k="frame_stage",
         )
 
     def editor_background_color(self):
@@ -243,10 +239,12 @@ class MainWindowUI:
                         k="document_editor",
                         disabled=self.props.editor_disabled,
                         background_color=self.editor_background_color(),
+                        font=("Times New Roman", 12),
                     )
                 ]
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
+            k="frame_document_editor",
         )
         return frame
 
@@ -336,59 +334,8 @@ class MainWindowUI:
                 text,
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(LEFT_COLUMN_WIDTH, 200),
+            size=(RIGHT_COLUMN_WIDTH, 100),
         )
-
-    def layout(self):
-        """
-        Holy layout of main window
-
-        Returns:
-            list
-        """
-        left_col = sg.Column(
-            [
-                [self.project_info()],
-                [sg.HorizontalSeparator()],
-                [self.branch_selector()],
-                [self.documents_list()],
-                [self.contact_info()],
-            ],
-            vertical_alignment="top",
-        )
-
-        center_col = sg.Column(
-            [
-                [self.stage()],
-                [sg.HorizontalSeparator()],
-                [self.text_editor()],
-                [sg.Button(_("Save"), k="save")],
-            ],
-            vertical_alignment="top",
-        )
-
-        right_col = sg.Column(
-            [
-                [self.server_info()],
-                [sg.HorizontalSeparator()],
-                [self.online_reviews()],
-                [sg.HorizontalSeparator()],
-            ],
-            vertical_alignment="top",
-        )
-
-        layout = [
-            [menu_toolbar()],
-            [
-                left_col,
-                sg.VerticalSeparator(),
-                center_col,
-                sg.VerticalSeparator(),
-                right_col,
-            ],
-        ]
-
-        return layout
 
     @staticmethod
     def change_project_popup():
@@ -496,3 +443,55 @@ class MainWindowUI:
             finalize=True,
             size=(350, 380),
         )
+
+    def layout(self):
+        """
+        Holy layout of main window
+
+        Returns:
+            list
+        """
+        left_col = sg.Column(
+            [
+                [self.project_info()],
+                [sg.HorizontalSeparator()],
+                [self.branch_selector()],
+                [self.documents_list()],
+                [self.contact_info()],
+            ],
+            vertical_alignment="top",
+        )
+
+        center_col = sg.Column(
+            [
+                [sg.Sizer(CENTER_COLUMN_WIDTH, 0)],
+                [self.stage()],
+                [sg.HorizontalSeparator()],
+                [self.text_editor()],
+                [sg.Button(_("Save"), k="save")],
+            ],
+            vertical_alignment="top",
+            k="center_column",
+        )
+
+        right_col = sg.Column(
+            [
+                [self.server_info()],
+                [sg.HorizontalSeparator()],
+                [self.online_reviews()],
+            ],
+            vertical_alignment="top",
+        )
+
+        layout = [
+            [menu_toolbar()],
+            [
+                left_col,
+                sg.VerticalSeparator(),
+                center_col,
+                sg.VerticalSeparator(),
+                right_col,
+            ],
+        ]
+
+        return layout

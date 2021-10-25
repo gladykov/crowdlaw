@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-25 02:01+0200\n"
-"PO-Revision-Date: 2021-10-25 02:04+0200\n"
+"POT-Creation-Date: 2021-10-25 23:07+0200\n"
+"PO-Revision-Date: 2021-10-25 23:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -27,92 +27,92 @@ msgstr ""
 msgid "Unsupported API provided: {api}"
 msgstr ""
 
-#: src/controller/main_window.py:123 src/views/main_window.py:85
+#: src/controller/main_window.py:119 src/views/main_window.py:89
 #: src/views/on_boarding.py:147
 msgid "Update token info"
 msgstr ""
 
-#: src/controller/main_window.py:139
+#: src/controller/main_window.py:135
 msgid "Couldn't authenticate with current token info"
 msgstr ""
 
-#: src/controller/main_window.py:142 src/controller/main_window.py:483
+#: src/controller/main_window.py:138 src/controller/main_window.py:479
 msgid "Close"
 msgstr ""
 
-#: src/controller/main_window.py:215
+#: src/controller/main_window.py:211
 msgid "At least one stage should be marked as active"
 msgstr ""
 
-#: src/controller/main_window.py:221
+#: src/controller/main_window.py:217
 msgid "Provide name for every stage"
 msgstr ""
 
-#: src/controller/main_window.py:273
+#: src/controller/main_window.py:269
 msgid "Are you sure you want to update token info?"
 msgstr ""
 
-#: src/controller/main_window.py:275
+#: src/controller/main_window.py:271
 msgid "Updating token info, will update it for all projects"
 msgstr ""
 
-#: src/controller/main_window.py:276
+#: src/controller/main_window.py:272
 msgid "which use {git_provider}"
 msgstr ""
 
-#: src/controller/main_window.py:279
+#: src/controller/main_window.py:275
 msgid "Are you sure?"
 msgstr ""
 
-#: src/controller/main_window.py:311 src/views/main_window.py:391
+#: src/controller/main_window.py:307 src/views/main_window.py:352
 msgid "Add new project"
 msgstr ""
 
-#: src/controller/main_window.py:330
+#: src/controller/main_window.py:326
 msgid "Are you sure you want to remove project?"
 msgstr ""
 
-#: src/controller/main_window.py:332
+#: src/controller/main_window.py:328
 msgid "WARNING: This will remove all project files from your local computer"
 msgstr ""
 
-#: src/controller/main_window.py:336
+#: src/controller/main_window.py:332
 msgid "associated with project {project_name}."
 msgstr ""
 
-#: src/controller/main_window.py:339
+#: src/controller/main_window.py:335
 msgid "Copy will be left on the server"
 msgstr ""
 
-#: src/controller/main_window.py:340
+#: src/controller/main_window.py:336
 msgid "To remove server version go to {server_url}"
 msgstr ""
 
-#: src/controller/main_window.py:343
+#: src/controller/main_window.py:339
 msgid "Are you sure you want ro remove files from local computer?"
 msgstr ""
 
-#: src/controller/main_window.py:368
+#: src/controller/main_window.py:364
 msgid "Confirm file deletion"
 msgstr ""
 
-#: src/controller/main_window.py:370
+#: src/controller/main_window.py:366
 msgid "Are you sure you want to remove file {file} ?"
 msgstr ""
 
-#: src/controller/main_window.py:421
+#: src/controller/main_window.py:417
 msgid "Are you sure you want to remove current set?"
 msgstr ""
 
-#: src/controller/main_window.py:423
+#: src/controller/main_window.py:419
 msgid "All changes made in this set will be lost locally."
 msgstr ""
 
-#: src/controller/main_window.py:424
+#: src/controller/main_window.py:420
 msgid "They will be still available on the server, if you sent them"
 msgstr ""
 
-#: src/controller/main_window.py:425
+#: src/controller/main_window.py:421
 msgid "Are you sure you want to remove current set locally?"
 msgstr ""
 
@@ -126,48 +126,44 @@ msgid ""
 "picture"
 msgstr ""
 
-#: src/model/main_window.py:46
-msgid "Trying to initialize controller for project {project_name}"
-msgstr ""
-
-#: src/model/main_window.py:323
+#: src/model/main_window.py:318
 msgid "Provide new file name"
 msgstr ""
 
-#: src/model/main_window.py:323
+#: src/model/main_window.py:318
 msgid "New filename"
 msgstr ""
 
-#: src/model/main_window.py:458
+#: src/model/main_window.py:452
 msgid "Filename cannot be empty"
 msgstr ""
 
-#: src/model/main_window.py:478
+#: src/model/main_window.py:472
 msgid "Warning: Unsaved changes"
 msgstr ""
 
-#: src/model/main_window.py:480
+#: src/model/main_window.py:474
 msgid ""
 "You have unsaved changes in editor. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: src/model/main_window.py:520
+#: src/model/main_window.py:515
 msgid ""
 "All your changes to the articles,\n"
 "will be treated together as one set\n"
 "Please, give a short name to a new set of changes"
 msgstr ""
 
-#: src/model/main_window.py:525
+#: src/model/main_window.py:520
 msgid "Provide name for your set of changes"
 msgstr ""
 
-#: src/model/main_window.py:538
+#: src/model/main_window.py:533
 msgid "Working set with name {branch_name} already exists"
 msgstr ""
 
-#: src/model/main_window.py:707 src/model/main_window.py:708
+#: src/model/main_window.py:702 src/model/main_window.py:703
 msgid "Provide title for your proposed changes"
 msgstr ""
 
@@ -235,8 +231,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/views/common.py:62 src/views/common.py:136 src/views/main_window.py:393
-#: src/views/main_window.py:423 src/views/main_window.py:478
+#: src/views/common.py:62 src/views/common.py:136 src/views/main_window.py:354
+#: src/views/main_window.py:384 src/views/main_window.py:439
 #: src/views/on_boarding.py:58 src/views/on_boarding.py:155
 msgid "Cancel"
 msgstr ""
@@ -277,55 +273,55 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/views/main_window.py:22
+#: src/views/main_window.py:27
 msgid "[edit contact info]"
 msgstr ""
 
-#: src/views/main_window.py:24
+#: src/views/main_window.py:29
 msgid "[add contact info]"
 msgstr ""
 
-#: src/views/main_window.py:27
+#: src/views/main_window.py:32
 msgid "Contact info"
 msgstr ""
 
-#: src/views/main_window.py:33
+#: src/views/main_window.py:38
 msgid "contact info not set by maintainer"
 msgstr ""
 
-#: src/views/main_window.py:36
+#: src/views/main_window.py:41
 msgid "Information about group contact provided by maintainer"
 msgstr ""
 
-#: src/views/main_window.py:59
+#: src/views/main_window.py:65
 msgid "Server info"
 msgstr ""
 
-#: src/views/main_window.py:61
+#: src/views/main_window.py:69
 msgid "URL: {url}"
 msgstr ""
 
-#: src/views/main_window.py:62
+#: src/views/main_window.py:74
 msgid "User: {user}"
 msgstr ""
 
-#: src/views/main_window.py:68
+#: src/views/main_window.py:77
 msgid "Token: ********"
 msgstr ""
 
-#: src/views/main_window.py:74
+#: src/views/main_window.py:83
 msgid "Token name: {token_name}"
 msgstr ""
 
-#: src/views/main_window.py:100
+#: src/views/main_window.py:102
 msgid "Project info"
 msgstr ""
 
-#: src/views/main_window.py:103
+#: src/views/main_window.py:105
 msgid "Current project"
 msgstr ""
 
-#: src/views/main_window.py:105
+#: src/views/main_window.py:107
 msgid ""
 "This is your main project, where you collaborate with other people. Project "
 "is kept on server, but can be edited locally. When you will create your "
@@ -333,122 +329,130 @@ msgid ""
 "team members."
 msgstr ""
 
-#: src/views/main_window.py:122
+#: src/views/main_window.py:124
 msgid "[change project]"
 msgstr ""
 
-#: src/views/main_window.py:138
+#: src/views/main_window.py:141
 msgid "Documents in the set"
 msgstr ""
 
-#: src/views/main_window.py:153
+#: src/views/main_window.py:143
+msgid "Click document to start editing"
+msgstr ""
+
+#: src/views/main_window.py:156
 msgid "Add new file"
 msgstr ""
 
-#: src/views/main_window.py:154
+#: src/views/main_window.py:157
 msgid "Remove selected file"
 msgstr ""
 
-#: src/views/main_window.py:166
+#: src/views/main_window.py:169
 msgid "This shows what is actual status of your project."
 msgstr ""
 
-#: src/views/main_window.py:184
+#: src/views/main_window.py:187
 msgid "Unrecognized status of stage"
 msgstr ""
 
-#: src/views/main_window.py:197
+#: src/views/main_window.py:200
 msgid "[edit stage info]"
 msgstr ""
 
-#: src/views/main_window.py:228
+#: src/views/main_window.py:211
+msgid "Project stage"
+msgstr ""
+
+#: src/views/main_window.py:233
 msgid "Document editor"
 msgstr ""
 
-#: src/views/main_window.py:251
+#: src/views/main_window.py:258
 msgid "Sets of changes"
 msgstr ""
 
-#: src/views/main_window.py:260
-msgid "Add new set"
-msgstr ""
-
-#: src/views/main_window.py:261
-msgid "Remove set"
-msgstr ""
-
-#: src/views/main_window.py:263
+#: src/views/main_window.py:268
 msgid ""
 "In one project you can prepare multiple versions of proposed changes. Each "
 "version is called set of changes (or branch). You can work on different sets "
 "of changes in parallel."
 msgstr ""
 
-#: src/views/main_window.py:283
+#: src/views/main_window.py:277
+msgid "Add new set"
+msgstr ""
+
+#: src/views/main_window.py:278
+msgid "Remove set"
+msgstr ""
+
+#: src/views/main_window.py:294
 msgid ""
 "When you are ready to propose your changes, send them for a review. Other "
 "team members will review them. All reviews are done on remote server. "
 "Communication is done by email, so watch your inbox."
 msgstr ""
 
-#: src/views/main_window.py:294
+#: src/views/main_window.py:305
 msgid "Send working set for a review"
 msgstr ""
 
-#: src/views/main_window.py:302
+#: src/views/main_window.py:313
 msgid "Update current review"
 msgstr ""
 
-#: src/views/main_window.py:320
+#: src/views/main_window.py:331
 msgid "Reviews"
 msgstr ""
 
-#: src/views/main_window.py:351 src/views/main_window.py:477
-msgid "Save"
-msgstr ""
-
-#: src/views/main_window.py:388
+#: src/views/main_window.py:349
 msgid "Change project"
 msgstr ""
 
-#: src/views/main_window.py:392
+#: src/views/main_window.py:353
 msgid "Remove project"
 msgstr ""
 
-#: src/views/main_window.py:407 src/views/main_window.py:422
+#: src/views/main_window.py:368 src/views/main_window.py:383
 msgid "Add / edit contact info"
 msgstr ""
 
-#: src/views/main_window.py:411
+#: src/views/main_window.py:372
 msgid ""
 "Provide contact info (Whatsapp group, FB group, mailing list, etc), where "
 "all participants can communicate with each other"
 msgstr ""
 
-#: src/views/main_window.py:438
+#: src/views/main_window.py:399
 msgid ""
 "Active\n"
 "stage"
 msgstr ""
 
-#: src/views/main_window.py:439
+#: src/views/main_window.py:400
 msgid "Stage name"
 msgstr ""
 
-#: src/views/main_window.py:440
+#: src/views/main_window.py:401
 msgid "Remove stage"
 msgstr ""
 
-#: src/views/main_window.py:463
+#: src/views/main_window.py:424
 msgid "Edit stage info"
 msgstr ""
 
-#: src/views/main_window.py:475
+#: src/views/main_window.py:436
 msgid "Add stage"
 msgstr ""
 
-#: src/views/main_window.py:476
+#: src/views/main_window.py:437
 msgid "Mark all as done"
+msgstr ""
+
+#: src/views/main_window.py:438 src/views/main_window.py:471
+msgid "Save"
 msgstr ""
 
 #: src/views/on_boarding.py:23

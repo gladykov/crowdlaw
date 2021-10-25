@@ -42,9 +42,9 @@ class MainWindowModel(BaseModel):
 
         self.config = self.get_config()
         self.project_name = self.config["last_project"]
-        logger.info("Trying to initialize controller for project {project_name}")
+        logger.info(f"Trying to initialize controller for project {self.project_name}")
         self.git_adapter = GitAdapter(
-            os.path.join(get_project_root(), "projects", self.project_name),
+            self.config["projects"][self.project_name]["folder"],
             initialized=True,
         )
 
@@ -288,6 +288,9 @@ class MainWindowModel(BaseModel):
         if not self.valid_file_to_open(values["doctree"]):
             return False
 
+        if values["doctree"][0] == self.edited_file:  # User clicked opened document
+            return False
+
         if self.edited_file is None:
             self.update_text_editor(window, values)
         else:
@@ -349,6 +352,8 @@ class MainWindowModel(BaseModel):
         self.remove_file(values["doctree"][0])
         self.update_list_of_files()
         self.edited_file = None
+        self.editor_text = ""
+        self.editor_disabled = True
 
     @staticmethod
     def valid_file_to_open(file_list):
@@ -480,6 +485,7 @@ class MainWindowModel(BaseModel):
 
             if reply == "yes":
                 self.put_file_content(self.edited_file, text_editor_value)
+                self.editor_text = text_editor_value
 
             return reply
 

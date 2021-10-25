@@ -299,8 +299,8 @@ class OnBoardingModel(BaseModel):
             "token": self.token,
             "token_name": self.token_name,
         }
-        self.config["projects"][self.project_name] = project_dict
-        self.config["last_project"] = self.project_name
+        self.config["projects"][project_stripped_name] = project_dict
+        self.config["last_project"] = project_stripped_name
 
         self.set_config(self.config)
         return True

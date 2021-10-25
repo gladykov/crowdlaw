@@ -5,19 +5,19 @@ import PySimpleGUI as sg
 import yaml
 
 from src.controller.common import BaseCtrl
-from src.controller.language import LanguageCtrl
 from src.controller.on_boarding import OnBoardingCtrl
 from src.model.main_window import MainWindowModel
-from src.utils.supported_langs import get_language_name_by_shortcut
+from src.utils.utils import get_logger
 from src.views.common import (
-    about,
-    change_language_selector,
     popup_yes_no_cancel,
     wait_cursor_disable,
     wait_cursor_enable,
     warning_popup,
 )
 from src.views.main_window import MainWindowUI
+
+
+logger = get_logger("root", log_level="debug")
 
 
 class MainWindowCtrl(BaseCtrl):
@@ -36,23 +36,50 @@ class MainWindowCtrl(BaseCtrl):
         """
         return MainWindowUI(self.model).layout()
 
-    def get_window(self, window_title, location=(None, None)):
+    def get_window(
+        self, window_title, location=(None, None), size=(None, None), maximized=False
+    ):
         """
         Draws window with given set of elements
 
         Args:
             window_title: str
             location: tuple
+            size: tuple
+            maximized: bool
 
         Returns:
             window
         """
-        return self.draw_window(
+        window = self.draw_window(
             window_title,
             self.get_elements(),
             location,
+            size,
             enable_close_attempted_event=True,
         )
+
+        # Resize elements
+        elements_to_expand_x = [
+            "frame_stage",
+        ]  # Order does matter
+
+        elements_to_expand_x_y = [
+            "frame_document_editor",
+            "document_editor",
+            "center_column",
+        ]
+
+        for element in elements_to_expand_x:
+            window[element].expand(expand_x=True)
+
+        for element in elements_to_expand_x_y:
+            window[element].expand(expand_x=True, expand_y=True)
+
+        if maximized:
+            window.maximize()
+
+        return window
 
     def redraw_window(self, window):
         """
@@ -64,7 +91,12 @@ class MainWindowCtrl(BaseCtrl):
         Returns:
             window
         """
-        new_window = self.get_window(self.model.app_title, window.CurrentLocation())
+        new_window = self.get_window(
+            self.model.app_title,
+            window.CurrentLocation(),
+            window.Size,
+            maximized=self.maximized(window),
+        )
         window.close()
         return new_window
 
@@ -260,8 +292,16 @@ class MainWindowCtrl(BaseCtrl):
             return window
 
         event = self.events_preprocessor(event)
+
+        # Handle menu items. Redraw if needed
         if self.common_event_handler(event):
-            return self.redraw_window(window)
+            if self.model.protect_unsaved_changes(values["document_editor"]) not in [
+                "cancel",
+                None,
+            ]:
+                window = self.redraw_window(window)
+                self.model.select_current_file(window)
+                return window
 
         if event == "click_change_project":
             reply = MainWindowUI.change_project_popup()
@@ -290,7 +330,7 @@ class MainWindowCtrl(BaseCtrl):
                     "cancel",
                     None,
                 ]:
-                    self.model.select_current_project(window)
+                    self.select_current_project(window)
                     wait_cursor_disable(window)
                     return window
 
@@ -303,7 +343,7 @@ class MainWindowCtrl(BaseCtrl):
                 "cancel",
                 None,
             ]:
-                self.model.select_current_project(window)
+                self.select_current_project(window)
                 return window
 
             on_boarding = OnBoardingCtrl()
@@ -313,7 +353,7 @@ class MainWindowCtrl(BaseCtrl):
 
             while True:
                 on_boarding_event, on_boarding_values = on_boarding_window.read()
-                print(on_boarding_event, "|", on_boarding_values)
+                logger.debug(on_boarding_event + "|" + str(on_boarding_values))
                 on_boarding_window = on_boarding.event_handler(
                     on_boarding_window, on_boarding_event, on_boarding_values
                 )
@@ -433,10 +473,16 @@ class MainWindowCtrl(BaseCtrl):
             return window
 
         if event == "send_to_review":
-            wait_cursor_enable(window)
-            self.model.send_to_review(values)
-            self.model.update_review_info()
-            return self.redraw_window(window)
+            if not self.model.protect_unsaved_changes(values["document_editor"]) in [
+                "cancel",
+                None,
+            ]:
+                wait_cursor_enable(window)
+                self.model.send_to_review(values)
+                self.model.update_review_info()
+                window = self.redraw_window(window)
+                self.model.select_current_file(window)
+                return window
 
         if event == "update_review":
             wait_cursor_enable(window)

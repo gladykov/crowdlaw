@@ -21,7 +21,9 @@ You edit all documents locally, and when you are ready you send changes to one o
 
 # Installation
 
-Download one of install packages for your system. Install and start using - app should be self-explanatory. If it is not, there is always room for improvement.
+[Download one of install packages for your system](https://github.com/gladykov/crowdlaw/releases)
+
+Install and start using - app should be self-explanatory. If it is not, there is always room for improvement.
 
 ## Why there is no PyPi module?
 

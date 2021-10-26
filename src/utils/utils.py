@@ -87,7 +87,8 @@ def get_logger(name, propagate=False, log_level="info"):
     ch = logging.StreamHandler()
 
     log_file = os.path.join(get_project_root(), "crowdlaw.log")
-    os.unlink(log_file)  # Always clear log
+    if os.path.isfile(log_file):
+        os.unlink(log_file)  # Always clear log
 
     fh = logging.FileHandler(log_file)
 

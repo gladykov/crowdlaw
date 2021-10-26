@@ -208,7 +208,7 @@ def about():
     return sg.Window(
         _("Info"),
         [
-            [sg.Text(f"Crowd Law v {BaseModel.get_version()}")],
+            [sg.Text(f"Crowd Law {BaseModel.get_version()}")],
             [
                 sg.Text(
                     "https://gitlab.com/gladykov/crowdlaw/",

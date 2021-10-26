@@ -232,6 +232,7 @@ class MainWindowUI:
         frame = sg.Frame(
             _("Document editor"),
             [
+                [sg.Button(_("Save"), k="save")],
                 [
                     sg.Multiline(
                         default_text=self.props.editor_text,
@@ -241,7 +242,7 @@ class MainWindowUI:
                         background_color=self.editor_background_color(),
                         font=("Times New Roman", 12),
                     )
-                ]
+                ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
             k="frame_document_editor",
@@ -467,7 +468,6 @@ class MainWindowUI:
                 [self.stage()],
                 [sg.HorizontalSeparator()],
                 [self.text_editor()],
-                [sg.Button(_("Save"), k="save")],
             ],
             vertical_alignment="top",
             k="center_column",

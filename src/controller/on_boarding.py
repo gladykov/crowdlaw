@@ -94,7 +94,7 @@ class OnBoardingCtrl(BaseCtrl):
                 self.model.collect_page_1(values)
                 self.page = 2
                 new_window = self.get_window(
-                    "git details title", window.CurrentLocation()
+                    _("Provide Git account details"), window.CurrentLocation()
                 )
                 if self.model.git_provider is not None and (
                     self.model.username in [None, ""]

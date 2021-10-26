@@ -53,6 +53,18 @@ class OnBoardingUI:
                 ]
 
             elements.append(project_input)
+            if self.props.new_existing == "existing":
+                elements.append(
+                    [
+                        sg.Text(
+                            _(
+                                "example: https://gitlab.com/gladykov/"
+                                "example-project-for-crowd-law"
+                            ),
+                            text_color="grey",
+                        )
+                    ]
+                )
 
         elements.append(
             [sg.Button(_("Next"), k="next"), sg.CloseButton(_("Cancel"), k="close")]

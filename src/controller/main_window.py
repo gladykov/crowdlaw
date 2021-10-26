@@ -55,8 +55,9 @@ class MainWindowCtrl(BaseCtrl):
             window_title,
             self.get_elements(),
             location,
+            False,
             size,
-            enable_close_attempted_event=True,
+            True,
         )
 
         # Resize elements

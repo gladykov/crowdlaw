@@ -5,11 +5,12 @@ from src.controller.language import LanguageCtrl
 from src.controller.main_window import MainWindowCtrl
 from src.controller.on_boarding import OnBoardingCtrl
 from src.model.common import BaseModel
-from src.utils.utils import get_logger
+from src.utils.utils import get_logger, redirect_stderr_to_logger
 from src.views.common import select_language
 
 
 logger = get_logger("root", log_level="debug")
+redirect_stderr_to_logger(logger)
 
 
 if __name__ == "__main__":

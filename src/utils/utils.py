@@ -1,6 +1,9 @@
 """Utils and helpers"""
+import io
 import logging
+import os
 import re
+import sys
 from pathlib import Path
 
 
@@ -76,17 +79,46 @@ def get_logger(name, propagate=False, log_level="info"):
     logger = logging.getLogger(name)
     if logger.hasHandlers():  # Already exists
         return logger
+
     log_level = logging.DEBUG if log_level == "debug" else logging.INFO
     logger.setLevel(log_level)
     logger.propagate = propagate
+
     ch = logging.StreamHandler()
-    ch.setLevel(log_level)
+
+    log_file = os.path.join(get_project_root(), "crowdlaw.log")
+    os.unlink(log_file)  # Always clear log
+
+    fh = logging.FileHandler(log_file)
+
     formatter = logging.Formatter(
         "%(asctime)s %(levelname)s %(name)s %(message)s", "%y/%m/%d %H:%M:%S"
     )
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
+
+    for handler in [ch, fh]:
+        handler.setLevel(log_level)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
     return logger
+
+
+def redirect_stderr_to_logger(logger):
+    """One to rule them all"""
+
+    class MyStream(io.IOBase):
+        """Class to reroute stderr to logger"""
+
+        def __init__(self, logger):
+            self.logger = logger
+
+        def write(self, s):
+            """Write"""
+            s = s.strip()
+            if s != "":
+                self.logger.error(s)
+
+    sys.stderr = MyStream(logger)
 
 
 def urljoin(parts):

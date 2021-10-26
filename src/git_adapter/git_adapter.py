@@ -268,3 +268,5 @@ class GitAdapter:
 
         if counter > 0:
             self.repo.head.reset(f"HEAD~{counter}", index=False, working_tree=False)
+        else:
+            return False

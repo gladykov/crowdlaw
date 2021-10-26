@@ -324,7 +324,7 @@ class MainWindowUI:
                 )
             ]
             if self.props.merge_request is not None
-            else [sg.Text("")]
+            else [sg.Text("", k="review_info")]
         )
 
         return sg.Frame(
@@ -464,7 +464,6 @@ class MainWindowUI:
 
         center_col = sg.Column(
             [
-                [sg.Sizer(CENTER_COLUMN_WIDTH, 0)],
                 [self.stage()],
                 [sg.HorizontalSeparator()],
                 [self.text_editor()],

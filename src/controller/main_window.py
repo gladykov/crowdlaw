@@ -62,13 +62,12 @@ class MainWindowCtrl(BaseCtrl):
         # Resize elements
         elements_to_expand_x = [
             "frame_stage",
-        ]  # Order does matter
-
-        elements_to_expand_x_y = [
+            "center_column",
             "frame_document_editor",
             "document_editor",
-            "center_column",
-        ]
+        ]  # Order does matter
+
+        elements_to_expand_x_y = []
 
         for element in elements_to_expand_x:
             window[element].expand(expand_x=True)
@@ -478,7 +477,10 @@ class MainWindowCtrl(BaseCtrl):
                 None,
             ]:
                 wait_cursor_enable(window)
-                self.model.send_to_review(values)
+                if self.model.send_to_review(values, window) is False:
+                    wait_cursor_disable(window)
+                    return window
+
                 self.model.update_review_info()
                 window = self.redraw_window(window)
                 self.model.select_current_file(window)

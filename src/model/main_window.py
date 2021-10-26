@@ -26,7 +26,6 @@ class MainWindowModel(BaseModel):
 
     def __init__(self):
         self.app_title = f"Crowd Law {self.get_version()}"
-        self.edited_file = None
         self.new_existing = None
         self.project_url = None
         self.project_name = None
@@ -274,6 +273,9 @@ class MainWindowModel(BaseModel):
         Returns:
             bool
         """
+        if self.edited_file is None:
+            return
+
         window["doctree"].TKTreeview.selection_set(
             self.key_to_id(window["doctree"], self.edited_file)
         )
@@ -696,7 +698,7 @@ class MainWindowModel(BaseModel):
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
 
-    def send_to_review(self, values):
+    def send_to_review(self, values, window):
         """
         Send for code review
         Args:
@@ -716,9 +718,15 @@ class MainWindowModel(BaseModel):
         )
 
         if merge_request_title is None:
-            return
+            return False
 
-        self.git_adapter.reset_identical_commits()
+        if self.git_adapter.reset_identical_commits() is False:
+            # No local commits to push
+            window["review_info"].update(
+                _("No changes to send. Edit some files first.")
+            )
+            return False
+
         self.git_adapter.commit(merge_request_title)
         self.git_adapter.push()
 

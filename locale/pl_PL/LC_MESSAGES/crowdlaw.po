@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-25 23:07+0200\n"
-"PO-Revision-Date: 2021-10-25 23:10+0200\n"
+"POT-Creation-Date: 2021-10-26 12:53+0200\n"
+"PO-Revision-Date: 2021-10-26 12:54+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -28,93 +28,93 @@ msgstr "Inicjalizacja"
 msgid "Unsupported API provided: {api}"
 msgstr "Nieobsługiwany interfejs API: {api}"
 
-#: src/controller/main_window.py:119 src/views/main_window.py:89
+#: src/controller/main_window.py:154 src/views/main_window.py:89
 #: src/views/on_boarding.py:147
 msgid "Update token info"
 msgstr "Zaktualizuj ustawienia tokena"
 
-#: src/controller/main_window.py:135
+#: src/controller/main_window.py:170
 msgid "Couldn't authenticate with current token info"
 msgstr "Nie udało się zalogować, używając danych tokena"
 
-#: src/controller/main_window.py:138 src/controller/main_window.py:479
+#: src/controller/main_window.py:173 src/controller/main_window.py:531
 msgid "Close"
 msgstr "Zamknij"
 
-#: src/controller/main_window.py:211
+#: src/controller/main_window.py:246
 msgid "At least one stage should be marked as active"
 msgstr "Jeden etap powinien by aktywny"
 
-#: src/controller/main_window.py:217
+#: src/controller/main_window.py:252
 msgid "Provide name for every stage"
 msgstr "Podaj nazwę dla każdego etapu"
 
-#: src/controller/main_window.py:269
+#: src/controller/main_window.py:312
 msgid "Are you sure you want to update token info?"
 msgstr "Czy na pewno chcec zaktualizować dane tokena ?"
 
-#: src/controller/main_window.py:271
+#: src/controller/main_window.py:314
 msgid "Updating token info, will update it for all projects"
 msgstr "Aktualizacja danych tokena, zaktualizuje go dla wszystkich projektow"
 
-#: src/controller/main_window.py:272
+#: src/controller/main_window.py:315
 msgid "which use {git_provider}"
 msgstr "które używają  {git_provider}"
 
-#: src/controller/main_window.py:275
+#: src/controller/main_window.py:318
 msgid "Are you sure?"
 msgstr "Czy jesteś pewien?"
 
-#: src/controller/main_window.py:307 src/views/main_window.py:352
+#: src/controller/main_window.py:350 src/views/main_window.py:352
 msgid "Add new project"
 msgstr "Dodaj nowy projekt"
 
-#: src/controller/main_window.py:326
+#: src/controller/main_window.py:369
 msgid "Are you sure you want to remove project?"
 msgstr "Czy jesteś pewien, że chcesz usunąć project?"
 
-#: src/controller/main_window.py:328
+#: src/controller/main_window.py:371
 msgid "WARNING: This will remove all project files from your local computer"
 msgstr "UWAGA: Zamierzasz usunąć wszystkie pliki projektu z Twojego komputera"
 
-#: src/controller/main_window.py:332
+#: src/controller/main_window.py:375
 msgid "associated with project {project_name}."
 msgstr "związane z projektem {project_name}."
 
-#: src/controller/main_window.py:335
+#: src/controller/main_window.py:378
 msgid "Copy will be left on the server"
 msgstr "Kopia pozostanie na serwerze"
 
-#: src/controller/main_window.py:336
+#: src/controller/main_window.py:379
 msgid "To remove server version go to {server_url}"
 msgstr "By usunąć wersję z serwera, otwórz {server_url}"
 
-#: src/controller/main_window.py:339
+#: src/controller/main_window.py:382
 msgid "Are you sure you want ro remove files from local computer?"
 msgstr "Czy jesteś pewien, że chcesz usunąć pliki lokalne?"
 
-#: src/controller/main_window.py:364
+#: src/controller/main_window.py:407
 msgid "Confirm file deletion"
 msgstr "Potwierdź usunięcie pliku"
 
-#: src/controller/main_window.py:366
+#: src/controller/main_window.py:409
 msgid "Are you sure you want to remove file {file} ?"
 msgstr "Czy jesteś pewien, że chcesz usunąć {file} ?"
 
-#: src/controller/main_window.py:417
+#: src/controller/main_window.py:460
 msgid "Are you sure you want to remove current set?"
 msgstr "Czy jesteś pewien że chcesz usunąć aktulalny zestaw zmian?"
 
-#: src/controller/main_window.py:419
+#: src/controller/main_window.py:462
 msgid "All changes made in this set will be lost locally."
 msgstr ""
 "Wszystkie zmiany w tym zestawie zmian, zostaną utracone z tego komputera."
 
-#: src/controller/main_window.py:420
+#: src/controller/main_window.py:463
 msgid "They will be still available on the server, if you sent them"
 msgstr "Jeśli wysłałeś je na serwer, wciąż tam będą dostępne"
 
-#: src/controller/main_window.py:421
+#: src/controller/main_window.py:464
 msgid "Are you sure you want to remove current set locally?"
 msgstr "Czy jesteś pewien, że chcesz usunąc lokalny zestaw zmian?"
 
@@ -130,23 +130,23 @@ msgstr ""
 "Kliknięcie \"Uzyskaj token\" otworzy stronę Git. Wypełnij wszystkie pola, "
 "jak na obrazku."
 
-#: src/model/main_window.py:318
+#: src/model/main_window.py:329
 msgid "Provide new file name"
 msgstr "Podaj nazwę nowego pliku"
 
-#: src/model/main_window.py:318
+#: src/model/main_window.py:329
 msgid "New filename"
 msgstr "Nowy plik"
 
-#: src/model/main_window.py:452
+#: src/model/main_window.py:465
 msgid "Filename cannot be empty"
 msgstr "Nazwa pliku nie może być pusta"
 
-#: src/model/main_window.py:472
+#: src/model/main_window.py:485
 msgid "Warning: Unsaved changes"
 msgstr "Uwaga: Niezapisane zmiany"
 
-#: src/model/main_window.py:474
+#: src/model/main_window.py:487
 msgid ""
 "You have unsaved changes in editor. Do you want to save them before "
 "proceeding?"
@@ -154,7 +154,7 @@ msgstr ""
 "W edytorze masz niezapisane zmiany. Czy chcesz je zapisać, nim będziesz "
 "kontynuował?"
 
-#: src/model/main_window.py:515
+#: src/model/main_window.py:529
 msgid ""
 "All your changes to the articles,\n"
 "will be treated together as one set\n"
@@ -164,17 +164,21 @@ msgstr ""
 "będą traktowane razem jako zestaw zmian\n"
 "Proszę, podaj krótką nazwę dla tego zestawu zmian"
 
-#: src/model/main_window.py:520
+#: src/model/main_window.py:534
 msgid "Provide name for your set of changes"
 msgstr "Podaj nazwę dla Twojego zestawu zmian"
 
-#: src/model/main_window.py:533
+#: src/model/main_window.py:547
 msgid "Working set with name {branch_name} already exists"
 msgstr "Zestaw zmian o nazwie {branch_name} już istnieje"
 
-#: src/model/main_window.py:702 src/model/main_window.py:703
+#: src/model/main_window.py:716 src/model/main_window.py:717
 msgid "Provide title for your proposed changes"
 msgstr "Podaj tytuł proponowanych zmian"
+
+#: src/model/main_window.py:726
+msgid "No changes to send. Edit some files first."
+msgstr "Brak zmian do wysłania. Zmień troche plików wpierw"
 
 #: src/model/on_boarding.py:44
 msgid "Please select if you want to create new or join existing project"
@@ -333,6 +337,10 @@ msgid "Current project"
 msgstr "Obecny projekt"
 
 #: src/views/main_window.py:107
+msgid "[change project]"
+msgstr "[zmień projekt]"
+
+#: src/views/main_window.py:112
 msgid ""
 "This is your main project, where you collaborate with other people. Project "
 "is kept on server, but can be edited locally. When you will create your "
@@ -343,10 +351,6 @@ msgstr ""
 "przetrzymywany na zdalnym serwerze, ale może być edytowany na Twoim "
 "komputerze. Gdy będzie gotowy, wyślij swój pakiet zmian na serwer, by inni "
 "członkowie zespołu mogli się z nim zapoznać"
-
-#: src/views/main_window.py:124
-msgid "[change project]"
-msgstr "[zmień projekt]"
 
 #: src/views/main_window.py:141
 msgid "Documents in the set"
@@ -476,7 +480,7 @@ msgstr "Dodaj etap"
 msgid "Mark all as done"
 msgstr "Zaznacz wszystkie jako wykonane"
 
-#: src/views/main_window.py:438 src/views/main_window.py:471
+#: src/views/main_window.py:438 src/views/main_window.py:470
 msgid "Save"
 msgstr "Zapisz"
 

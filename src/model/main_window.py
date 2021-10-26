@@ -296,7 +296,7 @@ class MainWindowModel(BaseModel):
         if not self.valid_file_to_open(values["doctree"]):
             return False
 
-        if values["doctree"][0] == self.edited_file:  # User clicked opened document
+        if values["doctree"][0] == self.edited_file:  # Clicked already opened document
             return False
 
         if self.edited_file is None:

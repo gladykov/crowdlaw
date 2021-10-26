@@ -67,13 +67,8 @@ class MainWindowCtrl(BaseCtrl):
             "document_editor",
         ]  # Order does matter
 
-        elements_to_expand_x_y = []
-
         for element in elements_to_expand_x:
             window[element].expand(expand_x=True)
-
-        for element in elements_to_expand_x_y:
-            window[element].expand(expand_x=True, expand_y=True)
 
         if maximized:
             window.maximize()

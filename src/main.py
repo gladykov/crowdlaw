@@ -47,7 +47,7 @@ if __name__ == "__main__":
             event, values = window.read()
             if None in [event, values]:
                 break
-            logger.debug(event + " | " + str(values))
+            logger.debug(str(event) + " | " + str(values))
             window = on_boarding.event_handler(window, event, values)
             if window is None:
                 break
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
         while True:
             event, values = window.read()
-            logger.debug(event + "|" + str(values))
+            logger.debug(str(event) + "|" + str(values))
             window = main_window.event_handler(window, event, values)
 
             if window is None:

@@ -3,9 +3,9 @@ gitlab:
     create_account: /users/sign_up
     get_token: /-/profile/personal_access_tokens
     get_raw_file_from_master: /-/raw/
-github:
-    base_url: https://github.com
-    create_account: /signup
-    get_token: /settings/tokens/new
-    get_raw_file_from_master: /
+#github:
+#    base_url: https://github.com
+#    create_account: /signup
+#    get_token: /settings/tokens/new
+#    get_raw_file_from_master: /
 

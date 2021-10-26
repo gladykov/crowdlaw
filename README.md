@@ -8,7 +8,7 @@
 
 ## What is this?
 
-Tool to collaboratively create law, so anybody can do it. You can write new and edit existing documents, and you can use it for any other purpose. It uses Git under the hood.
+Tool to collaboratively create law, so anybody can do it. You can write new and edit existing documents, and you can use it for any other purpose. In other words - Git addon.
 
 ## Why ?
 
@@ -22,6 +22,10 @@ You edit all documents locally, and when you are ready you send changes to one o
 # Installation
 
 Download one of install packages for your system. Install and start using - app should be self-explanatory. If it is not, there is always room for improvement.
+
+## Why there is no PyPi module?
+
+If you know how to install PyPi module, you do not need this tool, and you can use Git in your IDE :) Main distribution channel are provided installers. 
 
 ## Example project
 

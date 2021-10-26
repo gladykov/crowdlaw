@@ -79,6 +79,21 @@ class GitlabAPI:
             "path": project.path,
         }
 
+    def get_base_project_info(self, username, project_name):
+        """
+        Get info of base project - no matter current is forked or not
+
+        Returns:
+            dict
+        """
+        return self.get_project_info(
+            self.gitlab_api.projects.get(
+                self.get_base_project_id(
+                    self.get_project_by_user_path(username, project_name)
+                )
+            )
+        )
+
     def fork_project(self, project, new_name=None, new_path=None):
         """
         Fork existing project
@@ -134,6 +149,16 @@ class GitlabAPI:
         )
 
     def get_credentials_git_url(self, token_name, path):
+        """
+        For every project credentials are stored in URL
+
+        Args:
+            token_name: str
+            path: str
+
+        Returns:
+            str
+        """
         return f"https://{token_name}:{self.token}@gitlab.com/{self.user}/{path}.git"
 
     @staticmethod

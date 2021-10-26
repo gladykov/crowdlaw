@@ -116,7 +116,7 @@ class MainWindowModel(BaseModel):
     def get_maintainer_file(self, filename):
         """
         Maintainer files, are special files, with latest info,
-         which we try to fetch from master.
+        which we try to fetch from master (not from forked, but from original).
         If not available, try local version.
 
         Args:
@@ -147,7 +147,8 @@ class MainWindowModel(BaseModel):
         return None
 
     def get_file_from_master(self, filename):
-        """Grab latest version of file from master, from root of repo
+        """Grab latest version of file from master, from root of repo,
+        of original (not forked) repo
 
         Args:
             filename: str
@@ -156,11 +157,16 @@ class MainWindowModel(BaseModel):
             str, None
         """
         git_provider_dict = self.git_providers()[self.git_provider]
+
+        project = self.remote_api.get_base_project_info(
+            self.username, self.project_name
+        )
+
         url = urljoin(
             [
                 git_provider_dict["base_url"],
-                self.username,
-                self.project_name,
+                project["username"],
+                project["path"],
                 git_provider_dict["get_raw_file_from_master"],
                 "master",
                 filename,

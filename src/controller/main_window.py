@@ -353,7 +353,7 @@ class MainWindowCtrl(BaseCtrl):
 
             while True:
                 on_boarding_event, on_boarding_values = on_boarding_window.read()
-                logger.debug(on_boarding_event + "|" + str(on_boarding_values))
+                logger.debug(str(on_boarding_event) + "|" + str(on_boarding_values))
                 on_boarding_window = on_boarding.event_handler(
                     on_boarding_window, on_boarding_event, on_boarding_values
                 )

@@ -116,6 +116,16 @@ class GitlabAPI:
             time.sleep(5)
             forked_project = self.get_project_by_user_path(self.user, path)
 
+        # Setup a mirror, to fetch changes from upstream master (hourly)
+        self.gitlab_api.projects.update(
+            forked_project.id,
+            {
+                "import_url": project.http_url_to_repo,
+                "mirror": True,
+                "only_mirror_protected_branches": True,
+            },
+        )
+
         return forked_project
 
     def update_project_name_path(self, project, new_name, new_path):

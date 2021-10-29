@@ -260,7 +260,6 @@ class OnBoardingModel(BaseModel):
             git_adapter.add_all_untracked()
 
             git_adapter.commit(
-                # TRANSLATORS: Never translate using national characters
                 _("Initial commit for project {project_name}").format(
                     project_name=self.project_name
                 )

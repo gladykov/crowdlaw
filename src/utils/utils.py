@@ -86,7 +86,7 @@ def get_logger(name, propagate=False, log_level="info"):
 
     ch = logging.StreamHandler()
     log_file = os.path.join(get_project_root(), "crowdlaw.log")
-    fh = logging.FileHandler(log_file)
+    fh = logging.FileHandler(log_file, "a", "utf-8")
 
     formatter = logging.Formatter(
         "%(asctime)s %(levelname)s %(name)s %(message)s", "%y/%m/%d %H:%M:%S"

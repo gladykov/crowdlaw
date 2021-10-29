@@ -10,7 +10,7 @@ from src.views.common import select_language
 
 
 logger = get_logger("root", log_level="debug")
-# redirect_stderr_to_logger(logger)
+redirect_stderr_to_logger(logger)
 
 
 if __name__ == "__main__":

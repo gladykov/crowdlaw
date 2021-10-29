@@ -247,7 +247,7 @@ class OnBoardingModel(BaseModel):
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
                 with open(os.path.join(project_dir, example_file), "w") as file:
                     file.write(
-                        _(f"Contents of {example_file}").format(
+                        _("Contents of {example_file}").format(
                             example_file=example_file
                         )
                     )

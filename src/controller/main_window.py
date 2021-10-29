@@ -468,12 +468,12 @@ class MainWindowCtrl(BaseCtrl):
             return window
 
         if event == "send_to_review":
-            if not self.model.protect_unsaved_changes(values["document_editor"]) in [
+            if self.model.protect_unsaved_changes(values["document_editor"]) not in [
                 "cancel",
                 None,
             ]:
                 wait_cursor_enable(window)
-                if self.model.send_to_review(values, window) is False:
+                if self.model.send_to_review(window) is False:
                     wait_cursor_disable(window)
                     return window
 
@@ -483,10 +483,14 @@ class MainWindowCtrl(BaseCtrl):
                 return window
 
         if event == "update_review":
-            wait_cursor_enable(window)
-            self.model.update_review(values)
-            wait_cursor_disable(window)
-            return window
+            if self.model.protect_unsaved_changes(values["document_editor"]) not in [
+                "cancel",
+                None,
+            ]:
+                wait_cursor_enable(window)
+                self.model.update_review(values)
+                wait_cursor_disable(window)
+                return window
 
         if event is not None and event.startswith("URL"):
             self.model.open_url_in_browser(event.split(" ")[1])
@@ -498,12 +502,22 @@ class MainWindowCtrl(BaseCtrl):
                 None,
             ]:
                 ci_event, ci_values = MainWindowUI(self.model).add_contact_info_popup()
-                if ci_event not in [None, "Cancel"] and ci_values["contact_info"]:
-                    wait_cursor_enable(window)
-                    self.model.save_working_set()
-                    self.model.set_maintainer_file("contact", ci_values["contact_info"])
-                    window["contact_info"].update(ci_values["contact_info"])
-                    wait_cursor_disable(window)
+                if ci_event not in [None, "Cancel"]:
+                    # Either it was empty and now it will be filled
+                    # or it was filled, and now it will be empty
+                    # unless was empty and will stay empty
+                    if ci_values["contact_info"] or (
+                        self.model.contact_info not in ["", None]
+                        and not ci_values["contact_info"]
+                    ):
+                        wait_cursor_enable(window)
+                        self.model.save_working_set()
+                        self.model.set_maintainer_file(
+                            "contact", ci_values["contact_info"]
+                        )
+                        window["contact_info"].update(ci_values["contact_info"])
+                        self.model.contact_info = ci_values["contact_info"]
+                        wait_cursor_disable(window)
 
             return window
 

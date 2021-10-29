@@ -698,16 +698,15 @@ class MainWindowModel(BaseModel):
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
 
-    def send_to_review(self, values, window):
+    def send_to_review(self, window):
         """
         Send for code review
         Args:
-            values: dict
+            window: sg.Window
 
         Returns:
             None
         """
-        self.protect_unsaved_changes(values["document_editor"])
         if self.git_adapter.changes_exist():
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
@@ -748,11 +747,10 @@ class MainWindowModel(BaseModel):
         Returns:
             None
         """
-        self.protect_unsaved_changes(values["document_editor"])
         if self.git_adapter.changes_exist():
             self.git_adapter.add_all_untracked()
             self.git_adapter.commit("Saved working set")
 
-        self.git_adapter.reset_identical_commits()
-        self.git_adapter.commit("Updates to review")
-        self.git_adapter.push()
+            self.git_adapter.reset_identical_commits()
+            self.git_adapter.commit(_("Updates to review"))
+            self.git_adapter.push()

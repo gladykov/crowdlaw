@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-26 12:53+0200\n"
-"PO-Revision-Date: 2021-10-26 12:54+0200\n"
+"POT-Creation-Date: 2021-10-29 19:12+0200\n"
+"PO-Revision-Date: 2021-10-29 19:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
 "|| n%100>14) ? 1 : 2);\n"
 
-#: src/main.py:44
+#: src/main.py:45
 msgid "On boarding"
 msgstr "Inicjalizacja"
 
@@ -28,101 +28,105 @@ msgstr "Inicjalizacja"
 msgid "Unsupported API provided: {api}"
 msgstr "Nieobsługiwany interfejs API: {api}"
 
-#: src/controller/main_window.py:154 src/views/main_window.py:89
-#: src/views/on_boarding.py:147
+#: src/controller/main_window.py:150 src/views/main_window.py:89
+#: src/views/on_boarding.py:159
 msgid "Update token info"
 msgstr "Zaktualizuj ustawienia tokena"
 
-#: src/controller/main_window.py:170
+#: src/controller/main_window.py:166
 msgid "Couldn't authenticate with current token info"
 msgstr "Nie udało się zalogować, używając danych tokena"
 
-#: src/controller/main_window.py:173 src/controller/main_window.py:531
+#: src/controller/main_window.py:169 src/controller/main_window.py:527
 msgid "Close"
 msgstr "Zamknij"
 
-#: src/controller/main_window.py:246
+#: src/controller/main_window.py:242
 msgid "At least one stage should be marked as active"
 msgstr "Jeden etap powinien by aktywny"
 
-#: src/controller/main_window.py:252
+#: src/controller/main_window.py:248
 msgid "Provide name for every stage"
 msgstr "Podaj nazwę dla każdego etapu"
 
-#: src/controller/main_window.py:312
+#: src/controller/main_window.py:308
 msgid "Are you sure you want to update token info?"
 msgstr "Czy na pewno chcec zaktualizować dane tokena ?"
 
-#: src/controller/main_window.py:314
+#: src/controller/main_window.py:310
 msgid "Updating token info, will update it for all projects"
 msgstr "Aktualizacja danych tokena, zaktualizuje go dla wszystkich projektow"
 
-#: src/controller/main_window.py:315
+#: src/controller/main_window.py:311
 msgid "which use {git_provider}"
 msgstr "które używają  {git_provider}"
 
-#: src/controller/main_window.py:318
+#: src/controller/main_window.py:314
 msgid "Are you sure?"
 msgstr "Czy jesteś pewien?"
 
-#: src/controller/main_window.py:350 src/views/main_window.py:352
+#: src/controller/main_window.py:346 src/views/main_window.py:353
 msgid "Add new project"
 msgstr "Dodaj nowy projekt"
 
-#: src/controller/main_window.py:369
+#: src/controller/main_window.py:365
 msgid "Are you sure you want to remove project?"
 msgstr "Czy jesteś pewien, że chcesz usunąć project?"
 
-#: src/controller/main_window.py:371
+#: src/controller/main_window.py:367
 msgid "WARNING: This will remove all project files from your local computer"
 msgstr "UWAGA: Zamierzasz usunąć wszystkie pliki projektu z Twojego komputera"
 
-#: src/controller/main_window.py:375
+#: src/controller/main_window.py:371
 msgid "associated with project {project_name}."
 msgstr "związane z projektem {project_name}."
 
-#: src/controller/main_window.py:378
+#: src/controller/main_window.py:374
 msgid "Copy will be left on the server"
 msgstr "Kopia pozostanie na serwerze"
 
-#: src/controller/main_window.py:379
+#: src/controller/main_window.py:375
 msgid "To remove server version go to {server_url}"
 msgstr "By usunąć wersję z serwera, otwórz {server_url}"
 
-#: src/controller/main_window.py:382
+#: src/controller/main_window.py:378
 msgid "Are you sure you want ro remove files from local computer?"
 msgstr "Czy jesteś pewien, że chcesz usunąć pliki lokalne?"
 
-#: src/controller/main_window.py:407
+#: src/controller/main_window.py:403
 msgid "Confirm file deletion"
 msgstr "Potwierdź usunięcie pliku"
 
-#: src/controller/main_window.py:409
+#: src/controller/main_window.py:405
 msgid "Are you sure you want to remove file {file} ?"
 msgstr "Czy jesteś pewien, że chcesz usunąć {file} ?"
 
-#: src/controller/main_window.py:460
+#: src/controller/main_window.py:456
 msgid "Are you sure you want to remove current set?"
 msgstr "Czy jesteś pewien że chcesz usunąć aktulalny zestaw zmian?"
 
-#: src/controller/main_window.py:462
+#: src/controller/main_window.py:458
 msgid "All changes made in this set will be lost locally."
 msgstr ""
 "Wszystkie zmiany w tym zestawie zmian, zostaną utracone z tego komputera."
 
-#: src/controller/main_window.py:463
+#: src/controller/main_window.py:459
 msgid "They will be still available on the server, if you sent them"
 msgstr "Jeśli wysłałeś je na serwer, wciąż tam będą dostępne"
 
-#: src/controller/main_window.py:464
+#: src/controller/main_window.py:460
 msgid "Are you sure you want to remove current set locally?"
 msgstr "Czy jesteś pewien, że chcesz usunąc lokalny zestaw zmian?"
 
-#: src/controller/on_boarding.py:64
+#: src/controller/on_boarding.py:62
 msgid "On Boarding"
 msgstr "Inicjalizacja"
 
-#: src/controller/on_boarding.py:124
+#: src/controller/on_boarding.py:95
+msgid "Provide Git account details"
+msgstr "Podaj dane konta Git"
+
+#: src/controller/on_boarding.py:122
 msgid ""
 "Clicking 'Obtain token' will take you to the git page. Fill fields as on "
 "picture"
@@ -226,7 +230,7 @@ msgstr "Folder projektu {project_dir} już istnieje"
 msgid "Contents of {example_file}"
 msgstr "Zawartość przykładowa pliku {example_file}"
 
-#: src/model/on_boarding.py:262
+#: src/model/on_boarding.py:263
 msgid "Initial commit for project {project_name}"
 msgstr "Wstępny commit projektu  {project_name}"
 
@@ -246,9 +250,9 @@ msgstr "Tak"
 msgid "No"
 msgstr "Nie"
 
-#: src/views/common.py:62 src/views/common.py:136 src/views/main_window.py:354
-#: src/views/main_window.py:384 src/views/main_window.py:439
-#: src/views/on_boarding.py:58 src/views/on_boarding.py:155
+#: src/views/common.py:62 src/views/common.py:136 src/views/main_window.py:355
+#: src/views/main_window.py:385 src/views/main_window.py:440
+#: src/views/on_boarding.py:70 src/views/on_boarding.py:167
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -388,11 +392,15 @@ msgstr "Etap projektu"
 msgid "Document editor"
 msgstr "Edytor dokumentu"
 
-#: src/views/main_window.py:258
+#: src/views/main_window.py:235 src/views/main_window.py:439
+msgid "Save"
+msgstr "Zapisz"
+
+#: src/views/main_window.py:259
 msgid "Sets of changes"
 msgstr "Zestawy zmian"
 
-#: src/views/main_window.py:268
+#: src/views/main_window.py:269
 msgid ""
 "In one project you can prepare multiple versions of proposed changes. Each "
 "version is called set of changes (or branch). You can work on different sets "
@@ -402,15 +410,15 @@ msgstr ""
 "Każda wersja zmian, jest nazywana zestawem zmian (branch). Możesz równolegle "
 "pracować nad różnymi zestawami zmian. "
 
-#: src/views/main_window.py:277
+#: src/views/main_window.py:278
 msgid "Add new set"
 msgstr "Dodaj nowy zestaw"
 
-#: src/views/main_window.py:278
+#: src/views/main_window.py:279
 msgid "Remove set"
 msgstr "Usuń zestaw"
 
-#: src/views/main_window.py:294
+#: src/views/main_window.py:295
 msgid ""
 "When you are ready to propose your changes, send them for a review. Other "
 "team members will review them. All reviews are done on remote server. "
@@ -420,31 +428,31 @@ msgstr ""
 "członkowie zespołu przejrzą je. Wszystkie przejrzenia robi się na serwerze. "
 "Komunikacja odbywa się poprzez email."
 
-#: src/views/main_window.py:305
+#: src/views/main_window.py:306
 msgid "Send working set for a review"
 msgstr "Wyślij zestaw do recenzji"
 
-#: src/views/main_window.py:313
+#: src/views/main_window.py:314
 msgid "Update current review"
 msgstr "Zaktualizuj wersję do recenzji"
 
-#: src/views/main_window.py:331
+#: src/views/main_window.py:332
 msgid "Reviews"
 msgstr "Recenzje"
 
-#: src/views/main_window.py:349
+#: src/views/main_window.py:350
 msgid "Change project"
 msgstr "Zmień projekt"
 
-#: src/views/main_window.py:353
+#: src/views/main_window.py:354
 msgid "Remove project"
 msgstr "Usuń projekt"
 
-#: src/views/main_window.py:368 src/views/main_window.py:383
+#: src/views/main_window.py:369 src/views/main_window.py:384
 msgid "Add / edit contact info"
 msgstr "Dodaj / edytuj dane kontaktowe"
 
-#: src/views/main_window.py:372
+#: src/views/main_window.py:373
 msgid ""
 "Provide contact info (Whatsapp group, FB group, mailing list, etc), where "
 "all participants can communicate with each other"
@@ -452,7 +460,7 @@ msgstr ""
 "Podaj dane kontaktowe dla grupy (grupa WhatsApp, Facebook, grupa mejlowa, "
 "itp.) gdzie wszyscy członkowie mogą się nawzajem komunikować."
 
-#: src/views/main_window.py:399
+#: src/views/main_window.py:400
 msgid ""
 "Active\n"
 "stage"
@@ -460,33 +468,29 @@ msgstr ""
 "Aktywny\n"
 "etap"
 
-#: src/views/main_window.py:400
+#: src/views/main_window.py:401
 msgid "Stage name"
 msgstr "Nazwa etapu"
 
-#: src/views/main_window.py:401
+#: src/views/main_window.py:402
 msgid "Remove stage"
 msgstr "Usuń etap"
 
-#: src/views/main_window.py:424
+#: src/views/main_window.py:425
 msgid "Edit stage info"
 msgstr "Edytuj etapy"
 
-#: src/views/main_window.py:436
+#: src/views/main_window.py:437
 msgid "Add stage"
 msgstr "Dodaj etap"
 
-#: src/views/main_window.py:437
+#: src/views/main_window.py:438
 msgid "Mark all as done"
 msgstr "Zaznacz wszystkie jako wykonane"
 
-#: src/views/main_window.py:438 src/views/main_window.py:470
-msgid "Save"
-msgstr "Zapisz"
-
 #: src/views/on_boarding.py:23
 msgid "Before you start writing Law, we need few answers."
-msgstr "NIm ropoczniesz pisanie prawa, potrzebujemy kilka odpowiedzi"
+msgstr "Nim ropoczniesz pisanie prawa, potrzebujemy kilka odpowiedzi"
 
 #: src/views/on_boarding.py:24
 msgid "What do you want to do?"
@@ -494,7 +498,7 @@ msgstr "Co chcesz zrobić?"
 
 #: src/views/on_boarding.py:27
 msgid "Create fresh empty project, which others can join"
-msgstr "Stwórz nowy, pusty projekt, do któego inni dołączą"
+msgstr "Stwórz nowy, pusty projekt, do którego inni dołączą"
 
 #: src/views/on_boarding.py:34
 msgid "Join existing project"
@@ -508,54 +512,58 @@ msgstr "Podaj nazwę nowego projektu"
 msgid "Provide web address of existing project"
 msgstr "Podaj adres internetowy istniejącego projektu"
 
-#: src/views/on_boarding.py:58
+#: src/views/on_boarding.py:60
+msgid "example: https://gitlab.com/gladykov/example-project-for-crowd-law"
+msgstr "przykład: https://gitlab.com/gladykov/example-project-for-crowd-law"
+
+#: src/views/on_boarding.py:70
 msgid "Next"
 msgstr "Dalej"
 
-#: src/views/on_boarding.py:61
+#: src/views/on_boarding.py:73
 msgid "Welcome to Crowd Law app"
 msgstr "Witamy w aplikacji Crowd Law"
 
-#: src/views/on_boarding.py:80
+#: src/views/on_boarding.py:92
 msgid ""
 "In order to work with this tool, you will need account on Git site. It will "
 "take you only a moment."
 msgstr ""
 "By pracować z tą aplikacją, potrzebujesz konta Git. Zajmie to tylko chwilę"
 
-#: src/views/on_boarding.py:88
+#: src/views/on_boarding.py:100
 msgid "Select Git site"
 msgstr "Wybierz stronę Git"
 
-#: src/views/on_boarding.py:110
+#: src/views/on_boarding.py:122
 msgid "Provide {git} username"
 msgstr "Podaj nazwę użytkownika {git}"
 
-#: src/views/on_boarding.py:117
+#: src/views/on_boarding.py:129
 msgid "No account? Create now."
 msgstr "Nie masz konta? Utwórz teraz"
 
-#: src/views/on_boarding.py:124
+#: src/views/on_boarding.py:136
 msgid "Provide {git_provider} token"
 msgstr "Podaj token {git_provider}"
 
-#: src/views/on_boarding.py:131
+#: src/views/on_boarding.py:143
 msgid "Obtain token"
 msgstr "Uzyskaj token"
 
-#: src/views/on_boarding.py:136
+#: src/views/on_boarding.py:148
 msgid "Provide token name"
 msgstr "Podaj nazwę tokena"
 
-#: src/views/on_boarding.py:154
+#: src/views/on_boarding.py:166
 msgid "Back"
 msgstr "Wróć"
 
-#: src/views/on_boarding.py:156
+#: src/views/on_boarding.py:168
 msgid "Start!"
 msgstr "Start!"
 
-#: src/views/on_boarding.py:161
+#: src/views/on_boarding.py:173
 msgid "Git details"
 msgstr "Dane Git"
 

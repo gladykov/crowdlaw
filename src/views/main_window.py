@@ -69,7 +69,7 @@ class MainWindowUI:
                         _("URL: {url}").format(url=self.props.project_url),
                         enable_events=True,
                         k=f"URL {self.props.project_url}",
-                    )
+                    ),
                 ],
                 [sg.Text(_("User: {user}").format(user=self.props.username), k="user")],
                 [

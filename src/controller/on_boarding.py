@@ -4,11 +4,9 @@ import os
 import PySimpleGUI as sg
 
 from src.controller.common import BaseCtrl
-from src.controller.language import LanguageCtrl
 from src.model.on_boarding import OnBoardingModel
-from src.utils.supported_langs import get_language_name_by_shortcut
 from src.utils.utils import get_project_root
-from src.views.common import about, change_language_selector, image_popup, warning_popup
+from src.views.common import image_popup, warning_popup
 from src.views.on_boarding import OnBoardingUI
 
 

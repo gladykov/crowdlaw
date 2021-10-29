@@ -27,7 +27,8 @@ Install and start using - app should be self-explanatory. If it is not, there is
 
 ## Why there is no PyPi module?
 
-If you know how to install PyPi module, you do not need this tool, and you can use Git in your IDE :) Main distribution channel are provided installers. 
+App is intended for people not familiar with those technologies and installer is crucial, this is why only single distribution channel, to make life easier. Still you can clone this repo, install requirements and run through `python -m src.main` 
+But if there will be additional benefit from PyPi package, I assume I can add in the future.
 
 ## Example project
 
@@ -54,6 +55,7 @@ Right now supported languages are English and Polish. Soon there will be possibi
 ## Roadmap ?
 
 More like a wish list, as it depends on future needs of users and involvement of Open Source community:
+- testing, testing, testing
 - refactoring and review as this is initial work
 - store credentials in more secure way
 - Github adapter (right now only Gitlab is supported)

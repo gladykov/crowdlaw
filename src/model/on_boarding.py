@@ -247,7 +247,7 @@ class OnBoardingModel(BaseModel):
             for example_file in ["example_1.txt", "example_2.txt", "example_3.txt"]:
                 with open(os.path.join(project_dir, example_file), "w") as file:
                     file.write(
-                        _("Contents of {example_file}").format(
+                        _(f"Contents of {example_file}").format(
                             example_file=example_file
                         )
                     )
@@ -258,7 +258,9 @@ class OnBoardingModel(BaseModel):
             )
 
             git_adapter.add_all_untracked()
+
             git_adapter.commit(
+                # TRANSLATORS: Never translate using national characters
                 _("Initial commit for project {project_name}").format(
                     project_name=self.project_name
                 )

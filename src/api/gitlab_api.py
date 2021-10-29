@@ -155,7 +155,12 @@ class GitlabAPI:
             project
         """
         return self.gitlab_api.projects.create(
-            {"name": project_name, "visibility": "public"}
+            {
+                "name": project_name,
+                "visibility": "public",
+                "approvals_before_merge": 1,
+                "only_allow_merge_if_all_discussions_are_resolved": True,
+            }
         )
 
     def get_credentials_git_url(self, token_name, path):

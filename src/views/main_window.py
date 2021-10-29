@@ -427,7 +427,7 @@ class MainWindowUI:
                 [
                     sg.Col(
                         element_list,
-                        size=(300, 300),
+                        size=(400, 300),
                         scrollable=True,
                         vertical_scroll_only=True,
                         k="stages_col",
@@ -442,7 +442,7 @@ class MainWindowUI:
                 [sg.Text("", k="error", size=(40, 1), text_color="red")],
             ],
             finalize=True,
-            size=(350, 380),
+            size=(450, 380),
         )
 
     def layout(self):

@@ -186,17 +186,26 @@ class GitAdapter:
     def localise_remote_branches(self):
         """
         When new origin is added, we know nothing about remote branches.
-        Make all remote branches available as local branches
+        Make all remote branches available as local branches,
+        whose author of first commit was current user
 
         Args:
 
         Returns:
             None
         """
-        self.repo.git.fetch()
+        self.repo.remotes.origin.fetch()
         origin = self.repo.remotes.origin
         for branch in self.repo.remote().refs:
             branch_name = branch.name.split("/")[1]
+            if branch_name == "master":  # Always localise master
+                pass
+            else:
+                # Only localise branches with current author
+                if self.branch_author_email(branch_name) != self.get_config(
+                    "user", "email"
+                ):
+                    continue
 
             self.repo.create_head(
                 branch_name, branch
@@ -204,6 +213,31 @@ class GitAdapter:
             self.repo.heads.__getattr__(branch_name).set_tracking_branch(
                 origin.refs.__getattr__(branch_name)
             )  # Set tracking information
+
+    def branch_author_email(self, branch_name):
+        """
+        Get email of commiter, of first commit
+
+        Args:
+            branch_name: str
+
+        Returns:
+            str
+        """
+        master_shas = set()  # TODO: Move to class var, not to retrieve it many times
+
+        for parent_commit in self.repo.iter_commits("origin/master"):
+            master_shas.add(parent_commit.hexsha)
+
+        for commit in self.repo.iter_commits("origin/" + branch_name, reverse=True):
+            if commit.hexsha not in master_shas:
+                return commit.author.email
+
+        raise ValueError(
+            _("Didn't find author of branch {branch_name}").format(
+                branch_name=branch_name
+            )
+        )
 
     def localise_remote_branch(self, branch_name):
         """

@@ -543,7 +543,10 @@ class MainWindowModel(BaseModel):
 
         branch_name = strip_string(branch_name)
 
-        if branch_name in self.remote_api.get_branches():
+        if (
+            branch_name in self.remote_api.get_branches()
+            or branch_name in self.branch_names
+        ):
             sg.popup_ok(
                 _("Working set with name {branch_name} already exists").format(
                     branch_name=branch_name
@@ -553,29 +556,27 @@ class MainWindowModel(BaseModel):
 
         return branch_name
 
-    def set_working_branch(self, branch_name, from_master=True):
+    def set_working_branch(self, branch_name):
         """
         Set current branch (working set). If needed create new branch.
 
         Args:
             branch_name: str
-            from_master: bool
 
         Returns:
             None
         """
-        self.branch_name = branch_name
-        if self.branch_exists(self.branch_name):
-            self.git_adapter.checkout_existing_branch(self.branch_name)
-            logger.info("Branch exists. Switch only.")
+        if self.branch_exists_locally(branch_name):
+            self.git_adapter.checkout_existing_branch(branch_name)
+            logger.info(f"Branch {branch_name} exists. Switch only.")
         else:
-            logger.info("Branch does not exists. Create new one.")
-            if from_master:
-                self.git_adapter.checkout_master()
-                self.git_adapter.pull()
-                self.git_adapter.checkout_new_branch(self.branch_name)
-                self.branch_names = self.git_adapter.local_branches()
+            logger.info(f"Branch {branch_name} does not exists. Create new one.")
+            self.git_adapter.checkout_master()
+            self.git_adapter.pull()
+            self.git_adapter.checkout_new_branch(branch_name)
+            self.branch_names = self.git_adapter.local_branches()
 
+        self.branch_name = branch_name
         self.update_list_of_files()
         self.editor_text = ""
         self.edited_file = None
@@ -594,9 +595,10 @@ class MainWindowModel(BaseModel):
             return False
 
         self.set_working_branch(branch_name)
+
         return True
 
-    def branch_exists(self, branch_name):
+    def branch_exists_locally(self, branch_name):
         """
         Check if branch exists locally.
 

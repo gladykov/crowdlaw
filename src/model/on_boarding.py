@@ -109,10 +109,10 @@ class OnBoardingModel(BaseModel):
         Returns:
             None
         """
-        self.username = values["username_input"]
-        self.token = values["token_input"]
-        self.token_name = values["token_name_input"]
-        self.git_provider = values["git_provider"]
+        self.username = values["username_input"].strip()
+        self.token = values["token_input"].strip()
+        self.token_name = values["token_name_input"].strip()
+        self.git_provider = values["git_provider"].strip()
 
     def fill_credentials(self, window, git_provider):
         """

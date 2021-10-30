@@ -18,6 +18,7 @@ class GitAdapter:
 
     def __init__(self, path, initialized=True):
         self.path = path
+        self.master_shas = set()
         if initialized:
             self.repo = Repo(self.path)
         else:
@@ -196,6 +197,11 @@ class GitAdapter:
         """
         self.repo.remotes.origin.fetch()
         origin = self.repo.remotes.origin
+
+        # Collect all SHAs of commits from master
+        for parent_commit in self.repo.iter_commits("origin/master"):
+            self.master_shas.add(parent_commit.hexsha)
+
         for branch in self.repo.remote().refs:
             branch_name = branch.name.split("/")[1]
             if branch_name == "master":  # Always localise master
@@ -216,7 +222,7 @@ class GitAdapter:
 
     def branch_author_email(self, branch_name):
         """
-        Get email of commiter, of first commit
+        Get email of commiter, of first commit which is not on master
 
         Args:
             branch_name: str
@@ -224,13 +230,8 @@ class GitAdapter:
         Returns:
             str
         """
-        master_shas = set()  # TODO: Move to class var, not to retrieve it many times
-
-        for parent_commit in self.repo.iter_commits("origin/master"):
-            master_shas.add(parent_commit.hexsha)
-
         for commit in self.repo.iter_commits("origin/" + branch_name, reverse=True):
-            if commit.hexsha not in master_shas:
+            if commit.hexsha not in self.master_shas:
                 return commit.author.email
 
         raise ValueError(
@@ -244,7 +245,11 @@ class GitAdapter:
         When new origin is added, we know nothing about remote branches.
         Make all remote branches available as local branches
 
+        NOTE: Do not use to localise branches which are not main branch.
+        Otherwise branches from other people will be localised and mess
+
         Args:
+            branch_name: str
 
         Returns:
             None
@@ -272,13 +277,13 @@ class GitAdapter:
         branch_to_del = list(filter(lambda x: x.name == branch_name, self.repo.heads))
         assert (
             len(branch_to_del) == 1
-        ), "Didn't found branch to delete of found too much"
+        ), "Didn't found branch to delete or found too much"
         self.repo.delete_head(branch_to_del[0], force=True)
         logger.info(f"Branch removed {branch_name}")
 
     def remove_repo(self):
         """
-        Checkout current local repo
+        Remove current local repo
 
         Returns:
             None
@@ -291,6 +296,9 @@ class GitAdapter:
         """
         Reset all commits with same name locally, so we can commit new name.
         There is no data loss here.
+
+        Returns:
+            bool, None
         """
         counter = 0
         for commit in self.repo.iter_commits():

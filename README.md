@@ -1,25 +1,28 @@
 # Crowd Law
 
-<p align="center">
-<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-</p>
+## Preamble
 
-# Introduction
+What if citizens were to create laws for themselves? If from mass of people, experts and lawyers would participate in this process in a transparent way. Welcome to Crowd Law. 
 
-## What is this?
+[Wanna want more?](https://old.reddit.com/r/crowdlaw/wiki/index)
+
+
+## Introduction
+
+### What is this?
 
 Tool to collaboratively create law, so anybody can do it. You can write new and edit existing documents, and you can use it for any other purpose. In other words - Git addon.
 
-## Why ?
+### Why ?
 
 In 2021 there is no good tool, to write documents by many people. Google Docs and Wiki does not provide good mechanisms for tracking and approving changes, which is crucial when creating transparent law.
 Computer programmers for a long time know benefits which come with Git system, but it is too complicated for non-technical person. This is why UI was made as easy as possible, to allow everybody use power of Git.
 
-## How ?
+### How ?
 
 You edit all documents locally, and when you are ready you send changes to one of public servers. As they have tools, allowing to review, discuss and accept proposed changes, all review process is done on public server.
 
-# Installation
+## Installation
 
 [Download one of install packages for your system](https://github.com/gladykov/crowdlaw/releases)
 
@@ -34,17 +37,17 @@ But if there will be additional benefit from PyPi package, I assume I can add in
 
 https://gitlab.com/gladykov/example-project-for-crowd-law
 
-# I found an issue!
+## I found an issue!
 
 Great, please let me know:
 [Fill Gitlab issue](https://gitlab.com/gladykov/crowdlaw/-/issues/new)
 or drop me an email: gladykov gmail com
 
-# Documentation
+## Documentation
 
 Does not exist (yet)
 
-# Contribution
+## Contribution
 
 There is still so much work to be done. From testing, translations, code review, refactoring, through building packages to adding new Git providers and developing new functionalities.
 
@@ -67,8 +70,11 @@ Python + PySimpleGUI + GitPython + Gitlab API packages.
 
 ## Code style
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+
 Blackd formatter and isort are your friends. Line-length 88. PRs are validated against them and finally by pycodestyle
 
-# License
+## License
 
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)

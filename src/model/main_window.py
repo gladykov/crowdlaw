@@ -49,25 +49,26 @@ class MainWindowModel(BaseModel):
 
         repo_url = self.git_adapter.get_config('remote "origin"', "url")
         self.token_name, self.token = get_token_name_token(repo_url)
-        self.projects = self.folder_list(os.path.join(get_project_root(), "projects"))
+        self.projects = list(self.config["projects"].keys())
+        if len(self.projects) != len(
+            self.folder_list(os.path.join(get_project_root(), "projects"))
+        ):
+            logger.warning(
+                _("List of projects in config does not match list of project folders")
+            )
         self.branch_names = self.git_adapter.local_branches()
         self.branch_name = self.git_adapter.repo.active_branch.name
 
         # Special case in case of crash
         if self.branch_name == "master":
-            # TODO: Retest this
-            if len(self.branch_names) == 0:  # When only master, it will be 0
+            if not self.branch_names:  # When only master, it will be empty list
                 self.branch_name = None
             else:
-                self.branch_name = list(
-                    filter(lambda x: x != "master", self.git_adapter.local_branches())
-                )[0]
+                self.branch_name = self.branch_names[0]
                 self.git_adapter.checkout_existing_branch(self.branch_name)
 
-        self.branch_name_readable = ""
         self.project_url = self.config["projects"][self.project_name]["project_url"]
         self.username = self.config["projects"][self.project_name]["username"]
-        # self.is_owner = False
         self.is_owner = self.config["projects"][self.project_name]["is_owner"]
         self.project_folder = self.config["projects"][self.project_name]["folder"]
         self.git_provider = self.config["projects"][self.project_name]["provider"]
@@ -620,7 +621,9 @@ class MainWindowModel(BaseModel):
         if self.branch_names:
             self.set_working_branch(self.branch_names[0])
         else:
-            self.add_new_branch()
+            added = False
+            while added is not True:
+                added = self.add_new_branch()
 
     def switch_project(self, project_name):
         """

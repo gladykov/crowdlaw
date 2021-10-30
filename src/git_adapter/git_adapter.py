@@ -135,7 +135,7 @@ class GitAdapter:
 
     def local_branches(self):
         """
-        List local branches
+        List local branches (except master)
 
         Returns:
             list

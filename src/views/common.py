@@ -1,6 +1,5 @@
 """UI elements callable from multiple views"""
 import os
-from importlib.metadata import version
 from platform import platform
 from sys import version as pyversion
 from time import sleep
@@ -213,7 +212,7 @@ def about():
         _("Info"),
         [
             [sg.Text(f"Crowd Law: {BaseModel.get_version()}")],
-            [sg.Text(f"PySimpleGUI: {version('PySimpleGUI')}")],
+            [sg.Text(f"PySimpleGUI: {sg.__version__}")],
             [sg.Text(f"Tk / Tcl: {TkVersion, TclVersion }")],
             [sg.Text(f"Python: {pyversion.split(' ')[0]}")],
             [sg.Text(f"Platform: {platform()}")],

@@ -130,3 +130,32 @@ def urljoin(parts):
     """
     # https://stackoverflow.com/a/63678718
     return "/".join(parts).replace("//", "/").replace(":/", "://")
+
+
+def super_init(func):
+    """
+    Wrapper, to trigger super __init__, if init is simple enough
+    https://stackoverflow.com/questions/3782827/why-arent-superclass-init-methods-automatically-invoked
+
+    Args:
+        func: method
+
+    Returns:
+        wrapper
+    """
+
+    def wrapper(self, *args, **kwargs) -> None:
+        """
+        Trigger __init__
+        Args:
+            self:
+            *args:
+            **kwargs:
+
+        Returns:
+            None
+        """
+        super(type(self), self).__init__(*args, **kwargs)
+        func(self)
+
+    return wrapper

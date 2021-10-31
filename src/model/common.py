@@ -11,6 +11,9 @@ from src.utils.utils import get_project_root
 class BaseModel:
     """BaseModel class with various helpers"""
 
+    def __init__(self):
+        self.theme = "DarkTeal6"
+
     @staticmethod
     def git_providers():
         """

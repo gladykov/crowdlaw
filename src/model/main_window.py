@@ -13,6 +13,7 @@ from src.utils.utils import (
     get_token_name_token,
     replace_string_between_subs,
     strip_string,
+    super_init,
     urljoin,
 )
 from src.views.common import FILE_ICON, FOLDER_ICON, popup_yes_no_cancel
@@ -24,6 +25,7 @@ logger = logging.getLogger("root")
 class MainWindowModel(BaseModel):
     """Main Window Model Class"""
 
+    @super_init
     def __init__(self):
         self.app_title = f"Crowd Law {self.get_version()}"
         self.new_existing = None
@@ -33,7 +35,6 @@ class MainWindowModel(BaseModel):
         self.username = None
         self.token = None
         self.token_name = None
-        self.theme = "DarkTeal6"  # TODO: Move to some common CTRL
         self.supported_git_providers = list(self.git_providers().keys())
         self.editor_disabled = True
         self.editor_text = ""

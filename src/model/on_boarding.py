@@ -7,7 +7,7 @@ import validators
 from src.api.api import get_api
 from src.git_adapter.git_adapter import GitAdapter
 from src.model.common import BaseModel
-from src.utils.utils import get_project_root, strip_string
+from src.utils.utils import get_project_root, strip_string, super_init
 
 
 class OnBoardingModel(BaseModel):
@@ -16,6 +16,7 @@ class OnBoardingModel(BaseModel):
     1repo and also when updating token info across all repos
     """
 
+    @super_init
     def __init__(self):
         self.new_existing = None
         self.project_url = None
@@ -24,7 +25,6 @@ class OnBoardingModel(BaseModel):
         self.username = None
         self.token = None
         self.token_name = None
-        self.theme = "DarkTeal6"  # TODO: Move to some common place
         self.supported_git_providers = list(self.git_providers().keys())
         self.config = self.get_config()
 
@@ -224,6 +224,7 @@ class OnBoardingModel(BaseModel):
                 project = remote_api.get_project_info(source_project)
             else:
                 is_owner = False
+                # TODO: After some break we may want to join our existing fork
                 forked_proj = remote_api.fork_project(source_project)
                 project = remote_api.get_project_info(forked_proj)
 

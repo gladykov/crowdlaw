@@ -1,6 +1,10 @@
 """UI elements callable from multiple views"""
 import os
+from importlib.metadata import version
+from platform import platform
+from sys import version as pyversion
 from time import sleep
+from tkinter import TclVersion, TkVersion
 
 import PySimpleGUI as sg
 
@@ -208,7 +212,11 @@ def about():
     return sg.Window(
         _("Info"),
         [
-            [sg.Text(f"Crowd Law {BaseModel.get_version()}")],
+            [sg.Text(f"Crowd Law: {BaseModel.get_version()}")],
+            [sg.Text(f"PySimpleGUI: {version('PySimpleGUI')}")],
+            [sg.Text(f"Tk / Tcl: {TkVersion, TclVersion }")],
+            [sg.Text(f"Python: {pyversion.split(' ')[0]}")],
+            [sg.Text(f"Platform: {platform()}")],
             [
                 sg.Text(
                     "https://gitlab.com/gladykov/crowdlaw/",
@@ -219,10 +227,11 @@ def about():
                 )
             ],
             [sg.Text("gladykov gmail com")],
-            [sg.Button(_("OK"))],
+            [sg.Button(_("OK"), bind_return_key=True)],
         ],
         modal=True,
         finalize=True,
+        element_justification="c",
     )
 
 

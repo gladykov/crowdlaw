@@ -234,11 +234,7 @@ class GitAdapter:
             if commit.hexsha not in self.master_shas:
                 return commit.author.email
 
-        raise ValueError(
-            _("Didn't find author of branch {branch_name}").format(
-                branch_name=branch_name
-            )
-        )
+        raise ValueError(f"Didn't find author of branch {branch_name}")
 
     def localise_remote_branch(self, branch_name):
         """

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-29 19:12+0200\n"
-"PO-Revision-Date: 2021-10-29 19:15+0200\n"
+"POT-Creation-Date: 2021-10-31 12:28+0100\n"
+"PO-Revision-Date: 2021-10-31 12:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Couldn't authenticate with current token info"
 msgstr ""
 
-#: src/controller/main_window.py:169 src/controller/main_window.py:527
+#: src/controller/main_window.py:169 src/controller/main_window.py:541
 msgid "Close"
 msgstr ""
 
@@ -130,49 +130,53 @@ msgid ""
 "picture"
 msgstr ""
 
-#: src/model/main_window.py:329
+#: src/model/main_window.py:330
 msgid "Provide new file name"
 msgstr ""
 
-#: src/model/main_window.py:329
+#: src/model/main_window.py:330
 msgid "New filename"
 msgstr ""
 
-#: src/model/main_window.py:465
+#: src/model/main_window.py:466
 msgid "Filename cannot be empty"
 msgstr ""
 
-#: src/model/main_window.py:485
+#: src/model/main_window.py:486
 msgid "Warning: Unsaved changes"
 msgstr ""
 
-#: src/model/main_window.py:487
+#: src/model/main_window.py:488
 msgid ""
 "You have unsaved changes in editor. Do you want to save them before "
 "proceeding?"
 msgstr ""
 
-#: src/model/main_window.py:529
+#: src/model/main_window.py:530
 msgid ""
 "All your changes to the articles,\n"
 "will be treated together as one set\n"
 "Please, give a short name to a new set of changes"
 msgstr ""
 
-#: src/model/main_window.py:534
+#: src/model/main_window.py:535
 msgid "Provide name for your set of changes"
 msgstr ""
 
-#: src/model/main_window.py:547
+#: src/model/main_window.py:551
 msgid "Working set with name {branch_name} already exists"
 msgstr ""
 
-#: src/model/main_window.py:716 src/model/main_window.py:717
+#: src/model/main_window.py:720 src/model/main_window.py:721
 msgid "Provide title for your proposed changes"
 msgstr ""
 
-#: src/model/main_window.py:726
+#: src/model/main_window.py:730
 msgid "No changes to send. Edit some files first."
+msgstr ""
+
+#: src/model/main_window.py:760
+msgid "Updates to review"
 msgstr ""
 
 #: src/model/on_boarding.py:44
@@ -223,61 +227,61 @@ msgstr ""
 msgid "Initial commit for project {project_name}"
 msgstr ""
 
-#: src/views/common.py:26
+#: src/views/common.py:30
 msgid "Found some issues, please correct them."
 msgstr ""
 
-#: src/views/common.py:40
+#: src/views/common.py:44
 msgid "Help"
 msgstr ""
 
-#: src/views/common.py:60
+#: src/views/common.py:64
 msgid "Yes"
 msgstr ""
 
-#: src/views/common.py:61
+#: src/views/common.py:65
 msgid "No"
 msgstr ""
 
-#: src/views/common.py:62 src/views/common.py:136 src/views/main_window.py:355
+#: src/views/common.py:66 src/views/common.py:140 src/views/main_window.py:355
 #: src/views/main_window.py:385 src/views/main_window.py:440
 #: src/views/on_boarding.py:70 src/views/on_boarding.py:167
 msgid "Cancel"
 msgstr ""
 
-#: src/views/common.py:126
+#: src/views/common.py:130
 msgid "Select app language"
 msgstr ""
 
-#: src/views/common.py:135
+#: src/views/common.py:139
 msgid "Switch language"
 msgstr ""
 
-#: src/views/common.py:141
+#: src/views/common.py:145
 msgid "Change app language"
 msgstr ""
 
-#: src/views/common.py:153
+#: src/views/common.py:157
 msgid "&Settings"
 msgstr ""
 
-#: src/views/common.py:154
+#: src/views/common.py:158
 msgid "&Change language"
 msgstr ""
 
-#: src/views/common.py:156
+#: src/views/common.py:160
 msgid "&Help"
 msgstr ""
 
-#: src/views/common.py:156
+#: src/views/common.py:160
 msgid "&About"
 msgstr ""
 
-#: src/views/common.py:192 src/views/common.py:209
+#: src/views/common.py:196 src/views/common.py:213
 msgid "Info"
 msgstr ""
 
-#: src/views/common.py:195 src/views/common.py:222
+#: src/views/common.py:199 src/views/common.py:230
 msgid "OK"
 msgstr ""
 

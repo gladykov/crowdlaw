@@ -54,7 +54,7 @@ class MainWindowModel(BaseModel):
             self.folder_list(os.path.join(get_project_root(), "projects"))
         ):
             logger.warning(
-                _("List of projects in config does not match list of project folders")
+                "List of projects in config does not match list of project folders"
             )
         self.branch_names = self.git_adapter.local_branches()
         self.branch_name = self.git_adapter.repo.active_branch.name

@@ -3,11 +3,11 @@ import os
 
 import PySimpleGUI as sg
 
-from src.controller.common import BaseCtrl
-from src.model.on_boarding import OnBoardingModel
-from src.utils.utils import get_project_root
-from src.views.common import image_popup, warning_popup
-from src.views.on_boarding import OnBoardingUI
+from crowdlaw.controller.common import BaseCtrl
+from crowdlaw.model.on_boarding import OnBoardingModel
+from crowdlaw.utils.utils import get_project_root
+from crowdlaw.views.common import image_popup, warning_popup
+from crowdlaw.views.on_boarding import OnBoardingUI
 
 
 class OnBoardingCtrl(BaseCtrl):

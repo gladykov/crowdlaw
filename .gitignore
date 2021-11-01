@@ -141,3 +141,5 @@ cython_debug/
 
 # Custom
 projects/
+# Inno setup conf file
+inno_setup_script.iss

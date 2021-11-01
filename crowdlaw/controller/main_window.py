@@ -4,17 +4,17 @@ from sys import exit
 import PySimpleGUI as sg
 import yaml
 
-from src.controller.common import BaseCtrl
-from src.controller.on_boarding import OnBoardingCtrl
-from src.model.main_window import MainWindowModel
-from src.utils.utils import get_logger
-from src.views.common import (
+from crowdlaw.controller.common import BaseCtrl
+from crowdlaw.controller.on_boarding import OnBoardingCtrl
+from crowdlaw.model.main_window import MainWindowModel
+from crowdlaw.utils.utils import get_logger
+from crowdlaw.views.common import (
     popup_yes_no_cancel,
     wait_cursor_disable,
     wait_cursor_enable,
     warning_popup,
 )
-from src.views.main_window import MainWindowUI
+from crowdlaw.views.main_window import MainWindowUI
 
 
 logger = get_logger("root", log_level="debug")

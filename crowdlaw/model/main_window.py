@@ -5,18 +5,18 @@ import os
 import PySimpleGUI as sg
 import yaml
 
-from src.api.api import get_api
-from src.git_adapter.git_adapter import GitAdapter
-from src.model.common import BaseModel
-from src.utils.utils import (
-    get_project_root,
+from crowdlaw.api.api import get_api
+from crowdlaw.git_adapter.git_adapter import GitAdapter
+from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.utils import (
+    get_projects_path,
     get_token_name_token,
     replace_string_between_subs,
     strip_string,
     super_init,
     urljoin,
 )
-from src.views.common import FILE_ICON, FOLDER_ICON, popup_yes_no_cancel
+from crowdlaw.views.common import FILE_ICON, FOLDER_ICON, popup_yes_no_cancel
 
 
 logger = logging.getLogger("root")
@@ -51,9 +51,7 @@ class MainWindowModel(BaseModel):
         repo_url = self.git_adapter.get_config('remote "origin"', "url")
         self.token_name, self.token = get_token_name_token(repo_url)
         self.projects = list(self.config["projects"].keys())
-        if len(self.projects) != len(
-            self.folder_list(os.path.join(get_project_root(), "projects"))
-        ):
+        if len(self.projects) != len(self.folder_list(get_projects_path())):
             logger.warning(
                 "List of projects in config does not match list of project folders"
             )
@@ -242,9 +240,7 @@ class MainWindowModel(BaseModel):
                             icon=FILE_ICON,
                         )
 
-        add_files_in_folder(
-            "", os.path.join(get_project_root(), "projects", self.project_name)
-        )
+        add_files_in_folder("", os.path.join(get_projects_path(), self.project_name))
 
         return tree_data
 
@@ -340,7 +336,7 @@ class MainWindowModel(BaseModel):
             new_filename = new_filename + ".txt"
 
         new_file_path = os.path.join(
-            get_project_root(), "projects", self.project_name, new_filename
+            get_projects_path(), self.project_name, new_filename
         )
         self.create_file(new_file_path)
         self.update_list_of_files()
@@ -679,7 +675,7 @@ class MainWindowModel(BaseModel):
         if provider_projects:
             for provider_project in provider_projects:
                 repo = GitAdapter(
-                    os.path.join(get_project_root(), "projects", provider_project),
+                    os.path.join(get_projects_path(), provider_project),
                     initialized=True,
                 )
                 url = repo.get_config('remote "origin"', "url")

@@ -1,14 +1,12 @@
 """Local Git manipulations with GitPython and native Git"""
 import logging
-import os
 
 from git import Repo, rmtree
 
-from src.utils.utils import get_project_root, strip_string
+from crowdlaw.utils.utils import strip_string
 
 
 logger = logging.getLogger("root")
-repo_root = os.path.join(get_project_root(), "repos", "base_repo")
 
 
 class GitAdapter:

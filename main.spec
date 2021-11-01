@@ -5,10 +5,10 @@ block_cipher = None
 
 
 a = Analysis(
-    ['src\\main.py'],
-    pathex=[os.path.join(os.getcwd(), "src"), os.path.join(os.getcwd(), "venv", "Lib", "site-packages")],
+    ['crowdlaw\\main.py'],
+    pathex=[os.path.join(os.getcwd(), "crowdlaw"), os.path.join(os.getcwd(), "venv", "Lib", "site-packages")],
     binaries=[],
-    datas=[('locale', 'locale'), ('resources', 'resources'), ('src/git_providers.yaml', 'src'), ('VERSION', '.')],
+    datas=[('crowdlaw/locale', 'crowdlaw/locale'), ('crowdlaw/resources', 'crowdlaw/resources')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

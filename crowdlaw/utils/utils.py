@@ -14,7 +14,20 @@ def get_project_root() -> Path:
     Returns:
         path, str
     """
-    return Path(__file__).parent.parent.parent
+    return Path(__file__).parent.parent
+
+
+def get_home_user_path():
+    """Folder where user files are written. Create it, if there is none."""
+    home_user_path = os.path.join(Path.home(), ".crowdlaw")
+    if not os.path.isdir(home_user_path):
+        os.makedirs(home_user_path)
+    return home_user_path
+
+
+def get_projects_path():
+    """Path were projects are stored"""
+    return os.path.join(get_home_user_path(), "projects")
 
 
 def strip_string(string):
@@ -85,7 +98,7 @@ def get_logger(name, propagate=False, log_level="info"):
     logger.propagate = propagate
 
     ch = logging.StreamHandler()
-    log_file = os.path.join(get_project_root(), "crowdlaw.log")
+    log_file = os.path.join(get_home_user_path(), "crowdlaw.log")
     fh = logging.FileHandler(log_file, "a", "utf-8")
 
     formatter = logging.Formatter(

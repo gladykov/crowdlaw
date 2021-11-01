@@ -4,9 +4,9 @@ import locale
 import os
 import platform
 
-from src.model.common import BaseModel
-from src.utils.supported_langs import set_keyboard_language, supported_langs
-from src.utils.utils import get_logger, get_project_root
+from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.supported_langs import set_keyboard_language, supported_langs
+from crowdlaw.utils.utils import get_logger, get_project_root
 
 
 logger = get_logger("root", log_level="debug")

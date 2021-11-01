@@ -10,7 +10,16 @@ pyinstaller main.spec --noconfirm
 Run locally
 - install all packages (preferably in venv)
 - activate venv
-- python -m src.main
+- python -m crowdlaw.main
 
 Extract strings to pot
-pybabel extract -o output.pot ./src/
+pybabel extract -o output.pot ./crowdlaw/
+
+Create dist
+python setup.py sdist bdist_wheel
+
+TEST Upload dist
+twine upload --repository testpypi dist/*
+
+TEST Dist
+pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple crowdlaw==0.1.3

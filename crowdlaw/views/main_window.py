@@ -1,7 +1,7 @@
 """UI element of main view"""
 import PySimpleGUI as sg
 
-from src.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
+from crowdlaw.views.common import TITLE_FONT_SIZE, help_icon, menu_toolbar
 
 
 LEFT_COLUMN_WIDTH = 280

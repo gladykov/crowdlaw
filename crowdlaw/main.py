@@ -1,19 +1,20 @@
 """Main entry program of Crowd Law"""
 from sys import exit
 
-from src.controller.language import LanguageCtrl
-from src.controller.main_window import MainWindowCtrl
-from src.controller.on_boarding import OnBoardingCtrl
-from src.model.common import BaseModel
-from src.utils.utils import get_logger, redirect_stderr_to_logger
-from src.views.common import select_language
+from crowdlaw.controller.language import LanguageCtrl
+from crowdlaw.controller.main_window import MainWindowCtrl
+from crowdlaw.controller.on_boarding import OnBoardingCtrl
+from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.utils import get_logger, redirect_stderr_to_logger
+from crowdlaw.views.common import select_language
 
 
 logger = get_logger("root", log_level="debug")
 redirect_stderr_to_logger(logger)
 
 
-if __name__ == "__main__":
+def main():
+    """Main entry point"""
     logger.info(f"Starting Crowd Law app version {BaseModel.get_version()}")
     initialized = bool(BaseModel.get_config())
 
@@ -84,3 +85,7 @@ if __name__ == "__main__":
 
     logger.warning("On boarding did not succeed")
     exit()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,10 +1,10 @@
 """Common controller methods"""
 import PySimpleGUI as sg
 
-from src.controller.language import LanguageCtrl
-from src.model.common import BaseModel
-from src.utils.supported_langs import get_language_name_by_shortcut
-from src.views.common import about, change_language_selector
+from crowdlaw.controller.language import LanguageCtrl
+from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.supported_langs import get_language_name_by_shortcut
+from crowdlaw.views.common import about, change_language_selector
 
 
 def redo(text):

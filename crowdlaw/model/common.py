@@ -5,7 +5,7 @@ import webbrowser
 import requests
 import yaml
 
-from src.utils.utils import get_project_root
+from crowdlaw.utils.utils import get_project_root, get_projects_path
 
 
 class BaseModel:
@@ -22,7 +22,9 @@ class BaseModel:
         Returns:
             dict
         """
-        config_file = os.path.join(get_project_root(), "src", "git_providers.yaml")
+        config_file = os.path.join(
+            get_project_root(), "resources", "git_providers.yaml"
+        )
         with open(config_file, "r") as stream:
             config = yaml.safe_load(stream)
         return config
@@ -35,7 +37,7 @@ class BaseModel:
         Returns:
             dict
         """
-        config_file = os.path.join(get_project_root(), "projects", "config.yaml")
+        config_file = os.path.join(get_projects_path(), "config.yaml")
         if not os.path.exists(config_file):
             return False
 
@@ -55,7 +57,7 @@ class BaseModel:
         Returns:
             None
         """
-        config_file_dir = os.path.join(get_project_root(), "projects")
+        config_file_dir = os.path.join(get_projects_path())
         config_file = "config.yaml"
         config_file_path = os.path.join(config_file_dir, config_file)
         if not os.path.exists(config_file_dir):
@@ -98,5 +100,7 @@ class BaseModel:
         Returns:
             str
         """
-        with open(os.path.join(get_project_root(), "VERSION"), "r") as file:
+        with open(
+            os.path.join(get_project_root(), "resources", "VERSION"), "r"
+        ) as file:
             return file.readline()

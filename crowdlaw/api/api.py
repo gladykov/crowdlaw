@@ -1,5 +1,5 @@
 """Synthetic module to get proper Git API"""
-from src.api.gitlab_api import GitlabAPI
+from crowdlaw.api.gitlab_api import GitlabAPI
 
 
 def get_api(api, git_providers):

@@ -1,7 +1,7 @@
 """UI elements shown during on boarding and editing Git details"""
 import PySimpleGUI as sg
 
-from src.views.common import help_icon_clickable, menu_toolbar
+from crowdlaw.views.common import help_icon_clickable, menu_toolbar
 
 
 class OnBoardingUI:

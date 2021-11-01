@@ -4,10 +4,15 @@ import shutil
 
 import validators
 
-from src.api.api import get_api
-from src.git_adapter.git_adapter import GitAdapter
-from src.model.common import BaseModel
-from src.utils.utils import get_project_root, strip_string, super_init
+from crowdlaw.api.api import get_api
+from crowdlaw.git_adapter.git_adapter import GitAdapter
+from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.utils import (
+    get_project_root,
+    get_projects_path,
+    strip_string,
+    super_init,
+)
 
 
 class OnBoardingModel(BaseModel):
@@ -195,9 +200,7 @@ class OnBoardingModel(BaseModel):
                 )
             ]
 
-        project_dir = os.path.join(
-            get_project_root(), "projects", project_stripped_name
-        )
+        project_dir = os.path.join(get_projects_path(), project_stripped_name)
 
         if not os.path.exists(project_dir):
             os.mkdir(project_dir)

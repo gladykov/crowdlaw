@@ -17,7 +17,7 @@ README = (HERE / "README.md").read_text()
 with open("requirements.txt", "r") as f:
     required = f.readlines()
 
-required = [x.replace("~", "=") for x in required if x]  # Filter empty lines
+required = [x for x in required if x]  # Filter empty lines
 
 
 def package_files(directories):

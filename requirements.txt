@@ -1,6 +1,6 @@
-python-gitlab~=2.7.1
-GitPython~=3.1.20
-PySimpleGUI~=4.53.0
-PyYAML~=5.4.1
-validators~=0.18.2
-requests~=2.26.0
+python-gitlab==2.*
+GitPython==3.*
+PySimpleGUI==4.*
+PyYAML==5.*
+validators==0.*
+requests==2.*

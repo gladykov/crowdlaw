@@ -28,14 +28,14 @@ You edit all documents locally, and when you are ready you send changes to one o
 
 Install and start using - app should be self-explanatory. If it is not, there is always room for improvement.
 
-## Why there is no PyPi module?
-
-App is intended for people not familiar with those technologies and installer is crucial, this is why only single distribution channel, to make life easier. Still you can clone this repo, install requirements and run through `python -m src.main` 
-But if there will be additional benefit from PyPi package, I assume I can add in the future.
-
 ## Example project
 
 https://gitlab.com/gladykov/example-project-for-crowd-law
+
+## PyPi
+
+PyPi module is intended only for preview / development purpose, as main channel of distribution should be provided installer.
+`pip install corwdlaw`
 
 ## I found an issue!
 
@@ -47,13 +47,20 @@ or drop me an email: gladykov gmail com
 
 Does not exist (yet)
 
+Your projects live in HOME_DIRECTORY/.crowdlaw/
+
 ## Contribution
 
 There is still so much work to be done. From testing, translations, code review, refactoring, through building packages to adding new Git providers and developing new functionalities.
 
+### Packages preparation
+Win:
+- `pyinstaller main.spec --noconfirm --noconsole`
+- then use [inno setup](https://jrsoftware.org/isinfo.php)
+
 ## Translations
 
-Right now supported languages are English and Polish. Soon there will be possibility to translate project in Crowdin
+Right now supported languages are English and Polish. PLan is to allow translation of project in Crowdin
 
 ## Roadmap ?
 
@@ -67,6 +74,10 @@ More like a wish list, as it depends on future needs of users and involvement of
 ## Underlying technology
 
 Python + PySimpleGUI + GitPython + Gitlab API packages.
+
+## Debugging
+
+Logs live in : HOME_DIR/.crowdlaw/crowdlaw.log
 
 ## Code style
 

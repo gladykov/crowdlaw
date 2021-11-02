@@ -12,6 +12,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+Output/
 downloads/
 eggs/
 .eggs/
@@ -139,7 +140,5 @@ cython_debug/
 # IDE
 .idea
 
-# Custom
-projects/
 # Inno setup conf file
 inno_setup_script.iss

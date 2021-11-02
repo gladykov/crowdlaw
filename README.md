@@ -35,7 +35,7 @@ https://gitlab.com/gladykov/example-project-for-crowd-law
 ## PyPi
 
 PyPi module is intended only for preview / development purpose, as main channel of distribution should be provided installer.
-`pip install corwdlaw`
+`pip install crowdlaw`
 
 ## I found an issue!
 

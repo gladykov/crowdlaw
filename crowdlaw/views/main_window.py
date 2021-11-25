@@ -305,13 +305,19 @@ class MainWindowUI:
                 sg.Button(
                     _("Send working set for a review"),
                     k="send_to_review",
-                    disabled=not self.props.remote_api.connected,
+                    disabled=not self.props.remote_api.connected
+                    or self.props.demo_version,
                 ),
                 help_reviews,
             ]
             if self.props.merge_request is None
             else [
-                sg.Button(_("Update current review"), k="update_review"),
+                sg.Button(
+                    _("Update current review"),
+                    k="update_review",
+                    disabled=not self.props.remote_api.connected
+                    or self.props.demo_version,
+                ),
                 help_reviews,
             ]
         )
@@ -328,14 +334,22 @@ class MainWindowUI:
             else [sg.Text("", k="review_info")]
         )
 
+        elements = [
+            button,
+            text,
+        ]
+
+        if self.props.demo_version:
+            elements.insert(
+                1,
+                [sg.Text(_("Working in demo version. You cannot upload your changes"))],
+            )
+
         return sg.Frame(
             _("Reviews"),
-            [
-                button,
-                text,
-            ],
+            elements,
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(RIGHT_COLUMN_WIDTH, 100),
+            size=(RIGHT_COLUMN_WIDTH, 120),
         )
 
     @staticmethod

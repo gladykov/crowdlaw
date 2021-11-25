@@ -18,7 +18,7 @@ from crowdlaw.utils.utils import (
 class OnBoardingModel(BaseModel):
     """
     Used when configuring app for the first time to use with Git
-    1repo and also when updating token info across all repos
+    repo and also when updating token info across all repos
     """
 
     @super_init

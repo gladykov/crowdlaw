@@ -128,6 +128,23 @@ class OnBoardingCtrl(BaseCtrl):
                 ),
             )
 
+        if event == "demo_version":
+            self.model.git_provider = "gitlab"
+            self.model.new_existing = "existing"
+            self.model.username = "gladykov"
+            self.model.token = "glpat-QVFdF8iBW-LnysAxX_gH"
+            self.model.token_name = "crowdlaw_read_only"
+            self.model.project_url = (
+                "https://gitlab.com/gladykov/example-project-for-crowd-law"
+            )
+            self.model.project_name = "example-project-for-crowd-law"
+
+            initialization_result = self.model.initialize_project()
+            if initialization_result is True:
+                window.close()
+                return True
+            warning_popup(initialization_result)
+
         if event == "start":
             validation_result = self.model.validate_page_2(values)
             if validation_result is True:

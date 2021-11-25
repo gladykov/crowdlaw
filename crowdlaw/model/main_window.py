@@ -42,6 +42,7 @@ class MainWindowModel(BaseModel):
 
         self.config = self.get_config()
         self.project_name = self.config["last_project"]
+        self.demo_version = "example-project-for-crowd-law" == self.project_name
         logger.info(f"Trying to initialize controller for project {self.project_name}")
         self.git_adapter = GitAdapter(
             self.config["projects"][self.project_name]["folder"],

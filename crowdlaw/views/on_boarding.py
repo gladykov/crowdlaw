@@ -40,6 +40,20 @@ class OnBoardingUI:
             ],
         ]
 
+        if not self.props.config[
+            "init"
+        ]:  # Give possibility to see demo only on first launch
+            elements.append(
+                [
+                    sg.Button(_("Launch demo version"), k="demo_version"),
+                    sg.Text(
+                        _("Join demo project to preview application"),
+                        text_color="grey",
+                        justification="right",
+                    ),
+                ]
+            )
+
         if self.props.new_existing is not None:
             if self.props.new_existing == "new":
                 project_input = [

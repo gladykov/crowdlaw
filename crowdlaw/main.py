@@ -1,12 +1,13 @@
 """Main entry program of Crowd Law"""
+import locale
 from sys import exit
 
 from crowdlaw.controller.language import LanguageCtrl
 from crowdlaw.controller.main_window import MainWindowCtrl
 from crowdlaw.controller.on_boarding import OnBoardingCtrl
 from crowdlaw.model.common import BaseModel
+from crowdlaw.utils.supported_langs import get_language_name_by_shortcut
 from crowdlaw.utils.utils import get_logger, redirect_stderr_to_logger
-from crowdlaw.views.common import select_language
 
 
 logger = get_logger("root", log_level="debug")
@@ -19,20 +20,13 @@ def main():
     initialized = bool(BaseModel.get_config())
 
     if not initialized:
-        language_selector = select_language()
-        if language_selector[0] != "OK":
-            exit("Didn't choose valid language. Bye bye!")
+        # Autodetect local language
+        local_lang = locale.getdefaultlocale()[0]
+        if get_language_name_by_shortcut(local_lang, False) is False:
+            # Default to default
+            local_lang = "en_US"
 
-        selected_lang = None
-        for lang, val in language_selector[1].items():
-            if val is True:
-                selected_lang = lang
-                break
-
-        if selected_lang is None:
-            exit("Didn't choose valid language. Bye bye!")
-
-        config = {"lang": selected_lang, "init": False}
+        config = {"lang": local_lang, "init": False}
         BaseModel.set_config(config)
 
     LanguageCtrl.install_lang()

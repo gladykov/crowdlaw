@@ -323,18 +323,21 @@ def set_keyboard_language(lang_code):
         activate_keyboard_language(language)
 
 
-def get_language_name_by_shortcut(shortcut):
+def get_language_name_by_shortcut(shortcut, raise_exception=True):
     """
     Get language name by shortcut
 
     Args:
         shortcut: str
+        raise_exception: bool, should raise error if not found
 
     Returns:
-        str
+        str, bool
     """
     for k, v in supported_langs.items():
         if v["shortcut"] == shortcut:
             return k
+    if raise_exception:
+        raise ValueError(f"Didn't find lang with shortcut {shortcut}")
 
-    raise ValueError(f"Didn't find lang with shortcut {shortcut}")
+    return False

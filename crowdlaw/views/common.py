@@ -161,26 +161,6 @@ def menu_toolbar():
     return sg.Menu(menu_def, key="-MENU BAR-")
 
 
-def select_language():
-    """
-    Show modal to change language, when app is starting for the first time
-
-    Returns:
-        tuple(str, dict)
-    """
-    return sg.Window(
-        "Select app language",
-        [
-            [sg.Titlebar("Select app language")],
-            [sg.Radio("English", "language", key="en_US")],
-            [sg.Radio("Polski", "language", key="pl_PL")],
-            [sg.Button("OK"), sg.Button("Cancel / Close")],
-        ],
-        modal=True,
-        grab_anywhere=True,
-    ).read(close=True)
-
-
 def ok_popup(text):
     """
     Show simple popup with OK button and simple info

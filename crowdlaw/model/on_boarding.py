@@ -145,9 +145,14 @@ class OnBoardingModel(BaseModel):
         if self.config["git_providers"].get(git_provider) is None:
             return False
 
-        self.username = self.config["git_providers"][self.git_provider]["username"]
+        username = self.config["git_providers"][self.git_provider]["username"]
+        token_name = self.config["git_providers"][self.git_provider]["token_name"]
+        if username == "gladykov" and token_name == "crowdlaw_read_only":
+            return False  # Demo version
+
+        self.username = username
         self.token = self.config["git_providers"][self.git_provider]["token"]
-        self.token_name = self.config["git_providers"][self.git_provider]["token_name"]
+        self.token_name = token_name
         window["username_input"].update(self.username)
         window["token_input"].update(self.token)
         window["token_name_input"].update(self.token_name)
@@ -176,6 +181,9 @@ class OnBoardingModel(BaseModel):
         """
         RemoteAPI = get_api(self.git_provider, self.git_providers())
         remote_api = RemoteAPI(self.username, self.token)
+
+        if not remote_api.authenticated:
+            return [_("I was not able to authenticate using credentials provided")]
 
         new_project = self.new_existing == "new"
         project_stripped_name = strip_string(self.project_name)
@@ -229,6 +237,16 @@ class OnBoardingModel(BaseModel):
                 is_owner = False
                 # TODO: After some break we may want to join our existing fork
                 forked_proj = remote_api.fork_project(source_project)
+                if forked_proj == "error":
+                    os.rmdir(project_dir)
+                    return [
+                        _(
+                            "There was an error while creating copy of the project on"
+                            " your server. "
+                            "Probably project {project_name} already exists"
+                            " on your server."
+                        ).format(project_name=project_details[-1])
+                    ]
                 project = remote_api.get_project_info(forked_proj)
 
         username = project["username"]

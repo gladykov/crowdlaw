@@ -167,7 +167,7 @@ class MainWindowCtrl(BaseCtrl):
                 )
 
             elif update_token_event in [_("Close"), sg.WIN_CLOSED]:
-                break
+                return False
 
     @staticmethod
     def update_stage_info(window):
@@ -315,8 +315,8 @@ class MainWindowCtrl(BaseCtrl):
                 ],
             )
             if reply == "yes":
-                self.update_token_info()
-                return self.redraw_window(window)
+                if self.update_token_info() is not False:
+                    return self.redraw_window(window)
 
         if event == "project_selector":
             wait_cursor_enable(window)

@@ -4,6 +4,7 @@ import time
 
 import gitlab
 import requests
+from gitlab.exceptions import GitlabCreateError
 
 
 logger = logging.getLogger("root")
@@ -108,7 +109,12 @@ class GitlabAPI:
         """
         name = new_name if new_name else project.name
         path = new_path if new_path else project.path
-        project.forks.create({"name": name, "path": path})
+        try:
+            project.forks.create({"name": name, "path": path})
+        except GitlabCreateError as e:
+            logger.error(e)
+            return "error"
+
         forked_project = self.get_project_by_user_path(self.user, path)
         logger.info("Waiting for fork to complete. Grab a coffee.")
         while forked_project.import_status == "started":

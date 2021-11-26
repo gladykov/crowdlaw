@@ -149,7 +149,6 @@ class OnBoardingCtrl(BaseCtrl):
             validation_result = self.model.validate_page_2(values)
             if validation_result is True:
                 self.model.collect_page_2(values)
-                # TODO: Validate API credentials
                 initialization_result = self.model.initialize_project()
                 if initialization_result is True:
                     window.close()

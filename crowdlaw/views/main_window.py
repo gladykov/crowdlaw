@@ -86,7 +86,13 @@ class MainWindowUI:
                         k="token_name",
                     )
                 ],
-                [sg.Button(_("Update token info"), k="update_token_info")],
+                [
+                    sg.Button(
+                        _("Update token info"),
+                        k="update_token_info",
+                        disabled=self.props.demo_version,
+                    )
+                ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
             size=(RIGHT_COLUMN_WIDTH, 180),

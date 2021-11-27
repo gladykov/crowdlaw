@@ -4,7 +4,7 @@
 
 What if citizens were to create laws for themselves? If from mass of people, experts and lawyers would participate in this process in a transparent way. Welcome to Crowd Law. 
 
-[Wanna want more?](https://old.reddit.com/r/crowdlaw/wiki/index)
+[https://crowdlaw-app.org](https://crowdlaw-app.org)
 
 
 ## Introduction

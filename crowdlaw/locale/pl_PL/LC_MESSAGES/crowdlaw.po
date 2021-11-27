@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-31 12:28+0100\n"
-"PO-Revision-Date: 2021-10-31 12:29+0100\n"
+"POT-Creation-Date: 2021-11-27 20:10+0100\n"
+"PO-Revision-Date: 2021-11-27 20:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -20,113 +20,114 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
 "|| n%100>14) ? 1 : 2);\n"
 
-#: src/main.py:45
+#: crowdlaw/main.py:40
 msgid "On boarding"
 msgstr "Inicjalizacja"
 
-#: src/api/api.py:13
+#: crowdlaw/api/api.py:13
 msgid "Unsupported API provided: {api}"
 msgstr "Nieobsługiwany interfejs API: {api}"
 
-#: src/controller/main_window.py:150 src/views/main_window.py:89
-#: src/views/on_boarding.py:159
+#: crowdlaw/controller/main_window.py:151 crowdlaw/views/main_window.py:99
+#: crowdlaw/views/on_boarding.py:173
 msgid "Update token info"
 msgstr "Zaktualizuj ustawienia tokena"
 
-#: src/controller/main_window.py:166
+#: crowdlaw/controller/main_window.py:167
 msgid "Couldn't authenticate with current token info"
 msgstr "Nie udało się zalogować, używając danych tokena"
 
-#: src/controller/main_window.py:169 src/controller/main_window.py:541
+#: crowdlaw/controller/main_window.py:170
+#: crowdlaw/controller/main_window.py:552
 msgid "Close"
 msgstr "Zamknij"
 
-#: src/controller/main_window.py:242
+#: crowdlaw/controller/main_window.py:243
 msgid "At least one stage should be marked as active"
 msgstr "Jeden etap powinien by aktywny"
 
-#: src/controller/main_window.py:248
+#: crowdlaw/controller/main_window.py:249
 msgid "Provide name for every stage"
 msgstr "Podaj nazwę dla każdego etapu"
 
-#: src/controller/main_window.py:308
+#: crowdlaw/controller/main_window.py:313
 msgid "Are you sure you want to update token info?"
 msgstr "Czy na pewno chcec zaktualizować dane tokena ?"
 
-#: src/controller/main_window.py:310
+#: crowdlaw/controller/main_window.py:315
 msgid "Updating token info, will update it for all projects"
 msgstr "Aktualizacja danych tokena, zaktualizuje go dla wszystkich projektów"
 
-#: src/controller/main_window.py:311
+#: crowdlaw/controller/main_window.py:316
 msgid "which use {git_provider}"
 msgstr "które używają {git_provider}"
 
-#: src/controller/main_window.py:314
+#: crowdlaw/controller/main_window.py:319
 msgid "Are you sure?"
 msgstr "Czy jesteś pewien?"
 
-#: src/controller/main_window.py:346 src/views/main_window.py:353
+#: crowdlaw/controller/main_window.py:351 crowdlaw/views/main_window.py:381
 msgid "Add new project"
 msgstr "Dodaj nowy projekt"
 
-#: src/controller/main_window.py:365
+#: crowdlaw/controller/main_window.py:370
 msgid "Are you sure you want to remove project?"
 msgstr "Czy jesteś pewien, że chcesz usunąć project?"
 
-#: src/controller/main_window.py:367
+#: crowdlaw/controller/main_window.py:372
 msgid "WARNING: This will remove all project files from your local computer"
 msgstr "UWAGA: Zamierzasz usunąć wszystkie pliki projektu z Twojego komputera"
 
-#: src/controller/main_window.py:371
+#: crowdlaw/controller/main_window.py:376
 msgid "associated with project {project_name}."
 msgstr "związane z projektem {project_name}."
 
-#: src/controller/main_window.py:374
+#: crowdlaw/controller/main_window.py:379
 msgid "Copy will be left on the server"
 msgstr "Kopia pozostanie na serwerze"
 
-#: src/controller/main_window.py:375
+#: crowdlaw/controller/main_window.py:380
 msgid "To remove server version go to {server_url}"
 msgstr "By usunąć wersję z serwera, otwórz {server_url}"
 
-#: src/controller/main_window.py:378
+#: crowdlaw/controller/main_window.py:383
 msgid "Are you sure you want ro remove files from local computer?"
 msgstr "Czy jesteś pewien, że chcesz usunąć pliki lokalne?"
 
-#: src/controller/main_window.py:403
+#: crowdlaw/controller/main_window.py:408
 msgid "Confirm file deletion"
 msgstr "Potwierdź usunięcie pliku"
 
-#: src/controller/main_window.py:405
+#: crowdlaw/controller/main_window.py:410
 msgid "Are you sure you want to remove file {file} ?"
 msgstr "Czy jesteś pewien, że chcesz usunąć {file} ?"
 
-#: src/controller/main_window.py:456
+#: crowdlaw/controller/main_window.py:461
 msgid "Are you sure you want to remove current set?"
 msgstr "Czy jesteś pewien że chcesz usunąć aktulalny zestaw zmian?"
 
-#: src/controller/main_window.py:458
+#: crowdlaw/controller/main_window.py:463
 msgid "All changes made in this set will be lost locally."
 msgstr ""
 "Wszystkie zmiany w tym zestawie zmian, zostaną utracone z tego komputera."
 
-#: src/controller/main_window.py:459
+#: crowdlaw/controller/main_window.py:464
 msgid "They will be still available on the server, if you sent them"
 msgstr "Jeśli wysłałeś je na serwer, wciąż tam będą dostępne"
 
-#: src/controller/main_window.py:460
+#: crowdlaw/controller/main_window.py:465
 msgid "Are you sure you want to remove current set locally?"
 msgstr "Czy jesteś pewien, że chcesz usunąc lokalny zestaw zmian?"
 
-#: src/controller/on_boarding.py:62
+#: crowdlaw/controller/on_boarding.py:62
 msgid "On Boarding"
 msgstr "Inicjalizacja"
 
-#: src/controller/on_boarding.py:95
+#: crowdlaw/controller/on_boarding.py:95
 msgid "Provide Git account details"
 msgstr "Podaj dane konta Git"
 
-#: src/controller/on_boarding.py:122
+#: crowdlaw/controller/on_boarding.py:122
 msgid ""
 "Clicking 'Obtain token' will take you to the git page. Fill fields as on "
 "picture"
@@ -134,23 +135,23 @@ msgstr ""
 "Kliknięcie \"Uzyskaj token\" otworzy stronę Git. Wypełnij wszystkie pola, "
 "jak na obrazku."
 
-#: src/model/main_window.py:330
+#: crowdlaw/model/main_window.py:328
 msgid "Provide new file name"
 msgstr "Podaj nazwę nowego pliku"
 
-#: src/model/main_window.py:330
+#: crowdlaw/model/main_window.py:328
 msgid "New filename"
 msgstr "Nowy plik"
 
-#: src/model/main_window.py:466
+#: crowdlaw/model/main_window.py:464
 msgid "Filename cannot be empty"
 msgstr "Nazwa pliku nie może być pusta"
 
-#: src/model/main_window.py:486
+#: crowdlaw/model/main_window.py:484
 msgid "Warning: Unsaved changes"
 msgstr "Uwaga: Niezapisane zmiany"
 
-#: src/model/main_window.py:488
+#: crowdlaw/model/main_window.py:486
 msgid ""
 "You have unsaved changes in editor. Do you want to save them before "
 "proceeding?"
@@ -158,7 +159,7 @@ msgstr ""
 "W edytorze masz niezapisane zmiany. Czy chcesz je zapisać, nim będziesz "
 "kontynuował?"
 
-#: src/model/main_window.py:530
+#: crowdlaw/model/main_window.py:528
 msgid ""
 "All your changes to the articles,\n"
 "will be treated together as one set\n"
@@ -168,187 +169,208 @@ msgstr ""
 "będą traktowane razem jako zestaw zmian\n"
 "Proszę, podaj krótką nazwę dla tego zestawu zmian"
 
-#: src/model/main_window.py:535
+#: crowdlaw/model/main_window.py:533
 msgid "Provide name for your set of changes"
 msgstr "Podaj nazwę dla Twojego zestawu zmian"
 
-#: src/model/main_window.py:551
+#: crowdlaw/model/main_window.py:549
 msgid "Working set with name {branch_name} already exists"
 msgstr "Zestaw zmian o nazwie {branch_name} już istnieje"
 
-#: src/model/main_window.py:720 src/model/main_window.py:721
+#: crowdlaw/model/main_window.py:718 crowdlaw/model/main_window.py:719
 msgid "Provide title for your proposed changes"
 msgstr "Podaj tytuł proponowanych zmian"
 
-#: src/model/main_window.py:730
+#: crowdlaw/model/main_window.py:728
 msgid "No changes to send. Edit some files first."
 msgstr "Brak zmian do wysłania. Zmień troche plików wpierw"
 
-#: src/model/main_window.py:760
+#: crowdlaw/model/main_window.py:758
 msgid "Updates to review"
 msgstr "Poprawki do recenzji"
 
-#: src/model/on_boarding.py:44
+#: crowdlaw/model/on_boarding.py:49
 msgid "Please select if you want to create new or join existing project"
 msgstr ""
 "Proszę, wybierz czy chcesz stworzyć nowy project, czy dołączyć do "
 "istniejącego"
 
-#: src/model/on_boarding.py:47
+#: crowdlaw/model/on_boarding.py:52
 msgid "Provide project name"
 msgstr "Podaj nazwę projektu"
 
-#: src/model/on_boarding.py:49
+#: crowdlaw/model/on_boarding.py:54
 msgid "Provide project web address"
 msgstr "Podaj adres internetowy projektu"
 
-#: src/model/on_boarding.py:59
+#: crowdlaw/model/on_boarding.py:64
 msgid "Provided unsupported Git provider"
 msgstr "Podany adres internetowy jest niewspierany"
 
-#: src/model/on_boarding.py:61
+#: crowdlaw/model/on_boarding.py:66
 msgid "Provide valid web address of a project"
 msgstr "Podaj prawidłowy adres internetowy projektu"
 
-#: src/model/on_boarding.py:94
+#: crowdlaw/model/on_boarding.py:99
 msgid "Provide username"
 msgstr "Podaj nazwę użytkownika"
 
-#: src/model/on_boarding.py:96
+#: crowdlaw/model/on_boarding.py:101
 msgid "Provide API token key"
 msgstr "Podaj klucz API tokena"
 
-#: src/model/on_boarding.py:98
+#: crowdlaw/model/on_boarding.py:103
 msgid "Provide API token key name"
 msgstr "Podaj nazwę klucza API tokena"
 
-#: src/model/on_boarding.py:193
+#: crowdlaw/model/on_boarding.py:186
+msgid "I was not able to authenticate using credentials provided"
+msgstr "Nie udało mi się zalogować podanym tokenem"
+
+#: crowdlaw/model/on_boarding.py:206
 msgid "Project {project_name} already exists"
 msgstr "Projekt {project_name} już istnieje"
 
-#: src/model/on_boarding.py:206
+#: crowdlaw/model/on_boarding.py:217
 msgid "Project folder {project_dir} already exists"
 msgstr "Folder projektu {project_dir} już istnieje"
 
-#: src/model/on_boarding.py:250
+#: crowdlaw/model/on_boarding.py:243
+msgid ""
+"There was an error while creating copy of the project on your server. "
+"Probably project {project_name} already exists on your server."
+msgstr ""
+"Wystąpił błąd podczas tworzenia kopii na Twoim serwerze. Prawdopodobnie "
+"projekt {project_name} znajduje się na Twoim serwerze."
+
+#: crowdlaw/model/on_boarding.py:272
 msgid "Contents of {example_file}"
 msgstr "Zawartość przykładowa pliku {example_file}"
 
-#: src/model/on_boarding.py:263
+#: crowdlaw/model/on_boarding.py:285
 msgid "Initial commit for project {project_name}"
 msgstr "Wstępny commit projektu  {project_name}"
 
-#: src/views/common.py:30
+#: crowdlaw/views/common.py:29
 msgid "Found some issues, please correct them."
 msgstr "Zostały znalezione błędy. Proszę, napraw je."
 
-#: src/views/common.py:44
+#: crowdlaw/views/common.py:43
 msgid "Help"
 msgstr "Pomoc"
 
-#: src/views/common.py:64
+#: crowdlaw/views/common.py:63
 msgid "Yes"
 msgstr "Tak"
 
-#: src/views/common.py:65
+#: crowdlaw/views/common.py:64
 msgid "No"
 msgstr "Nie"
 
-#: src/views/common.py:66 src/views/common.py:140 src/views/main_window.py:355
-#: src/views/main_window.py:385 src/views/main_window.py:440
-#: src/views/on_boarding.py:70 src/views/on_boarding.py:167
+#: crowdlaw/views/common.py:65 crowdlaw/views/common.py:139
+#: crowdlaw/views/main_window.py:383 crowdlaw/views/main_window.py:413
+#: crowdlaw/views/main_window.py:468 crowdlaw/views/on_boarding.py:84
+#: crowdlaw/views/on_boarding.py:181
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: src/views/common.py:130
+#: crowdlaw/views/common.py:129
 msgid "Select app language"
 msgstr "Wybierz język aplikacji"
 
-#: src/views/common.py:139
+#: crowdlaw/views/common.py:138
 msgid "Switch language"
 msgstr "Zmień język"
 
-#: src/views/common.py:145
+#: crowdlaw/views/common.py:144
 msgid "Change app language"
 msgstr "Zmień język aplikacji"
 
-#: src/views/common.py:157
+#: crowdlaw/views/common.py:156
 msgid "&Settings"
 msgstr "&Ustawienia"
 
-#: src/views/common.py:158
+#: crowdlaw/views/common.py:157
 msgid "&Change language"
 msgstr "&Zmień język"
 
-#: src/views/common.py:160
+#: crowdlaw/views/common.py:159
 msgid "&Help"
 msgstr "&Pomoc"
 
-#: src/views/common.py:160
+#: crowdlaw/views/common.py:159
 msgid "&About"
 msgstr "&O programie"
 
-#: src/views/common.py:196 src/views/common.py:213
+#: crowdlaw/views/common.py:175 crowdlaw/views/common.py:192
 msgid "Info"
 msgstr "Informacja"
 
-#: src/views/common.py:199 src/views/common.py:230
+#: crowdlaw/views/common.py:178 crowdlaw/views/common.py:209
 msgid "OK"
 msgstr "OK"
 
-#: src/views/main_window.py:27
+#: crowdlaw/views/main_window.py:27
 msgid "[edit contact info]"
 msgstr "[edytuj dane kontaktowe]"
 
-#: src/views/main_window.py:29
+#: crowdlaw/views/main_window.py:29
 msgid "[add contact info]"
 msgstr "[dodaj dane kontaktowe]"
 
-#: src/views/main_window.py:32
+#: crowdlaw/views/main_window.py:32
 msgid "Contact info"
 msgstr "Dane kontaktowe"
 
-#: src/views/main_window.py:38
+#: crowdlaw/views/main_window.py:38
 msgid "contact info not set by maintainer"
 msgstr "dane kontaktowe nie ustawione "
 
-#: src/views/main_window.py:41
+#: crowdlaw/views/main_window.py:41
 msgid "Information about group contact provided by maintainer"
 msgstr "Dane kontaktowe ustawione przez prowadzącego projekt"
 
-#: src/views/main_window.py:65
+#: crowdlaw/views/main_window.py:65
 msgid "Server info"
 msgstr "Dane serwera"
 
-#: src/views/main_window.py:69
+#: crowdlaw/views/main_window.py:69
 msgid "URL: {url}"
 msgstr "URL: {url}"
 
-#: src/views/main_window.py:74
+#: crowdlaw/views/main_window.py:76
+msgid "[share url]"
+msgstr "[udostępnij adres]"
+
+#: crowdlaw/views/main_window.py:80
+msgid "copied to clipboard"
+msgstr "skopiowano do schowka"
+
+#: crowdlaw/views/main_window.py:82
 msgid "User: {user}"
 msgstr "Użytkownik: {user}"
 
-#: src/views/main_window.py:77
+#: crowdlaw/views/main_window.py:85
 msgid "Token: ********"
 msgstr "Token: ********"
 
-#: src/views/main_window.py:83
+#: crowdlaw/views/main_window.py:91
 msgid "Token name: {token_name}"
 msgstr "Nazwa tokena: {token_name}"
 
-#: src/views/main_window.py:102
+#: crowdlaw/views/main_window.py:116
 msgid "Project info"
 msgstr "Dane projektu"
 
-#: src/views/main_window.py:105
+#: crowdlaw/views/main_window.py:119
 msgid "Current project"
 msgstr "Obecny projekt"
 
-#: src/views/main_window.py:107
+#: crowdlaw/views/main_window.py:121
 msgid "[change project]"
 msgstr "[zmień projekt]"
 
-#: src/views/main_window.py:112
+#: crowdlaw/views/main_window.py:126
 msgid ""
 "This is your main project, where you collaborate with other people. Project "
 "is kept on server, but can be edited locally. When you will create your "
@@ -360,51 +382,51 @@ msgstr ""
 "komputerze. Gdy będzie gotowy, wyślij swój pakiet zmian na serwer, by inni "
 "członkowie zespołu mogli się z nim zapoznać"
 
-#: src/views/main_window.py:141
+#: crowdlaw/views/main_window.py:155
 msgid "Documents in the set"
 msgstr "Dokumenty w zestawie"
 
-#: src/views/main_window.py:143
+#: crowdlaw/views/main_window.py:157
 msgid "Click document to start editing"
 msgstr "Kliknij document, by rozpocząć edycję"
 
-#: src/views/main_window.py:156
+#: crowdlaw/views/main_window.py:170
 msgid "Add new file"
 msgstr "Dodaj nowy plik"
 
-#: src/views/main_window.py:157
+#: crowdlaw/views/main_window.py:171
 msgid "Remove selected file"
 msgstr "Usuń zaznaczony plik"
 
-#: src/views/main_window.py:169
+#: crowdlaw/views/main_window.py:183
 msgid "This shows what is actual status of your project."
 msgstr "To pokazuje aktualny etap projektu"
 
-#: src/views/main_window.py:187
+#: crowdlaw/views/main_window.py:201
 msgid "Unrecognized status of stage"
 msgstr "Nierozpoznany status etapu"
 
-#: src/views/main_window.py:200
+#: crowdlaw/views/main_window.py:214
 msgid "[edit stage info]"
 msgstr "[edytuj etapy]"
 
-#: src/views/main_window.py:211
+#: crowdlaw/views/main_window.py:225
 msgid "Project stage"
 msgstr "Etap projektu"
 
-#: src/views/main_window.py:233
+#: crowdlaw/views/main_window.py:247
 msgid "Document editor"
 msgstr "Edytor dokumentu"
 
-#: src/views/main_window.py:235 src/views/main_window.py:439
+#: crowdlaw/views/main_window.py:249 crowdlaw/views/main_window.py:467
 msgid "Save"
 msgstr "Zapisz"
 
-#: src/views/main_window.py:259
+#: crowdlaw/views/main_window.py:273
 msgid "Sets of changes"
 msgstr "Zestawy zmian"
 
-#: src/views/main_window.py:269
+#: crowdlaw/views/main_window.py:283
 msgid ""
 "In one project you can prepare multiple versions of proposed changes. Each "
 "version is called set of changes (or branch). You can work on different sets "
@@ -414,15 +436,15 @@ msgstr ""
 "Każda wersja zmian, jest nazywana zestawem zmian (branch). Możesz równolegle "
 "pracować nad różnymi zestawami zmian. "
 
-#: src/views/main_window.py:278
+#: crowdlaw/views/main_window.py:292
 msgid "Add new set"
 msgstr "Dodaj nowy zestaw"
 
-#: src/views/main_window.py:279
+#: crowdlaw/views/main_window.py:293
 msgid "Remove set"
 msgstr "Usuń zestaw"
 
-#: src/views/main_window.py:295
+#: crowdlaw/views/main_window.py:309
 msgid ""
 "When you are ready to propose your changes, send them for a review. Other "
 "team members will review them. All reviews are done on remote server. "
@@ -432,31 +454,35 @@ msgstr ""
 "członkowie zespołu przejrzą je. Wszystkie przejrzenia robi się na serwerze. "
 "Komunikacja odbywa się poprzez email."
 
-#: src/views/main_window.py:306
+#: crowdlaw/views/main_window.py:320
 msgid "Send working set for a review"
 msgstr "Wyślij zestaw do recenzji"
 
-#: src/views/main_window.py:314
+#: crowdlaw/views/main_window.py:330
 msgid "Update current review"
 msgstr "Zaktualizuj wersję do recenzji"
 
-#: src/views/main_window.py:332
+#: crowdlaw/views/main_window.py:359
+msgid "Working in demo version. You cannot upload your changes"
+msgstr "Praca na wersji demo. Nie możesz wysyłać zmian."
+
+#: crowdlaw/views/main_window.py:363
 msgid "Reviews"
 msgstr "Recenzje"
 
-#: src/views/main_window.py:350
+#: crowdlaw/views/main_window.py:378
 msgid "Change project"
 msgstr "Zmień projekt"
 
-#: src/views/main_window.py:354
+#: crowdlaw/views/main_window.py:382
 msgid "Remove project"
 msgstr "Usuń projekt"
 
-#: src/views/main_window.py:369 src/views/main_window.py:384
+#: crowdlaw/views/main_window.py:397 crowdlaw/views/main_window.py:412
 msgid "Add / edit contact info"
 msgstr "Dodaj / edytuj dane kontaktowe"
 
-#: src/views/main_window.py:373
+#: crowdlaw/views/main_window.py:401
 msgid ""
 "Provide contact info (Whatsapp group, FB group, mailing list, etc), where "
 "all participants can communicate with each other"
@@ -464,7 +490,7 @@ msgstr ""
 "Podaj dane kontaktowe dla grupy (grupa WhatsApp, Facebook, grupa mejlowa, "
 "itp.) gdzie wszyscy członkowie mogą się nawzajem komunikować."
 
-#: src/views/main_window.py:400
+#: crowdlaw/views/main_window.py:428
 msgid ""
 "Active\n"
 "stage"
@@ -472,102 +498,110 @@ msgstr ""
 "Aktywny\n"
 "etap"
 
-#: src/views/main_window.py:401
+#: crowdlaw/views/main_window.py:429
 msgid "Stage name"
 msgstr "Nazwa etapu"
 
-#: src/views/main_window.py:402
+#: crowdlaw/views/main_window.py:430
 msgid "Remove stage"
 msgstr "Usuń etap"
 
-#: src/views/main_window.py:425
+#: crowdlaw/views/main_window.py:453
 msgid "Edit stage info"
 msgstr "Edytuj etapy"
 
-#: src/views/main_window.py:437
+#: crowdlaw/views/main_window.py:465
 msgid "Add stage"
 msgstr "Dodaj etap"
 
-#: src/views/main_window.py:438
+#: crowdlaw/views/main_window.py:466
 msgid "Mark all as done"
 msgstr "Zaznacz wszystkie jako wykonane"
 
-#: src/views/on_boarding.py:23
+#: crowdlaw/views/on_boarding.py:23
 msgid "Before you start writing Law, we need few answers."
 msgstr "Nim ropoczniesz pisanie prawa, potrzebujemy kilka odpowiedzi"
 
-#: src/views/on_boarding.py:24
+#: crowdlaw/views/on_boarding.py:24
 msgid "What do you want to do?"
 msgstr "Co chcesz zrobić?"
 
-#: src/views/on_boarding.py:27
+#: crowdlaw/views/on_boarding.py:27
 msgid "Create fresh empty project, which others can join"
 msgstr "Stwórz nowy, pusty projekt, do którego inni dołączą"
 
-#: src/views/on_boarding.py:34
+#: crowdlaw/views/on_boarding.py:34
 msgid "Join existing project"
 msgstr "Dołącz do istniejącego projektu"
 
-#: src/views/on_boarding.py:46
+#: crowdlaw/views/on_boarding.py:48
+msgid "Launch demo version"
+msgstr "Otwórz wersję demo"
+
+#: crowdlaw/views/on_boarding.py:50
+msgid "Join demo project to preview application"
+msgstr "Podgląd aplikacji w wersji demo"
+
+#: crowdlaw/views/on_boarding.py:60
 msgid "Provide new project name"
 msgstr "Podaj nazwę nowego projektu"
 
-#: src/views/on_boarding.py:51
+#: crowdlaw/views/on_boarding.py:65
 msgid "Provide web address of existing project"
 msgstr "Podaj adres internetowy istniejącego projektu"
 
-#: src/views/on_boarding.py:60
+#: crowdlaw/views/on_boarding.py:74
 msgid "example: https://gitlab.com/gladykov/example-project-for-crowd-law"
 msgstr "przykład: https://gitlab.com/gladykov/example-project-for-crowd-law"
 
-#: src/views/on_boarding.py:70
+#: crowdlaw/views/on_boarding.py:84
 msgid "Next"
 msgstr "Dalej"
 
-#: src/views/on_boarding.py:73
+#: crowdlaw/views/on_boarding.py:87
 msgid "Welcome to Crowd Law app"
 msgstr "Witamy w aplikacji Crowd Law"
 
-#: src/views/on_boarding.py:92
+#: crowdlaw/views/on_boarding.py:106
 msgid ""
 "In order to work with this tool, you will need account on Git site. It will "
 "take you only a moment."
 msgstr ""
 "By pracować z tą aplikacją, potrzebujesz konta Git. Zajmie to tylko chwilę"
 
-#: src/views/on_boarding.py:100
+#: crowdlaw/views/on_boarding.py:114
 msgid "Select Git site"
 msgstr "Wybierz stronę Git"
 
-#: src/views/on_boarding.py:122
+#: crowdlaw/views/on_boarding.py:136
 msgid "Provide {git} username"
 msgstr "Podaj nazwę użytkownika {git}"
 
-#: src/views/on_boarding.py:129
+#: crowdlaw/views/on_boarding.py:143
 msgid "No account? Create now."
 msgstr "Nie masz konta? Utwórz teraz"
 
-#: src/views/on_boarding.py:136
+#: crowdlaw/views/on_boarding.py:150
 msgid "Provide {git_provider} token"
 msgstr "Podaj token {git_provider}"
 
-#: src/views/on_boarding.py:143
+#: crowdlaw/views/on_boarding.py:157
 msgid "Obtain token"
 msgstr "Uzyskaj token"
 
-#: src/views/on_boarding.py:148
+#: crowdlaw/views/on_boarding.py:162
 msgid "Provide token name"
 msgstr "Podaj nazwę tokena"
 
-#: src/views/on_boarding.py:166
+#: crowdlaw/views/on_boarding.py:180
 msgid "Back"
 msgstr "Wróć"
 
-#: src/views/on_boarding.py:168
+#: crowdlaw/views/on_boarding.py:182
 msgid "Start!"
 msgstr "Start!"
 
-#: src/views/on_boarding.py:173
+#: crowdlaw/views/on_boarding.py:187
 msgid "Git details"
 msgstr "Dane Git"
 

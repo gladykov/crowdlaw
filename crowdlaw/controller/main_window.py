@@ -1,6 +1,7 @@
 """Controller for application main window"""
 from sys import exit
 
+import pyperclip
 import PySimpleGUI as sg
 import yaml
 
@@ -282,6 +283,10 @@ class MainWindowCtrl(BaseCtrl):
             window, after successful handling of event;
             None if window is about to be destroyed
         """
+        if window["copied_info"]._visible:
+            window["copied_info"].update(visible=False)
+            window.refresh()
+
         if self.ignore_event:
             self.ignore_event = not self.ignore_event
             return window
@@ -536,6 +541,12 @@ class MainWindowCtrl(BaseCtrl):
                     self.model.stages = stage_dict
                     return self.redraw_window(window)
 
+            return window
+
+        if event == "click_share_url":
+            pyperclip.copy(self.model.project_url)
+            window["copied_info"].update(visible=True)
+            window.refresh()
             return window
 
         if event in [_("Close"), sg.WINDOW_CLOSE_ATTEMPTED_EVENT]:

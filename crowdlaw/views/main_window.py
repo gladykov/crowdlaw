@@ -71,6 +71,14 @@ class MainWindowUI:
                         k=f"URL {self.props.project_url}",
                     ),
                 ],
+                [
+                    sg.Text(
+                        _("[share url]"),
+                        k="click_share_url",
+                        enable_events=True,
+                    ),
+                    sg.Text(_("copied to clipboard"), visible=False, k="copied_info"),
+                ],
                 [sg.Text(_("User: {user}").format(user=self.props.username), k="user")],
                 [
                     sg.Text(
@@ -95,7 +103,7 @@ class MainWindowUI:
                 ],
             ],
             font=("Helvetica", TITLE_FONT_SIZE),
-            size=(RIGHT_COLUMN_WIDTH, 180),
+            size=(RIGHT_COLUMN_WIDTH, 200),
         )
 
     def project_info(self):

@@ -23,3 +23,6 @@ twine upload --repository testpypi dist/*
 
 TEST Dist
 pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple crowdlaw==0.1.3
+
+UPLOAD DIST
+twine upload --repository pypi dist/*
